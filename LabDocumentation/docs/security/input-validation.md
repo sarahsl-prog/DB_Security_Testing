@@ -48,3 +48,9 @@ For research purposes, vulnerable mode allows:
 ## Related Documentation
 - [SQL Validation](sql-validation.md)
 - [Security Overview](overview.md)
+
+---
+
+*Last Updated: January 6, 2026*
+*Documentation Version: 1.1*
+*Lab Version: 1.0*

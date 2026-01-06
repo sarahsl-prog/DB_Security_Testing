@@ -2,7 +2,7 @@
 Healthcare Security Research Project
 Created for Boston University CS 674 Database Security Fall 2025
 Author: Sarah Sund-Lussier (SarahSL@bu.edu)
-GitHub: https://github.com/sarahsl-prog/Database_Security_TestApp
+GitHub: https://github.com/sarahsl-prog/DB_Security_Testing
 -->
 
 # Quick Start Guide - Testing Your Healthcare Security Application
@@ -337,3 +337,9 @@ run_tests.bat quick
 ```
 
 Good luck with your security research! 🔐
+
+---
+
+*Last Updated: January 6, 2026*
+*Documentation Version: 1.1*
+*Lab Version: 1.0*

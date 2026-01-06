@@ -1324,7 +1324,13 @@ openssl s_client -connect [frontend-host]:443 -tls1_2
 
 ---
 
-*Security Testing Documentation for MET CS 674 Research Paper*  
-*Test Lab Version: 1.0*  
-*Document Version: 1.1*  
+*Security Testing Documentation for MET CS 674 Research Paper*
+*Test Lab Version: 1.0*
+*Document Version: 1.1*
 *Last Updated: [Date]*
+
+---
+
+*Last Updated: January 6, 2026*
+*Documentation Version: 1.1*
+*Lab Version: 1.0*

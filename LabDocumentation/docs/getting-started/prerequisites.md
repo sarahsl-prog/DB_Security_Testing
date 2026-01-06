@@ -35,3 +35,9 @@ Before setting up the Healthcare Database Security Research Lab, ensure you have
 ### Operating Systems
 - **Ubuntu 24.04 LTS** - For Frontend/Backend and LLM hosts
 - **Ubuntu 25.04** - For Database host
+
+---
+
+*Last Updated: January 6, 2026*
+*Documentation Version: 1.1*
+*Lab Version: 1.0*

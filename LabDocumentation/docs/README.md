@@ -411,3 +411,9 @@ For questions or issues:
 ---
 
 **Remember**: This is a research tool with intentional vulnerabilities. Use responsibly and only in controlled environments.
+
+---
+
+*Last Updated: January 6, 2026*
+*Documentation Version: 1.1*
+*Lab Version: 1.0*

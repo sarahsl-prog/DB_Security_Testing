@@ -87,3 +87,9 @@ def filter_results(results, role):
 ## Related Documentation
 - [Data Classification](../database/data-classification.md)
 - [Security Overview](overview.md)
+
+---
+
+*Last Updated: January 6, 2026*
+*Documentation Version: 1.1*
+*Lab Version: 1.0*

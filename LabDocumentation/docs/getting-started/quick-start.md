@@ -112,3 +112,9 @@ If you encounter issues, check:
 ## Getting Help
 
 For detailed setup instructions, refer to the specific host setup guides or the troubleshooting section.
+
+---
+
+*Last Updated: January 6, 2026*
+*Documentation Version: 1.1*
+*Lab Version: 1.0*

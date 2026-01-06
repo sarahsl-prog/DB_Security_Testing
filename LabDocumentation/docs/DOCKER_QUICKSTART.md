@@ -385,15 +385,15 @@ docker compose up -d
 Edit `.env`:
 ```bash
 # Use CodeLlama instead
-LLM_MODEL=codellama:7b
+LLM_MODEL=llama3.1-sql:latest
 
-# Or DeepSeek Coder
-LLM_MODEL=deepseek-coder
+# Or alternative model
+LLM_MODEL=codellama:7b
 ```
 
 Download the model:
 ```bash
-docker compose exec ollama ollama pull codellama:7b
+docker compose exec ollama ollama pull llama3.1-sql:latest
 ```
 
 ### Persistent Logs
@@ -592,3 +592,9 @@ After `docker compose up -d`, you have:
 **Enjoy your Healthcare Security Research Platform!** 🏥🔐
 
 For traditional installation (without Docker), see `INSTALL.md` or `QUICKSTART.md`.
+
+---
+
+*Last Updated: January 6, 2026*
+*Documentation Version: 1.1*
+*Lab Version: 1.0*

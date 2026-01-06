@@ -55,3 +55,9 @@ Retrieve audit log entries (admin only).
 - [Authentication](authentication.md)
 - [Query Processing](query-processing.md)
 - [Error Handling](errors.md)
+
+---
+
+*Last Updated: January 6, 2026*
+*Documentation Version: 1.1*
+*Lab Version: 1.0*
