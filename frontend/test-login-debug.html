@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Debug Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #1a1a1a; color: #e5e5e5; }
+        .test-container { max-width: 600px; margin: 0 auto; background: #2a2a2a; padding: 20px; border-radius: 8px; }
+        input, button { display: block; width: 100%; padding: 10px; margin: 10px 0; }
+        button { background: #7c3aed; color: white; border: none; cursor: pointer; border-radius: 4px; }
+        button:hover { background: #6d28d9; }
+        #output { background: #1a1a1a; padding: 15px; margin-top: 20px; border-radius: 4px; font-family: monospace; }
+        .error { color: #ef4444; }
+        .success { color: #10b981; }
+        .info { color: #3b82f6; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Login Functionality Debug</h1>
+
+        <form id="login-form">
+            <input type="text" id="username" placeholder="Username" value="testuser">
+            <input type="password" id="password" placeholder="Password" value="password123">
+            <button type="submit" id="login-submit">
+                <span id="login-submit-text">Sign In</span>
+            </button>
+        </form>
+
+        <div id="output"></div>
+    </div>
+
+    <script>
+        const output = document.getElementById('output');
+
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type;
+            output.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+        }
+
+        log('Page loaded', 'success');
+        log('Checking DOM elements...');
+
+        const loginForm = document.getElementById('login-form');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const submitButton = document.getElementById('login-submit');
+        const submitText = document.getElementById('login-submit-text');
+
+        log(`login-form: ${loginForm ? 'Found' : 'NOT FOUND'}`, loginForm ? 'success' : 'error');
+        log(`username input: ${usernameInput ? 'Found' : 'NOT FOUND'}`, usernameInput ? 'success' : 'error');
+        log(`password input: ${passwordInput ? 'Found' : 'NOT FOUND'}`, passwordInput ? 'success' : 'error');
+        log(`submit button: ${submitButton ? 'Found' : 'NOT FOUND'}`, submitButton ? 'success' : 'error');
+        log(`submit text span: ${submitText ? 'Found' : 'NOT FOUND'}`, submitText ? 'success' : 'error');
+
+        log('Setting up event listener...');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            log('Form submitted!', 'success');
+
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+
+            log(`Username: ${username}`);
+            log(`Password: ${password ? '***' : '(empty)'}`, password ? 'success' : 'error');
+
+            if (!username || !password) {
+                log('Missing username or password', 'error');
+                return;
+            }
+
+            // Update UI
+            submitButton.disabled = true;
+            submitText.innerHTML = '<div class="loading-spinner"></div> Authenticating...';
+            log('UI updated to loading state', 'success');
+
+            try {
+                log('Making API call to backend...');
+
+                // Get backend URL from config or use default
+                const backendUrl = 'http://192.168.0.241:5000';
+                const url = `${backendUrl}/api/login`;
+
+                log(`Calling: ${url}`);
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                });
+
+                log(`Response status: ${response.status}`, response.ok ? 'success' : 'error');
+
+                const data = await response.json();
+                log(`Response data: ${JSON.stringify(data, null, 2)}`);
+
+                if (data.success) {
+                    log('Login successful!', 'success');
+                    log(`Token: ${data.token.substring(0, 20)}...`);
+                    log(`User: ${JSON.stringify(data.user, null, 2)}`);
+                } else {
+                    log(`Login failed: ${data.message || 'Unknown error'}`, 'error');
+                }
+
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+                log(`Error stack: ${error.stack}`, 'error');
+            } finally {
+                submitButton.disabled = false;
+                submitText.textContent = 'Sign In';
+                log('Button state reset', 'success');
+            }
+        });
+
+        log('Event listener attached successfully', 'success');
+        log('Ready to test login!', 'success');
+    </script>
+</body>
+</html>

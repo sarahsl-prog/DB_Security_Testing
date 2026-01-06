@@ -1,0 +1,17 @@
+---
+config:
+  theme: mc
+---
+graph TB
+    User[User/Client] -->|HTTP :80/:443| Frontend[Frontend Host<br/>NGINX Server]
+    Frontend -->|REST API :5000<br/>HTTP/JSON| Backend[Backend Host<br/>Flask Application]
+    Backend -->|SQL :5432<br/>PostgreSQL Protocol| Database[(Database Host<br/>PostgreSQL)]
+    Backend -->|LLM API :11434<br/>HTTP/JSON| LLM[LLM Host<br/>Ollama]
+    Database -->|Query Results :5432| Backend
+    LLM -->|Generated Response :11434| Backend
+    Backend -->|JSON Response :5000| Frontend
+    Frontend -->|Display Results| User
+    style Frontend fill:#e1f5ff
+    style Backend fill:#fff4e1
+    style Database fill:#f0e1ff
+    style LLM fill:#e1ffe1

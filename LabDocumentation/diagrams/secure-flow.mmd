@@ -1,0 +1,65 @@
+sequenceDiagram
+    participant User
+    participant Frontend as Frontend Host
+    participant Backend as Backend Host<br/>Flask
+    participant Security as SecurityManager
+    participant Database as Database Host<br/>PostgreSQL
+    participant LLM as LLM Host<br/>Ollama :11434
+    
+    Note over User,LLM: Secure Mode Query Processing
+    User->>Frontend: Submit natural language query
+    Frontend->>Backend: POST /api/query<br/>Authorization: Bearer JWT<br/>security_mode: 'secure'
+    Backend->>Backend: @token_required:<br/>Decode & verify JWT
+    Backend->>Database: get_user_by_id(user_id)
+    Database-->>Backend: User object with role
+    
+    Note over Backend,Security: Security Validation Layer 1: Question
+    Backend->>Security: validate_question(question, role)
+    Security->>Security: Check for malicious patterns<br/>Check role permissions<br/>Detect injection attempts
+    alt Question Blocked
+        Security-->>Backend: {valid: false, reason: '...'}
+        Backend-->>Frontend: 400 Error: Query blocked
+        Frontend-->>User: Security warning
+    else Question Valid
+        Security-->>Backend: {valid: true, warnings: [...]}
+    end
+    
+    Note over Backend,Database: Get Filtered Schema Context
+    Backend->>Database: get_schema_info()
+    Database-->>Backend: Full schema
+    Backend->>Security: filter_schema_by_role(schema, role)
+    Security-->>Backend: Filtered schema (role-appropriate)
+    
+    Note over Backend,LLM: LLM SQL Generation
+    Backend->>LLM: generate_sql(question, filtered_schema, role)
+    LLM-->>Backend: Generated SQL query
+    
+    Note over Backend,Security: Security Validation Layer 2: SQL
+    Backend->>Security: validate_sql(sql_query, role)
+    Security->>Security: Check for dangerous operations<br/>Verify table access permissions<br/>Detect UNION/DROP/ALTER<br/>Validate WHERE clauses
+    alt SQL Blocked
+        Security-->>Backend: {valid: false, reason: '...'}
+        Backend->>Database: log_audit(BLOCKED)
+        Backend-->>Frontend: 400 Error: SQL blocked
+        Frontend-->>User: Security violation details
+    else SQL Valid
+        Security-->>Backend: {valid: true, warnings: [...]}
+    end
+    
+    Note over Backend,Database: Execute Query
+    Backend->>Database: execute_query(sql)
+    Database-->>Backend: Raw results
+    
+    Note over Backend,Security: Security Validation Layer 3: Results
+    Backend->>Security: filter_results_by_role(results, role)
+    Security->>Security: Remove unauthorized columns<br/>Filter sensitive data<br/>Apply data masking
+    Security-->>Backend: Filtered results
+    
+    Note over Backend,Database: Audit Logging
+    Backend->>Database: log_audit(user_id, query,<br/>SUCCESS, security_mode)
+    Database-->>Backend: Audit logged
+    
+    Backend-->>Frontend: JSON response<br/>(sql, filtered_data,<br/>security_warnings)
+    Frontend-->>User: Display results + warnings
+    
+    Note over Backend: All security checks passed<br/>Query executed successfully

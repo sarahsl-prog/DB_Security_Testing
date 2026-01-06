@@ -1,0 +1,20 @@
+[Unit]
+Description=My DB Application
+After=network.target
+
+[Service]
+Type=simple
+User=sunds
+Group=sunds
+WorkingDirectory=/home/sunds/Code/TestApp/backend
+EnvironmentFile=/home/sunds/Code/TestApp/backend/.env
+ExecStart=/home/sunds/Code/TestApp/backend/venv/bin/python app.py
+Restart=always
+RestartSec=30
+
+#logging
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

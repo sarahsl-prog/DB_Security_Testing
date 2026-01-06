@@ -1,0 +1,160 @@
+# Healthcare Security Research API Dependencies
+# Python Flask backend with security research capabilities
+
+# Core Flask Framework
+Flask==2.3.3
+Flask-CORS==4.0.0
+
+# Database Dependencies
+SQLAlchemy==2.0.23
+psycopg2-binary==2.9.9
+alembic==1.12.1
+
+# Authentication & Security
+bcrypt==4.1.2
+PyJWT==2.8.0
+cryptography==41.0.7
+
+# HTTP Client for LLM Integration
+requests==2.31.0
+urllib3==2.1.0
+
+# Data Validation & Sanitization
+bleach==6.1.0
+marshmallow==3.20.2
+email-validator==2.1.0
+phonenumbers==8.13.25
+
+# Environment & Configuration
+python-dotenv==1.0.0
+
+# Logging & Monitoring
+colorlog==6.8.0
+
+# Data Generation & Testing
+Faker==20.1.0
+factory-boy==3.3.0
+
+# System Monitoring
+psutil==5.9.6
+
+# Date/Time Utilities
+python-dateutil==2.8.2
+pytz==2023.3
+
+# JSON Schema Validation
+jsonschema==4.20.0
+
+# Rate Limiting
+Flask-Limiter==3.5.0
+
+# API Documentation (Optional)
+flask-restx==1.3.0
+flasgger==0.9.7.1
+
+# Excel/CSV Export (Optional)
+openpyxl==3.1.2
+pandas==2.1.4
+
+# Development & Testing Dependencies
+pytest==7.4.3
+pytest-flask==1.3.0
+pytest-cov==4.1.0
+pytest-mock==3.12.0
+coverage==7.3.2
+black==23.11.0
+flake8==6.1.0
+mypy==1.7.1
+bandit==1.7.5
+
+# Additional Security Tools
+safety==2.3.5
+pip-audit==2.6.1
+
+# Performance & Profiling
+memory-profiler==0.61.0
+# line-profiler==4.1.1
+
+# WSGI Server for Production
+gunicorn==21.2.0
+gevent==23.9.1
+
+# Load Testing
+locust==2.17.0
+
+# Additional Utilities
+click==8.1.7
+humanize==4.8.0
+
+# Jupyter Notebooks for Analysis (Optional)
+jupyter==1.0.0
+notebook==7.0.6
+ipykernel==6.26.0
+
+# Visualization for Security Reports (Optional)
+matplotlib==3.8.2
+seaborn==0.13.0
+plotly==5.17.0
+
+# Web Framework Extras
+Werkzeug==2.3.7
+Jinja2==3.1.2
+MarkupSafe==2.1.3
+itsdangerous==2.1.2
+
+# Configuration Management
+dynaconf==3.2.4
+
+# Time Zone Support
+babel==2.13.1
+
+# Regular Expressions Enhanced
+regex==2023.10.3
+
+# Async Support (if needed)
+aiohttp==3.9.1
+
+# Development Tools
+pre-commit==3.5.0
+autopep8==2.0.4
+isort==5.12.0
+
+# Documentation Generation
+sphinx==7.2.6
+sphinx-rtd-theme==1.3.0
+
+# API Testing
+httpx==0.25.2
+responses==0.24.1
+
+# Database Migrations
+flask-migrate #==4.0.5
+
+# Session Management
+Flask-Session #==0.5.0
+redis #==5.0.1
+
+# Task Queue (Optional)
+celery #==5.3.4
+
+# Message Queue
+kombu #==5.3.4
+
+# Caching
+flask-caching #==2.1.0
+
+# Health Checks
+healthcheck #==1.3.3
+
+# Metrics Collection
+prometheus-client #==0.19.0
+
+# String Processing
+python-slugify #==8.0.1
+unidecode #==1.3.7
+
+# Network Utilities
+netaddr #==0.9.0
+
+# Typing Extensions
+typing-extensions #==4.8.0

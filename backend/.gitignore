@@ -1,0 +1,21 @@
+# I want to ignore the venv files in this repository
+# Ignore these directories
+__pycache__/
+venv/
+.venv/
+.claude/
+
+# Log files and directories
+logs/
+*.log
+*.log.*
+
+# Test reports
+tests/test_reports/
+test_reports/
+INSTALLATION*
+.env*
+.env.backup*
+.ruff_cache/
+.DS_Store
+.idea/

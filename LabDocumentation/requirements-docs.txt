@@ -1,0 +1,27 @@
+# Documentation Dependencies for MkDocs
+# Healthcare Database Security Research Lab Documentation
+#
+# Install these to build and serve the documentation:
+#   pip install -r requirements-docs.txt
+#
+# Then run:
+#   mkdocs serve
+#
+# Or for production build:
+#   mkdocs build
+
+# Core MkDocs
+mkdocs>=1.5.0,<2.0.0
+
+# Material Theme
+# Required by mkdocs.yml theme configuration
+mkdocs-material>=9.0.0,<10.0.0
+
+# Markdown Extensions
+# Required for pymdownx extensions in mkdocs.yml
+pymdown-extensions>=10.0.0,<11.0.0
+
+# Optional: Additional plugins for enhanced features
+# mkdocs-minify-plugin>=0.7.0  # Minify HTML/CSS/JS in production builds
+# mkdocs-redirects>=1.2.0      # Handle URL redirects
+# mkdocs-awesome-pages-plugin>=2.9.0  # Simplify page arrangement

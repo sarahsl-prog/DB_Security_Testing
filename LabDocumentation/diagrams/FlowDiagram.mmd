@@ -1,0 +1,37 @@
+sequenceDiagram
+    participant User
+    participant Frontend as Frontend <br/>Webserver
+    participant Backend as Backend<br/>Flask
+    participant Database as Database Host<br/>PostgreSQL 17
+    participant LLM as LLM Host<br/>Ollama :11434
+    Note over User,Database: Initial Authentication
+    User->>Frontend: Enter credentials
+    Frontend->>Backend: POST /api/login<br/>(username, password)
+    Backend->>Database: authenticate_user(username, password)
+    Database-->>Backend: User record (if valid)
+    Backend->>Backend: Generate JWT token<br/>(user_id, username, role)<br/>exp: 24 hours
+    Backend->>Database: update_last_login(user_id)
+    Database-->>Backend: Success
+    Backend-->>Frontend: JWT + user info<br/>(username, role, user_id)
+    Frontend->>Frontend: Store JWT in localStorage
+    
+    Note over User,LLM: Authenticated Query Request Flow
+    User->>Frontend: Submit natural language query
+    Frontend->>Backend: POST /api/query<br/>Authorization: Bearer {JWT}
+    Backend->>Backend: @token_required decorator:<br/>1. Extract & decode JWT<br/>2. Verify signature (HS256)
+    Backend->>Database: get_user_by_id(user_id)
+    Database-->>Backend: User object → g.current_user
+    Backend->>Database: get_schema_info()
+    Database-->>Backend: Schema context
+    Backend->>LLM: generate_sql(question, schema, role)
+    LLM-->>Backend: Generated SQL query
+    Backend->>Database: execute_query(sql)
+    Database-->>Backend: Query results
+    Backend->>Database: log_audit(user_id, query, status)
+    Database-->>Backend: Audit logged
+    Backend-->>Frontend: JSON response<br/>(sql, data, metrics)
+    Frontend-->>User: Display results
+    
+    Note over Backend,Frontend: JWT expires after 24 hours<br/>Frontend redirects to /api/login
+
+

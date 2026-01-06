@@ -1,0 +1,22 @@
+#git ignore file
+.claude/
+.vscode/
+healthcare_security_api/
+*.bak
+DBSecurityProject.code-workspace
+_*
+nul
+venv/
+*.log
+*.tmp
+*.swp
+.DS_Store
+.idea/
+*.iml
+*workspace
+.env
+INSTALLATION*
+/.venv
+__pycache__/
+.ruff_cache/
+logs/

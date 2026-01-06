@@ -1,0 +1,5 @@
+PG_HOST=192.168.0.240
+PG_PORT=5432
+PG_DATABASE=healthcare_research
+PG_USER=healthcare_user
+PG_PASSWORD=postgresql17!

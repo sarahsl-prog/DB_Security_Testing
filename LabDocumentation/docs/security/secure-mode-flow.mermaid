@@ -1,0 +1,184 @@
+sequenceDiagram
+    participant User
+    participant Host as Frontend/Backend Host<br/>Nginx + Flask
+    participant Security as SecurityManager<br/>Python (F/B Host)
+    participant Database as Database Host<br/>PostgreSQL 17
+    participant LLM as LLM Host<br/>Ollama :11434
+    
+    Note over User,LLM: Secure Mode Query Processing
+    User->>Host: Submit natural language query
+    Host->>Host: Nginx → Flask :5000<br/>Authorization: Bearer JWT<br/>security_mode: 'secure'
+    Host->>Host: @token_required:<br/>Decode & verify JWT
+    Host->>Database: get_user_by_id(user_id)
+    Database-->>Host: User object with role
+    
+    Note over Host,Security: Security Validation Layer 1: Question
+    Host->>Security: validate_question(question, role)
+    Security->>Security: Check for malicious patterns<br/>Check role permissions<br/>Detect injection attempts
+    alt Question Blocked
+        Security-->>Host: {valid: false, reason: '...'}
+        Host->>Host: Flask → Nginx
+        Host-->>User: 400 Error: Query blocked
+    else Question Valid
+        Security-->>Host: {valid: true, warnings: [...]}
+    end
+    
+    Note over Host,Database: Get Filtered Schema Context
+    Host->>Database: get_schema_info()
+    Database-->>Host: Full schema
+    Host->>Security: filter_schema_by_role(schema, role)
+    Security-->>Host: Filtered schema (role-appropriate)
+    
+    Note over Host,LLM: LLM SQL Generation
+    Host->>LLM: generate_sql(question, filtered_schema, role)
+    LLM-->>Host: Generated SQL query
+    
+    Note over Host,Security: Security Validation Layer 2: SQL
+    Host->>Security: validate_sql(sql_query, role)
+    Security->>Security: Check for dangerous operations<br/>Verify table access permissions<br/>Detect UNION/DROP/ALTER<br/>Validate WHERE clauses
+    alt SQL Blocked
+        Security-->>Host: {valid: false, reason: '...'}
+        Host->>Database: log_audit(BLOCKED)
+        Host->>Host: Flask → Nginx
+        Host-->>User: 400 Error: SQL blocked
+    else SQL Valid
+        Security-->>Host: {valid: true, warnings: [...]}
+    end
+    
+    Note over Host,Database: Execute Query
+    Host->>Database: execute_query(sql)
+    Database-->>Host: Raw results
+    
+    Note over Host,Security: Security Validation Layer 3: Results
+    Host->>Security: filter_results_by_role(results, role)
+    Security->>Security: Remove unauthorized columns<br/>Filter sensitive data<br/>Apply data masking
+    Security-->>Host: Filtered results
+    
+    Note over Host,Database: Audit Logging
+    Host->>Database: log_audit(user_id, query,<br/>SUCCESS, security_mode)
+    Database-->>Host: Audit logged
+    
+    Host->>Host: Flask → Nginx
+    Host-->>User: JSON response<br/>(sql, filtered_data,<br/>security_warnings)
+    
+    Note over Host: All security checks passed<br/>Query executed successfullysequenceDiagram
+    participant User
+    participant Host as Frontend/Backend Host<br/>Nginx + Flask
+    participant Database as Database Host<br/>PostgreSQL 17
+    participant LLM as LLM Host<br/>Ollama :11434
+    
+    Note over Host: SecurityManager runs as<br/>part of Flask application
+    
+    Note over User,LLM: Secure Mode Query Processing
+    User->>Host: Submit natural language query
+    Host->>Host: Nginx → Flask :5000<br/>Authorization: Bearer JWT<br/>security_mode: 'secure'
+    Host->>Host: @token_required:<br/>Decode & verify JWT
+    Host->>Database: get_user_by_id(user_id)
+    Database-->>Host: User object with role
+    
+    Note over Host: Security Validation Layer 1: Question<br/>(SecurityManager.validate_question)
+    Host->>Host: Check for malicious patterns<br/>Check role permissions<br/>Detect injection attempts
+    alt Question Blocked
+        Host->>Host: Flask → Nginx
+        Host-->>User: 400 Error: Query blocked
+    else Question Valid
+        Host->>Host: Continue with warnings
+    end
+    
+    Note over Host,Database: Get Filtered Schema Context
+    Host->>Database: get_schema_info()
+    Database-->>Host: Full schema
+    Host->>Host: SecurityManager.filter_schema_by_role<br/>(schema, role)
+    
+    Note over Host,LLM: LLM SQL Generation
+    Host->>LLM: generate_sql(question, filtered_schema, role)
+    LLM-->>Host: Generated SQL query
+    
+    Note over Host: Security Validation Layer 2: SQL<br/>(SecurityManager.validate_sql)
+    Host->>Host: Check for dangerous operations<br/>Verify table access permissions<br/>Detect UNION/DROP/ALTER<br/>Validate WHERE clauses
+    alt SQL Blocked
+        Host->>Database: log_audit(BLOCKED)
+        Host->>Host: Flask → Nginx
+        Host-->>User: 400 Error: SQL blocked
+    else SQL Valid
+        Host->>Host: Continue with warnings
+    end
+    
+    Note over Host,Database: Execute Query
+    Host->>Database: execute_query(sql)
+    Database-->>Host: Raw results
+    
+    Note over Host: Security Validation Layer 3: Results<br/>(SecurityManager.filter_results_by_role)
+    Host->>Host: Remove unauthorized columns<br/>Filter sensitive data<br/>Apply data masking
+    
+    Note over Host,Database: Audit Logging
+    Host->>Database: log_audit(user_id, query,<br/>SUCCESS, security_mode)
+    Database-->>Host: Audit logged
+    
+    Host->>Host: Flask → Nginx
+    Host-->>User: JSON response<br/>(sql, filtered_data,<br/>security_warnings)
+    
+    Note over Host: All security checks passed<br/>Query executed successfullysequenceDiagram
+    participant User
+    participant Host as Frontend/Backend Host<br/>Nginx + Flask
+    participant Security as SecurityManager
+    participant Database as Database Host<br/>PostgreSQL 17
+    participant LLM as LLM Host<br/>Ollama :11434
+    
+    Note over User,LLM: Secure Mode Query Processing
+    User->>Host: Submit natural language query
+    Host->>Host: Nginx → Flask :5000<br/>Authorization: Bearer JWT<br/>security_mode: 'secure'
+    Host->>Host: @token_required:<br/>Decode & verify JWT
+    Host->>Database: get_user_by_id(user_id)
+    Database-->>Host: User object with role
+    
+    Note over Host,Security: Security Validation Layer 1: Question
+    Host->>Security: validate_question(question, role)
+    Security->>Security: Check for malicious patterns<br/>Check role permissions<br/>Detect injection attempts
+    alt Question Blocked
+        Security-->>Host: {valid: false, reason: '...'}
+        Host->>Host: Flask → Nginx
+        Host-->>User: 400 Error: Query blocked
+    else Question Valid
+        Security-->>Host: {valid: true, warnings: [...]}
+    end
+    
+    Note over Host,Database: Get Filtered Schema Context
+    Host->>Database: get_schema_info()
+    Database-->>Host: Full schema
+    Host->>Security: filter_schema_by_role(schema, role)
+    Security-->>Host: Filtered schema (role-appropriate)
+    
+    Note over Host,LLM: LLM SQL Generation
+    Host->>LLM: generate_sql(question, filtered_schema, role)
+    LLM-->>Host: Generated SQL query
+    
+    Note over Host,Security: Security Validation Layer 2: SQL
+    Host->>Security: validate_sql(sql_query, role)
+    Security->>Security: Check for dangerous operations<br/>Verify table access permissions<br/>Detect UNION/DROP/ALTER<br/>Validate WHERE clauses
+    alt SQL Blocked
+        Security-->>Host: {valid: false, reason: '...'}
+        Host->>Database: log_audit(BLOCKED)
+        Host->>Host: Flask → Nginx
+        Host-->>User: 400 Error: SQL blocked
+    else SQL Valid
+        Security-->>Host: {valid: true, warnings: [...]}
+    end
+    
+    Note over Host,Database: Execute Query
+    Host->>Database: execute_query(sql)
+    Database-->>Host: Raw results
+    
+    Note over Host,Security: Security Validation Layer 3: Results
+    Host->>Security: filter_results_by_role(results, role)
+    Security->>Security: Remove unauthorized columns<br/>Filter sensitive data<br/>Apply data masking
+    Security-->>Host: Filtered results
+    
+    Note over Host,Database: Audit Logging
+    Host->>Database: log_audit(user_id, query,<br/>SUCCESS, security_mode)
+    Database-->>Host: Audit logged
+    
+    Host->>Host: Flask → Nginx
+    Host-->>User: JSON response<br/>(sql, filtered_data,<br/>security_warnings)
+    
+    Note over Host: All security checks passed<br/>Query executed successfully

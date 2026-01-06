@@ -1,0 +1,19 @@
+# Healthcare Security Research API - Development Dependencies
+# Install production dependencies first: pip install -r requirements.txt
+# Then install dev dependencies: pip install -r requirements-dev.txt
+
+# Include production requirements
+-r requirements.txt
+
+# Testing Framework
+pytest==7.4.3
+pytest-cov==4.1.0
+responses==0.24.1
+
+# Code Quality & Linting
+flake8==6.1.0
+mypy==1.7.1
+bandit==1.7.5
+
+# Production WSGI Server (for testing production setup)
+gunicorn==21.2.0

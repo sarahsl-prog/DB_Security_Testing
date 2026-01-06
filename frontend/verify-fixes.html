@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Verify Login Fixes</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #1a1a1a; color: #e5e5e5; }
+        .test { margin: 10px 0; padding: 10px; background: #2a2a2a; border-left: 4px solid #666; }
+        .pass { border-left-color: #10b981; }
+        .fail { border-left-color: #ef4444; }
+        button { padding: 10px 20px; background: #7c3aed; color: white; border: none; cursor: pointer; margin: 5px; }
+        button:hover { background: #6d28d9; }
+        pre { background: #000; padding: 10px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Login Fix Verification</h1>
+    <p>Current location: <code id="location"></code></p>
+    <p>Development mode: <code id="devmode"></code></p>
+
+    <div id="tests"></div>
+
+    <button onclick="runTests()">Run All Tests</button>
+    <button onclick="testActualLogin()">Test Actual Login</button>
+
+    <!-- Load config exactly as the main app does -->
+    <script src="/config.js"></script>
+
+    <script>
+        const testsDiv = document.getElementById('tests');
+
+        // Display location info
+        document.getElementById('location').textContent =
+            `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+        document.getElementById('devmode').textContent =
+            (window.location.hostname === 'localhost' ||
+             window.location.hostname === '127.0.0.1' ||
+             window.location.port === '3000') ? 'YES' : 'NO';
+
+        function addTest(name, passed, details) {
+            const div = document.createElement('div');
+            div.className = `test ${passed ? 'pass' : 'fail'}`;
+            div.innerHTML = `
+                <strong>${passed ? '✓' : '✗'} ${name}</strong>
+                ${details ? `<pre>${details}</pre>` : ''}
+            `;
+            testsDiv.appendChild(div);
+        }
+
+        function runTests() {
+            testsDiv.innerHTML = '<h2>Test Results:</h2>';
+
+            // Test 1: CONFIG is defined
+            const configExists = typeof window.CONFIG !== 'undefined';
+            addTest('CONFIG object exists on window', configExists,
+                configExists ? 'window.CONFIG is defined' : 'window.CONFIG is undefined');
+
+            if (!configExists) {
+                addTest('Cannot continue tests', false, 'CONFIG object not found');
+                return;
+            }
+
+            // Test 2: CONFIG has required properties
+            const hasHosts = window.CONFIG.hosts !== undefined;
+            addTest('CONFIG.hosts exists', hasHosts,
+                hasHosts ? JSON.stringify(window.CONFIG.hosts, null, 2) : 'Missing hosts');
+
+            // Test 3: Backend host is set correctly
+            const backendHost = window.CONFIG.hosts?.WEB?.host;
+            const backendHostOk = backendHost && backendHost !== 'undefined';
+            addTest('Backend host is valid', backendHostOk,
+                `Host: ${backendHost} (should be 192.168.0.241)`);
+
+            // Test 4: getBackendUrl function exists
+            const hasGetBackendUrl = typeof window.CONFIG.getBackendUrl === 'function';
+            addTest('getBackendUrl function exists', hasGetBackendUrl);
+
+            if (hasGetBackendUrl) {
+                // Test 5: getBackendUrl returns correct format in dev mode
+                const loginUrl = window.CONFIG.getBackendUrl('/api/login');
+                const urlFormat = (window.location.port === '3000')
+                    ? loginUrl === '/api/login'  // Should be relative in dev
+                    : loginUrl.startsWith('http://192.168.0.241:5000');
+                addTest('getBackendUrl returns correct format', urlFormat,
+                    `Returned: "${loginUrl}"\nExpected: ${window.location.port === '3000' ? 'relative "/api/login"' : 'full URL'}`);
+            }
+
+            // Test 6: Timeouts are configured
+            const hasTimeouts = window.CONFIG.timeouts !== undefined;
+            addTest('Timeouts configured', hasTimeouts,
+                hasTimeouts ? JSON.stringify(window.CONFIG.timeouts, null, 2) : 'Missing timeouts');
+
+            // Test 7: API endpoints are configured
+            const hasApiEndpoints = window.CONFIG.api !== undefined;
+            addTest('API endpoints configured', hasApiEndpoints,
+                hasApiEndpoints ? JSON.stringify(window.CONFIG.api, null, 2) : 'Missing API endpoints');
+        }
+
+        async function testActualLogin() {
+            testsDiv.innerHTML += '<h2>Actual Login Test:</h2>';
+
+            try {
+                const url = window.CONFIG.getBackendUrl('/api/login');
+                addTest('Login URL', true, `Using URL: ${url}`);
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: 'admin',
+                        password: 'password123'
+                    })
+                });
+
+                const responseOk = response.ok;
+                addTest(`HTTP Response (${response.status})`, responseOk,
+                    `Status: ${response.status} ${response.statusText}`);
+
+                const data = await response.json();
+                addTest('Response JSON', true, JSON.stringify(data, null, 2));
+
+                if (data.success) {
+                    addTest('Login Successful', true,
+                        `Token received: ${data.token.substring(0, 30)}...\nUser: ${data.user.username} (${data.user.role})`);
+                } else {
+                    addTest('Login Failed', false,
+                        `Error: ${data.error || data.message || 'Unknown error'}`);
+                }
+            } catch (error) {
+                addTest('Login Request Error', false, error.message);
+            }
+        }
+
+        // Auto-run tests on load
+        window.addEventListener('load', () => {
+            setTimeout(runTests, 100);
+        });
+    </script>
+</body>
+</html>

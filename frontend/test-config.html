@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Config Test</title>
+</head>
+<body>
+    <h1>Configuration Test</h1>
+    <div id="output"></div>
+
+    <script src="/config.js"></script>
+    <script>
+        const output = document.getElementById('output');
+
+        output.innerHTML = `
+            <h2>CONFIG Object:</h2>
+            <pre>${JSON.stringify(CONFIG, null, 2)}</pre>
+
+            <h2>Host Values:</h2>
+            <ul>
+                <li>WEB host: ${CONFIG.hosts.WEB.host}</li>
+                <li>WEB port: ${CONFIG.hosts.WEB.port}</li>
+                <li>WEB protocol: ${CONFIG.hosts.WEB.protocol}</li>
+            </ul>
+
+            <h2>Generated URLs:</h2>
+            <ul>
+                <li>Backend URL: ${CONFIG.getBackendUrl()}</li>
+                <li>Login URL: ${CONFIG.getBackendUrl('/api/login')}</li>
+            </ul>
+
+            <h2>Environment Check:</h2>
+            <ul>
+                <li>import.meta available: ${typeof import !== 'undefined' && import.meta ? 'Yes' : 'No'}</li>
+                <li>process.env available: ${typeof process !== 'undefined' && process.env ? 'Yes' : 'No'}</li>
+            </ul>
+        `;
+    </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+# Healthcare Security Research API - Production Dependencies
+# Python Flask backend with security research capabilities
+
+# Core Flask Framework
+Flask==2.3.3
+Flask-CORS==4.0.0
+
+# Database Dependencies
+SQLAlchemy==2.0.23
+psycopg2-binary==2.9.9
+
+# Authentication & Security
+bcrypt==4.1.2
+PyJWT==2.8.0
+
+# HTTP Client for LLM Integration
+requests==2.31.0
+urllib3==2.1.0
+
+# Data Validation & Sanitization
+bleach==6.1.0
+
+# Environment & Configuration
+python-dotenv==1.0.0
+
+# Logging (CRITICAL - was missing from original requirements!)
+loguru==0.7.2
+
+# Data Generation for Testing
+Faker==20.1.0
+
+# System Monitoring
+psutil==5.9.6
+
+# WSGI Server for Production (optional - uncomment if deploying to production)
+# gunicorn==21.2.0
