@@ -1,9 +1,9 @@
 <div align="center">
   <img src="app-LOGO2.jpg" alt="Healthcare Database Security Research Logo" width="200"/>
 
-  # Healthcare Database Security Research API
+  # Healthcare Database Security Research Application
 
-  A comprehensive Flask-based API designed for researching SQL injection vulnerabilities and defense mechanisms in healthcare database systems. This project supports both vulnerable and secure modes for educational security testing and research purposes.
+  A comprehensive Flask-based Application designed for researching SQL injection vulnerabilities and defense mechanisms in healthcare database systems. This project supports both vulnerable and secure modes for educational security testing and research purposes.
 </div>
 
 ## ⚠️ SECURITY NOTICE
@@ -47,8 +47,8 @@ The system uses a distributed architecture across multiple VMs:
 
 ### Prerequisites
 
-1. **Python 3.8+**
-2. **PostgreSQL 12+**
+1. **Python 3.12+**
+2. **PostgreSQL 17+**
 3. **Ollama** (running on Windows host)
 4. **Git**
 
@@ -57,16 +57,16 @@ The system uses a distributed architecture across multiple VMs:
 ```bash
 # Clone the repository
 git clone <repository-url>
-cd healthcare_security_api
+cd DB_Security_Testing
 
 # Create virtual environment
-python -m venv venv
+python -m venv .venv
 
 # Activate virtual environment
 # On Windows:
-venv\\Scripts\\activate
+.venv\\Scripts\\activate
 # On Linux/Mac:
-source venv/bin/activate
+source .venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
@@ -110,7 +110,7 @@ DB_PASSWORD=secure_password_123
 # LLM Service Configuration
 LLM_HOST=192.168.100.1
 LLM_PORT=11434
-LLM_MODEL=llama3.1
+LLM_MODEL=deepseek-r1:latest
 
 # Security Configuration
 SECURITY_MODE=vulnerable
@@ -276,7 +276,7 @@ SECURE_MODE_FEATURES = {
 ### Project Structure
 
 ```
-healthcare_security_api/
+DB_Security_Testing/
 ├── app.py                    # Main Flask application
 ├── config.py                 # Configuration management
 ├── database.py              # Database connection and queries
@@ -291,35 +291,6 @@ healthcare_security_api/
 └── README.md               # This file
 ```
 
-### Running Tests
-
-```bash
-# Install development dependencies
-pip install pytest pytest-flask pytest-cov
-
-# Run unit tests
-pytest
-
-# Run with coverage
-pytest --cov=. --cov-report=html
-
-# Security analysis
-bandit -r .
-safety check
-```
-
-### Code Quality
-
-```bash
-# Format code
-black .
-
-# Lint code
-flake8 .
-
-# Type checking
-mypy .
-```
 
 ## Troubleshooting
 
