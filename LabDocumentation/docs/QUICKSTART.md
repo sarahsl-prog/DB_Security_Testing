@@ -2,7 +2,7 @@
 Healthcare Security Research Project
 Created for Boston University CS 674 Database Security Fall 2025
 Author: Sarah Sund-Lussier (SarahSL@bu.edu)
-GitHub: https://github.com/sarahsl-prog/Database_Security_TestApp
+GitHub: https://github.com/sarahsl-prog/DB_Security_Testing
 -->
 
 # Healthcare Security Research Platform - Quick Start Guide
@@ -164,7 +164,7 @@ ollama pull llama3.1-sql:latest
 ## Directory Structure After Installation
 
 ```
-TestLabApp/
+DB_Security_Testing/
 ├── install.sh              # Linux/Mac installer
 ├── install.bat             # Windows installer
 ├── INSTALL.md              # Full installation guide
@@ -267,3 +267,9 @@ Before deploying to production:
 ---
 
 For complete installation instructions and troubleshooting, see **INSTALL.md**.
+
+---
+
+*Last Updated: January 6, 2026*
+*Documentation Version: 1.1*
+*Lab Version: 1.0*

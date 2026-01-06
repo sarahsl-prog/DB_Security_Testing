@@ -4,8 +4,8 @@ site_author: SarahSL-Prog
 site_url: https://yoursite.com
 
 # Repository (optional)
-repo_name: sarahsl-prog/Database_Security_TestApp
-repo_url: https://github.com/sarahsl-prog/Database_Security_TestApp
+repo_name: sarahsl-prog/DB_Security_Testing
+repo_url: https://github.com/sarahsl-prog/DB_Security_Testing
 
 # Theme configuration
 theme:
@@ -94,7 +94,6 @@ nav:
   - Home: index.md
   
   - Getting Started:
-    - Overview: getting-started/overview.md
     - Prerequisites: getting-started/prerequisites.md
     - Quick Start: getting-started/quick-start.md
   
@@ -117,19 +116,13 @@ nav:
     - Data Classification: database/data-classification.md
   
   - Security Testing:
-    - Testing Methodology: testing/methodology.md
     - Test Cases: testing/test-cases.md
-    - Vulnerable Mode: testing/vulnerable-mode.md
-    - Secure Mode: testing/secure-mode.md
-    - Results Analysis: testing/results.md
   
   - Security Controls:
     - Overview: security/overview.md
     - Input Validation: security/input-validation.md
     - SQL Validation: security/sql-validation.md
     - Result Filtering: security/result-filtering.md
-    - SSL/TLS Configuration: security/ssl-tls.md
-    - Firewall Rules: security/firewall.md
   
   - API Documentation:
     - Endpoints: api/endpoints.md
@@ -137,30 +130,14 @@ nav:
     - Query Processing: api/query-processing.md
     - Error Handling: api/errors.md
   
-  - Configuration Files:
-    - Nginx Configs: config/nginx.md
-    - Flask Config: config/flask.md
-    - PostgreSQL Config: config/postgresql.md
-    - Ollama Config: config/ollama.md
   
   - Troubleshooting:
     - Common Issues: troubleshooting/common-issues.md
-    - Frontend/Backend: troubleshooting/frontend-backend.md
-    - Database: troubleshooting/database.md
-    - LLM Service: troubleshooting/llm.md
-    - Network: troubleshooting/network.md
   
-  - Research:
-    - Research Objectives: research/objectives.md
-    - Methodology: research/methodology.md
-    - Data Collection: research/data-collection.md
-    - Analysis: research/analysis.md
   
   - Reference:
-    - Glossary: reference/glossary.md
     - Command Reference: reference/commands.md
     - Port Reference: reference/ports.md
-    - Further Reading: reference/reading.md
 
 # Extra CSS/JS (optional)
 extra_css:
@@ -173,7 +150,7 @@ extra_javascript:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/sarahsl-prog/Database_Security_TestApp
+      link: https://github.com/sarahsl-prog/DB_Security_Testing
     - icon: fontawesome/brands/linkedin
       link: https://linkedin.com/in/sund-lussier
 

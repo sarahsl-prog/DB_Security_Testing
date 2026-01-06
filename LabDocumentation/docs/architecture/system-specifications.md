@@ -59,3 +59,9 @@ Virtual machines (Frontend/Backend and Database hosts) are running on **VMware W
 ---
 
 **Note:** This is a research test environment. All systems are isolated from production networks and contain only synthetic test data.
+
+---
+
+*Last Updated: January 6, 2026*
+*Documentation Version: 1.1*
+*Lab Version: 1.0*

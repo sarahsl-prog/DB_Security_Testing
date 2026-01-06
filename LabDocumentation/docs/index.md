@@ -28,9 +28,9 @@ The research lab consists of three distributed hosts:
 ```mermaid
 graph LR
     A[User] --> B[Frontend/Backend Host<br/>Nginx + Flask]
-    B --> C[Database Host<br/>PostgreSQL 17]
+    B --> C[Database Host<br/>PostgreSQL]
     B --> D[LLM Host<br/>Ollama]
-    
+
     style B fill:#fff4e1
     style C fill:#f0e1ff
     style D fill:#e1ffe1
@@ -38,9 +38,9 @@ graph LR
 
 | Host | IP Address | OS | Primary Services |
 |------|-----------|-----|------------------|
-| Frontend/Backend | 192.168.1.10 | Ubuntu 24.04 | Nginx 1.26, Flask 3.1.2, Vite (Vanilla JS) |
-| Database | 192.168.1.11 | Ubuntu 25.04 | PostgreSQL 17, Apache 2 |
-| LLM | 192.168.1.12 | Ubuntu 24.04 | Ollama 0.12.3, deepseek-coder:1.3b |
+| Frontend/Backend | 192.168.1.10 | Ubuntu 24.04 | Nginx, Flask 2.3.3, Vite (Vanilla JS) |
+| Database | 192.168.1.11 | Ubuntu | PostgreSQL 12+ |
+| LLM | 192.168.1.12 | Ubuntu/Windows | Ollama, llama3.1-sql:latest |
 
 ---
 
@@ -76,13 +76,13 @@ graph LR
    - Deploy Vite frontend
 
 2. **[Set up the Database Host](hosts/database-host.md)**
-   - Install Ubuntu 25.04
-   - Configure PostgreSQL 17
+   - Install Ubuntu or compatible Linux
+   - Configure PostgreSQL 12+ (15+ recommended)
    - Load healthcare schema
 
 3. **[Set up the LLM Host](hosts/llm-host.md)**
    - Install Ollama
-   - Pull deepseek-coder model
+   - Pull llama3.1-sql:latest model
    - Configure network access
 
 4. **[Configure Network Security](hosts/network-config.md)**
@@ -189,18 +189,18 @@ This lab supports research into:
 ## Technology Stack
 
 ### Backend
-- **Flask 3.1.2** - REST API framework
-- **Python 3.12** - Application runtime
+- **Flask 2.3.3** - REST API framework
+- **Python 3.8+** (3.11+ recommended) - Application runtime
 - **PyJWT** - JWT token authentication
 - **Loguru** - Logging and audit trails
 
 ### Database
-- **PostgreSQL 17** - Primary data store
+- **PostgreSQL 12+** (15+ recommended) - Primary data store
 - **Healthcare Schema** - Patients, doctors, medical records, audit logs
 
 ### LLM
-- **Ollama 0.13.5** - LLM inference engine
-- **deepseek-coder:1.3b** - Code-focused language model
+- **Ollama** - LLM inference engine
+- **llama3.1-sql:latest** - SQL-focused language model
 - **Natural Language to SQL** - Query generation
 
 ### Frontend

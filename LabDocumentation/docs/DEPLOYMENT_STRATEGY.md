@@ -248,11 +248,11 @@ ollama serve
 
 **Pull required models:**
 ```bash
+# Recommended model for SQL generation
 ollama pull llama3.1-sql:latest
-# OR
+
+# OR alternative models
 ollama pull codellama:7b
-# OR
-ollama pull deepseek-coder
 ```
 
 **Configure for network access:**
@@ -542,3 +542,9 @@ npm install
 **Created:** 2025-12-29
 **For:** Healthcare Security Research Platform
 **Branch:** claude/frontend-migration-checklist-DSMzl
+
+---
+
+*Last Updated: January 6, 2026*
+*Documentation Version: 1.1*
+*Lab Version: 1.0*

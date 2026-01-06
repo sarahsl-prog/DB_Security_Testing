@@ -51,3 +51,9 @@ API error codes and response formats.
 ## Related Documentation
 - [API Endpoints](endpoints.md)
 - [Security Controls](../security/overview.md)
+
+---
+
+*Last Updated: January 6, 2026*
+*Documentation Version: 1.1*
+*Lab Version: 1.0*

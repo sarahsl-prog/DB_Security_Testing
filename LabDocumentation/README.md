@@ -65,16 +65,16 @@ See `/docs/diagrams/authentication-flow.mmd` for detailed sequence diagram.
 ## Installation & Setup
 
 ### Prerequisites
-- Python 3.12+
-- PostgreSQL 17+
-- Ollama (with appropriate model installed)
-- Node.js 22+ (for frontend)
+- Python 3.8+ (3.11+ recommended)
+- PostgreSQL 15+
+- Ollama (with llama3.1-sql:latest model)
+- Node.js 22.12+ (for frontend)
 
 ### Backend Setup
 ```bash
 # Clone repository
-git clone [repository-url]
-cd [repository-name]
+git clone https://github.com/sarahsl-prog/DB_Security_Testing
+cd DB_Security_Testing
 
 # Install Python dependencies
 pip install -r requirements.txt
@@ -108,7 +108,7 @@ python generate_sample_data.py
 # See: https://ollama.ai
 
 # Pull required model
-ollama pull [model-name]
+ollama pull llama3.1-sql:latest
 
 # Verify Ollama is running on port 11434
 curl http://localhost:11434/api/tags
@@ -197,3 +197,9 @@ If you use this test lab in your research, please cite:
 ## Acknowledgments
 
 [Any acknowledgments for funding, collaboration, etc.]
+
+---
+
+*Last Updated: January 6, 2026*
+*Documentation Version: 1.1*
+*Lab Version: 1.0*

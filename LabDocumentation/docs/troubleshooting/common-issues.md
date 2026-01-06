@@ -254,3 +254,9 @@ Troubleshooting guide for common problems with the Healthcare Database Security 
 - [Frontend-Backend Troubleshooting](frontend-backend.md)
 - [Database Troubleshooting](database.md)
 - [Network Troubleshooting](network.md)
+
+---
+
+*Last Updated: January 6, 2026*
+*Documentation Version: 1.1*
+*Lab Version: 1.0*

@@ -52,3 +52,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ## Related Documentation
 - [API Endpoints](endpoints.md)
 - [Security Overview](../security/overview.md)
+
+---
+
+*Last Updated: January 6, 2026*
+*Documentation Version: 1.1*
+*Lab Version: 1.0*

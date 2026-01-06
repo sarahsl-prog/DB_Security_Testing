@@ -218,3 +218,9 @@ If you use this test lab in your research, please cite:
 ## Acknowledgments
 
 [Any acknowledgments for funding, collaboration, etc.]
+
+---
+
+*Last Updated: January 6, 2026*
+*Documentation Version: 1.1*
+*Lab Version: 1.0*
