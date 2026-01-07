@@ -2,7 +2,7 @@
 Healthcare Security Research Project
 Created for Boston University CS 674 Database Security Fall 2025
 Author: Sarah Sund-Lussier (SarahSL@bu.edu)
-GitHub: https://github.com/sarahsl-prog/Database_Security_TestApp
+GitHub: https://github.com/sarahsl-prog/DB_Security_Testing
 -->
 
 # Healthcare Security Research Platform - Installation Guide
@@ -15,8 +15,8 @@ Before running the installation scripts, ensure you have the following:
 
 ### Required Software
 
-- **Python 3.8+** - Backend application runtime
-- **PostgreSQL 12+** - Database server
+- **Python 3.12+** - Backend application runtime
+- **PostgreSQL 17** - Database server
 - **Node.js 22+** - Frontend build tools (required >=22.12.0)
 - **Ollama** - LLM service for SQL generation
 
@@ -114,7 +114,7 @@ You'll be prompted to provide:
   - Example: `admin@hospital.com`
 
 - **LLM Model**: Ollama model to use
-  - Default: `llama3.1-sql:latest`
+  - Default: `deepseek-r1:latest`
 
 - **Security Mode**: Choose between:
   - `vulnerable` - Demonstrates security vulnerabilities (for research)
@@ -154,12 +154,12 @@ cd backend
 
 # Create and activate virtual environment
 # For Linux/Mac:
-python3 -m venv venv
-source venv/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
 
 # For Windows:
-python -m venv venv
-venv\Scripts\activate
+python -m venv .venv
+.venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
@@ -259,7 +259,7 @@ Located at `frontend/.env`, contains:
 
 ### Issue: "Python not found"
 
-**Solution**: Install Python 3.8 or higher from [python.org](https://www.python.org/downloads/)
+**Solution**: Install Python 3.12 or higher from [python.org](https://www.python.org/downloads/)
 
 ### Issue: "Failed to connect to database"
 
@@ -291,7 +291,7 @@ curl http://<LLM_HOST>:<LLM_PORT>/api/version
 curl http://<LLM_HOST>:<LLM_PORT>/api/tags
 
 # Pull the model if not available
-ollama pull llama3.1-sql:latest
+ollama pull deepseek-r1:latest
 ```
 
 ### Issue: "Port already in use"
@@ -453,10 +453,10 @@ If you encounter issues:
 
 ## License
 
-[Your License Here]
+**MIT License**: `LICENSE`
 
 ---
 
 ## Support
 
-For issues, questions, or contributions, please [contact information or issue tracker].
+For issues, questions, or contributions, please **contact** sarahsl@bu.edu

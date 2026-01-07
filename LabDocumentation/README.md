@@ -172,8 +172,8 @@ All queries are logged in the audit table with:
 
 ## Technology Stack
 
-- **Backend**: Flask (Python 3.11), JWT, Loguru
-- **Database**: PostgreSQL 15
+- **Backend**: Flask (Python 3.12), JWT, Loguru
+- **Database**: PostgreSQL 17
 - **LLM**: Ollama (port 11434)
 - **Frontend**: Vite (Vanilla JavaScript), Nginx
 - **Security**: Role-based access control, input validation, SQL sanitization

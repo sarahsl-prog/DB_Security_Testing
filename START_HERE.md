@@ -184,7 +184,7 @@ sudo -u postgres createuser healthcare_user
 curl -fsSL https://ollama.com/install.sh | sh
 
 # Pull model
-ollama pull llama3.1-sql:latest
+ollama pull deepseek-coder:latest
 ```
 
 📖 **[Full Ollama Guide](DEPLOYMENT_STRATEGY.md#ollama-llm-installation)**
