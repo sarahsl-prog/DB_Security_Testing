@@ -5,7 +5,7 @@ Healthcare Database Security Research API
 Healthcare Security Research Project
 Created for Boston University CS 674 Database Security Fall 2025
 Author: Sarah Sund-Lussier (SarahSL@bu.edu)
-GitHub: https://github.com/sarahsl-prog/Database_Security_TestApp
+GitHub: https://github.com/sarahsl-prog/DB_Security_Testing
 
 A Flask-based API for researching SQL injection vulnerabilities and defense mechanisms
 in healthcare database systems. Supports both vulnerable and secure modes for testing.

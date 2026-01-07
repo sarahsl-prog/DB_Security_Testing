@@ -1,0 +1,106 @@
+site_name: Healthcare Database Security Research Lab
+site_description: Comprehensive documentation for the Healthcare Database Security Research Application
+site_author: Sarah Sund-Lussier
+site_url: https://github.com/sarahsl-prog/DB_Security_Testing
+
+# Repository
+repo_name: sarahsl-prog/DB_Security_Testing
+repo_url: https://github.com/sarahsl-prog/DB_Security_Testing
+edit_uri: edit/main/LabDocumentation/docs/
+
+# Copyright
+copyright: Copyright &copy; 2025 Sarah Sund-Lussier - Boston University CS 674
+
+# Configuration
+theme:
+  name: readthedocs
+  language: en
+
+# Extensions
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - codehilite:
+      guess_lang: false
+  - fenced_code
+
+# Plugins
+plugins:
+  - search:
+      lang: en
+      separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
+
+# Extra CSS
+extra_css:
+  - stylesheets/extra.css
+
+# Extra JavaScript
+extra_javascript:
+  - javascripts/extra.js
+
+# Social links
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/sarahsl-prog/DB_Security_Testing
+      name: GitHub Repository
+
+# Navigation
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Start Here: START_HERE.md
+      - Quick Start: getting-started/quick-start.md
+      - Prerequisites: getting-started/prerequisites.md
+      - Installation Guide: INSTALL.md
+      - Docker Quick Start: DOCKER_QUICKSTART.md
+      - Quick Start (Scripts): QUICKSTART.md
+      - Quick Start Testing: QUICK_START_TESTING.md
+  - Architecture:
+      - Overview: architecture/overview.md
+      - System Specifications: architecture/system-specifications.md
+      - Lab Specifications: architecture/lab-specs-table.md
+      - Specifications Details: architecture/specifications.md
+      - Architecture Diagrams: architecture/diagrams.md
+      - Security Layers: architecture/security-layers.md
+      - Authentication: architecture/authentication.md
+  - Host Configuration:
+      - Frontend & Backend: hosts/frontend-backend.md
+      - Database Host: hosts/database-host.md
+      - LLM Host: hosts/llm-host.md
+      - Network Configuration: hosts/network-config.md
+  - Database:
+      - Schema: database/schema.md
+      - ERD: database/erd.md
+      - Data Classification: database/data-classification.md
+  - API Documentation:
+      - Endpoints: api/endpoints.md
+      - Authentication: api/authentication.md
+      - Query Processing: api/query-processing.md
+      - Error Handling: api/errors.md
+  - Security:
+      - Overview: security/overview.md
+      - Security Testing: security/security-testing.md
+      - Input Validation: security/input-validation.md
+      - SQL Validation: security/sql-validation.md
+      - Result Filtering: security/result-filtering.md
+  - Testing:
+      - Test Cases: testing/test-cases.md
+  - Deployment:
+      - Deployment Strategy: DEPLOYMENT_STRATEGY.md
+      - Deployment Package: DEPLOYMENT_PACKAGE.md
+  - Reference:
+      - Commands: reference/commands.md
+      - Ports & Services: reference/ports.md
+  - Troubleshooting:
+      - Common Issues: troubleshooting/common-issues.md
+  - Research:
+      - Research Documentation: research/research-readme.md

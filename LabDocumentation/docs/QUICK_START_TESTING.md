@@ -150,9 +150,9 @@ python --version
 **Solution**:
 ```batch
 cd backend
-python -m venv venv
+uv venv venv
 venv\Scripts\activate
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 ```
 
 ### Issue: "API server not accessible"

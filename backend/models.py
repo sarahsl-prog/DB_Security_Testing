@@ -5,7 +5,7 @@ Data Models and Schemas for Healthcare Security Research API
 Healthcare Security Research Project
 Created for Boston University CS 674 Database Security Fall 2025
 Author: Sarah Sund-Lussier (SarahSL@bu.edu)
-GitHub: https://github.com/sarahsl-prog/Database_Security_TestApp
+GitHub: https://github.com/sarahsl-prog/DB_Security_Testing
 
 Defines database models for realistic healthcare data and security testing.
 Includes both SQLAlchemy ORM models and Pydantic schemas for validation.

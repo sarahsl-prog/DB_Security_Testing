@@ -349,7 +349,7 @@ curl -X POST http://192.168.1.10/api/query \
 - [Architecture Overview](overview.md)
 - [API Endpoints](../api/endpoints.md)
 - [Security Controls](../security/overview.md)
-- [Testing Guide](../testing/methodology.md)
+- [Testing Guide](../testing/test-cases.md)
 
 ---
 

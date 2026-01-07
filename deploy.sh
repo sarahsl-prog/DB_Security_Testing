@@ -97,7 +97,7 @@ install_python() {
             fi
             ;;
         *)
-            print_error "Unsupported OS. Please install Python 3.8+ manually."
+            print_error "Unsupported OS. Please install Python 3.12+ manually."
             return 1
             ;;
     esac
@@ -315,12 +315,12 @@ case $choice in
                 if install_python; then
                     HAS_PYTHON=true
                 else
-                    print_error "Failed to install Python. Please install Python 3.8+ manually."
+                    print_error "Failed to install Python. Please install Python 3.12+ manually."
                     exit 1
                 fi
             else
                 print_error "Python is required for script installation."
-                echo "Please install Python 3.8+ and run this script again."
+                echo "Please install Python 3.12+ and run this script again."
                 exit 1
             fi
         fi

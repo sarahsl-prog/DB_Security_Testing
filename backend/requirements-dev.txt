@@ -1,6 +1,6 @@
 # Healthcare Security Research API - Development Dependencies
-# Install production dependencies first: pip install -r requirements.txt
-# Then install dev dependencies: pip install -r requirements-dev.txt
+# Install production dependencies first: uv pip install -r requirements.txt
+# Then install dev dependencies: uv pip install -r requirements-dev.txt
 
 # Include production requirements
 -r requirements.txt

@@ -90,8 +90,8 @@ python3 -m venv venv
 source venv/bin/activate
 
 # Install Flask and dependencies
-pip install --upgrade pip
-pip install flask flask-cors python-jose[cryptography] psycopg2-binary loguru requests
+uv pip install --upgrade pip
+uv pip install flask flask-cors python-jose[cryptography] psycopg2-binary loguru requests
 ```
 
 Create requirements.txt:
@@ -108,7 +108,7 @@ PyJWT==2.8.0
 EOF
 
 # Install from requirements
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 ```
 
 ### 5. Setup Vite Frontend

@@ -89,7 +89,7 @@ curl http://192.168.1.12:11434/api/tags
 
 ### Step 5: Run Initial Tests
 
-1. Navigate to [Testing Methodology](../testing/methodology.md)
+1. Navigate to [Testing Documentation](../testing/test-cases.md)
 2. Execute vulnerable mode tests first
 3. Document your results
 

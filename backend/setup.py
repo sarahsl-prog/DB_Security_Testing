@@ -5,7 +5,7 @@ Setup Script for Healthcare Security Research API
 Healthcare Security Research Project
 Created for Boston University CS 674 Database Security Fall 2025
 Author: Sarah Sund-Lussier (SarahSL@bu.edu)
-GitHub: https://github.com/sarahsl-prog/Database_Security_TestApp
+GitHub: https://github.com/sarahsl-prog/DB_Security_Testing
 
 Automates the installation and configuration process for the healthcare
 database security research environment.
@@ -79,8 +79,8 @@ class HealthcareSecuritySetup:
             return False
         
         # Check Python version
-        if sys.version_info < (3, 8):
-            print("✗ Python 3.8 or higher is required")
+        if sys.version_info < (3, 12):
+            print("✗ Python 3.12+ or higher is required")
             return False
         
         print("✓ All prerequisites met")
@@ -99,7 +99,7 @@ class HealthcareSecuritySetup:
                 return True
         
         print("Creating virtual environment...")
-        success, stdout, stderr = self.run_command(f"python -m venv {self.venv_path}")
+        success, stdout, stderr = self.run_command(f"uv venv {self.venv_path}")
         
         if not success:
             print(f"✗ Failed to create virtual environment: {stderr}")
@@ -110,17 +110,17 @@ class HealthcareSecuritySetup:
         # Get activation command
         if os.name == 'nt':  # Windows
             activate_cmd = f"{self.venv_path}\\Scripts\\activate.bat"
-            pip_cmd = f"{self.venv_path}\\Scripts\\pip.exe"
+            pip_cmd = "uv pip"
         else:  # Unix-like
             activate_cmd = f"source {self.venv_path}/bin/activate"
-            pip_cmd = f"{self.venv_path}/bin/pip"
-        
+            pip_cmd = "uv pip"
+
         print(f"Virtual environment activation command: {activate_cmd}")
-        
+
         # Install requirements
         print("Installing Python dependencies...")
         requirements_file = self.project_root / "requirements.txt"
-        
+
         if requirements_file.exists():
             success, stdout, stderr = self.run_command(f"{pip_cmd} install -r {requirements_file}")
             if success:

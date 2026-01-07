@@ -51,14 +51,14 @@ Press Enter to accept defaults shown in brackets `[default]`.
 
 ```bash
 cd backend
-python -m venv venv
+uv venv venv
 
 # Activate virtual environment
 source venv/bin/activate        # Linux/Mac
 # OR
 venv\Scripts\activate           # Windows
 
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 python database.py              # Initialize database
 python app.py                   # Start backend
 ```

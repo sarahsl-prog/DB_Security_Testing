@@ -319,7 +319,7 @@ server {
 
 Use MkDocs or similar:
 ```bash
-pip install mkdocs mkdocs-material
+uv pip install mkdocs mkdocs-material
 cd LabDocumentation
 mkdocs serve
 ```
@@ -346,9 +346,9 @@ ollama serve &
 
 # Start backend
 cd ../backend
-python -m venv venv
+uv venv venv
 source venv/bin/activate
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 python database.py
 python app.py &
 
@@ -395,7 +395,7 @@ npm run dev
 - [ ] Sufficient resources (8GB+ RAM, GPU optional)
 
 ### Application
-- [ ] Python 3.8+ installed
+- [ ] Python 3.12+ installed
 - [ ] Node.js 22+ installed (required >=22.12.0)
 - [ ] Dependencies installed
 - [ ] .env files configured
@@ -508,7 +508,7 @@ git pull origin main
 # Update backend dependencies
 cd backend
 source venv/bin/activate
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 
 # Update frontend dependencies
 cd frontend

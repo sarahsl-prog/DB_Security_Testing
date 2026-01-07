@@ -184,7 +184,7 @@ Can be deployed separately or with application.
 - Manual: See `DEPLOYMENT_STRATEGY.md#postgresql-installation`
 
 **Requirements:**
-- PostgreSQL 12+
+- PostgreSQL 17+
 - Network accessible from application host
 - User with appropriate permissions
 
@@ -236,7 +236,7 @@ python -m http.server 8000
 
 **Option 4: Static Site Generator**
 ```bash
-pip install mkdocs mkdocs-material
+uv pip install mkdocs mkdocs-material
 mkdocs serve
 ```
 

@@ -23,7 +23,7 @@ See `/docs/diagrams/` for detailed architecture and authentication flow diagrams
 | Component | OS | Hardware | Software | Network | Role |
 |-----------|-----|----------|----------|---------|------|
 | Frontend Host | TBD | TBD | Vite (Vanilla JS), Nginx | Port 80/443 | Web interface for query submission |
-| Backend Host | TBD | 8GB RAM, 4 vCPU | Flask, Python 3.11 | Port 5000 | API server, authentication, security controls |
+| Backend Host | TBD | 8GB RAM, 4 vCPU | Flask, Python 3.12 | Port 5000 | API server, authentication, security controls |
 | Database Host | TBD | TBD | PostgreSQL | Port 5432 | Healthcare data storage, user management |
 | LLM Host | TBD | TBD | Ollama | Port 11434 | Natural language to SQL generation |
 
@@ -65,8 +65,8 @@ See `/docs/diagrams/authentication-flow.mmd` for detailed sequence diagram.
 ## Installation & Setup
 
 ### Prerequisites
-- Python 3.8+ (3.11+ recommended)
-- PostgreSQL 15+
+- Python 3.12+
+- PostgreSQL 17+
 - Ollama (with llama3.1-sql:latest model)
 - Node.js 22.12+ (for frontend)
 
@@ -77,7 +77,7 @@ git clone https://github.com/sarahsl-prog/DB_Security_Testing
 cd DB_Security_Testing
 
 # Install Python dependencies
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 
 # Configure environment
 cp .env.example .env
@@ -172,8 +172,8 @@ All queries are logged in the audit table with:
 
 ## Technology Stack
 
-- **Backend**: Flask (Python 3.12), JWT, Loguru
-- **Database**: PostgreSQL 17
+- **Backend**: Flask (Python 3.12+), JWT, Loguru
+- **Database**: PostgreSQL 17+
 - **LLM**: Ollama (port 11434)
 - **Frontend**: Vite (Vanilla JavaScript), Nginx
 - **Security**: Role-based access control, input validation, SQL sanitization

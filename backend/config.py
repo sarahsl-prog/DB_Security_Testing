@@ -5,7 +5,7 @@ Configuration Management for Healthcare Security Research API
 Healthcare Security Research Project
 Created for Boston University CS 674 Database Security Fall 2025
 Author: Sarah Sund-Lussier (SarahSL@bu.edu)
-GitHub: https://github.com/sarahsl-prog/Database_Security_TestApp
+GitHub: https://github.com/sarahsl-prog/DB_Security_Testing
 
 Handles environment-specific settings for distributed architecture:
 - Flask API Server (Ubuntu VM)

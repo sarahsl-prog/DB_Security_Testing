@@ -27,7 +27,7 @@ See `/docs/diagrams/` for detailed architecture and authentication flow diagrams
 | Component | OS | Hardware | Software | Network | Role |
 |-----------|-----|----------|----------|---------|------|
 | Frontend Host | TBD | TBD | Vite (Vanilla JS), Nginx | Port 80/443 | Web interface for query submission |
-| Backend Host | TBD | 8GB RAM, 4 vCPU | Flask, Python 3.11 | Port 5000 | API server, authentication, security controls |
+| Backend Host | TBD | 8GB RAM, 4 vCPU | Flask, Python 3.12 | Port 5000 | API server, authentication, security controls |
 | Database Host | TBD | TBD | PostgreSQL | Port 5432 | Healthcare data storage, user management |
 | LLM Host | TBD | TBD | Ollama | Port 11434 | Natural language to SQL generation |
 
@@ -86,8 +86,8 @@ See `/docs/diagrams/secure-mode-flow.mmd` for detailed security validation seque
 ## Installation & Setup
 
 ### Prerequisites
-- Python 3.11+
-- PostgreSQL 15+
+- Python 3.12+
+- PostgreSQL 17+
 - Ollama (with appropriate model installed)
 - Node.js 18+ (for frontend)
 
@@ -98,7 +98,7 @@ git clone [repository-url]
 cd [repository-name]
 
 # Install Python dependencies
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 
 # Configure environment
 cp .env.example .env

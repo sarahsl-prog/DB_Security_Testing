@@ -162,7 +162,7 @@ case $INSTALL_MODE in
 
         if [ ! -d "$VENV_PATH" ]; then
             print_info "Creating virtual environment..."
-            python3 -m venv "$VENV_PATH"
+            uv venv "$VENV_PATH"
             print_success "Virtual environment created"
         fi
 
@@ -170,10 +170,10 @@ case $INSTALL_MODE in
         source "$VENV_PATH/bin/activate"
 
         print_info "Upgrading pip..."
-        pip install --upgrade pip
+        uv pip install --upgrade pip
 
         print_info "Installing MkDocs dependencies..."
-        pip install -r "$SCRIPT_DIR/requirements-docs.txt"
+        uv pip install -r "$SCRIPT_DIR/requirements-docs.txt"
 
         print_success "Virtual environment installation complete!"
         echo ""

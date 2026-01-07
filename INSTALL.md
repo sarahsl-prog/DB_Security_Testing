@@ -16,7 +16,7 @@ Before running the installation scripts, ensure you have the following:
 ### Required Software
 
 - **Python 3.12+** - Backend application runtime
-- **PostgreSQL 17** - Database server
+- **PostgreSQL 17+** - Database server
 - **Node.js 22+** - Frontend build tools (required >=22.12.0)
 - **Ollama** - LLM service for SQL generation
 
@@ -154,15 +154,15 @@ cd backend
 
 # Create and activate virtual environment
 # For Linux/Mac:
-python3 -m venv .venv
+uv venv .venv
 source .venv/bin/activate
 
 # For Windows:
-python -m venv .venv
+uv venv .venv
 .venv\Scripts\activate
 
 # Install dependencies
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 
 # Initialize database (creates tables and sample data)
 python database.py
@@ -259,7 +259,7 @@ Located at `frontend/.env`, contains:
 
 ### Issue: "Python not found"
 
-**Solution**: Install Python 3.12 or higher from [python.org](https://www.python.org/downloads/)
+**Solution**: Install Python 3.12+ or higher from [python.org](https://www.python.org/downloads/)
 
 ### Issue: "Failed to connect to database"
 

@@ -319,7 +319,7 @@ server {
 
 Use MkDocs or similar:
 ```bash
-pip install mkdocs mkdocs-material
+uv pip install mkdocs mkdocs-material
 cd LabDocumentation
 mkdocs serve
 ```
@@ -346,9 +346,9 @@ ollama serve &
 
 # Start backend
 cd ../backend
-python -m venv venv
+uv venv venv
 source venv/bin/activate
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 python database.py
 python app.py &
 
@@ -497,7 +497,7 @@ VITE_BACKEND_PORT=5000
 ### Regular Tasks
 - Check logs weekly: `tail -f backend/logs/healthcare_security.log`
 - Back up database regularly
-- Update dependencies: `pip install -U -r requirements.txt`
+- Update dependencies: `uv pip install -U -r requirements.txt`
 - Review security logs: `backend/logs/security_audit.log`
 
 ### Updates
@@ -508,7 +508,7 @@ git pull origin main
 # Update backend dependencies
 cd backend
 source venv/bin/activate
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 
 # Update frontend dependencies
 cd frontend

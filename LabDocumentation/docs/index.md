@@ -39,7 +39,7 @@ graph LR
 | Host | IP Address | OS | Primary Services |
 |------|-----------|-----|------------------|
 | Frontend/Backend | 192.168.1.10 | Ubuntu 24.04 | Nginx, Flask 2.3.3, Vite (Vanilla JS) |
-| Database | 192.168.1.11 | Ubuntu | PostgreSQL 12+ |
+| Database | 192.168.1.11 | Ubuntu | PostgreSQL 17+ |
 | LLM | 192.168.1.12 | Ubuntu/Windows | Ollama, llama3.1-sql:latest |
 
 ---
@@ -77,7 +77,7 @@ graph LR
 
 2. **[Set up the Database Host](hosts/database-host.md)**
    - Install Ubuntu or compatible Linux
-   - Configure PostgreSQL 12+ (15+ recommended)
+   - Configure PostgreSQL 17+
    - Load healthcare schema
 
 3. **[Set up the LLM Host](hosts/llm-host.md)**
@@ -90,7 +90,7 @@ graph LR
    - Configure firewalls
    - Test connectivity
 
-5. **[Run Security Tests](testing/methodology.md)**
+5. **[Run Security Tests](testing/test-cases.md)**
    - Execute vulnerable mode tests
    - Implement security controls
    - Re-run tests in secure mode
@@ -139,7 +139,6 @@ The lab includes 16 comprehensive test cases covering:
 ### 📋 For Lab Setup
 
 - **[Host Setup](hosts/frontend-backend.md)** - Step-by-step installation guides
-- **[Configuration Files](config/nginx.md)** - All config files with explanations
 - **[Troubleshooting](troubleshooting/common-issues.md)** - Common problems and solutions
 
 ### 🏗️ For Architecture Understanding
@@ -148,11 +147,9 @@ The lab includes 16 comprehensive test cases covering:
 - **[Database Schema](database/schema.md)** - Complete table documentation
 - **[Security Layers](architecture/security-layers.md)** - Defense-in-depth explanation
 
-### 🧪 For Research/Testing
+###  🧪 For Research/Testing
 
-- **[Testing Methodology](testing/methodology.md)** - Research approach and process
-- **[Test Cases](testing/test-cases.md)** - All 16 test scenarios with templates
-- **[Results Analysis](testing/results.md)** - Metrics and comparison frameworks
+- **[Test Cases](testing/test-cases.md)** - All 16 test scenarios with templates and research approach
 
 ### 🔒 For Security Controls
 
@@ -182,7 +179,7 @@ This lab supports research into:
    - Assess usability impact of security measures
    - Develop best practices for secure NL2SQL implementations
 
-[View Full Research Methodology →](research/methodology.md)
+[View Full Research Documentation →](research/research-readme.md)
 
 ---
 
@@ -190,12 +187,12 @@ This lab supports research into:
 
 ### Backend
 - **Flask 2.3.3** - REST API framework
-- **Python 3.8+** (3.11+ recommended) - Application runtime
+- **Python 3.12+** - Application runtime
 - **PyJWT** - JWT token authentication
 - **Loguru** - Logging and audit trails
 
 ### Database
-- **PostgreSQL 12+** (15+ recommended) - Primary data store
+- **PostgreSQL 17+** - Primary data store
 - **Healthcare Schema** - Patients, doctors, medical records, audit logs
 
 ### LLM
