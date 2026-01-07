@@ -820,7 +820,7 @@ sudo tar -xzf ollama-models-backup-20250101.tar.gz -C /
 
 - [Frontend/Backend Host Setup](frontend-backend.md)
 - [Database Host Setup](database-host.md)
-- [Flask LLM Client Configuration](../api/llm-client.md)
+- [API Documentation](../api/endpoints.md)
 - [Security Testing Guide](../security/security-testing.md)
 
 ---

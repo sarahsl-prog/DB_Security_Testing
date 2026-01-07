@@ -187,7 +187,7 @@ curl http://localhost:11434/api/version
 ```
 
 ## Related Documentation
-- [Docker Quickstart](../../../DOCKER_QUICKSTART.md)
+- [Docker Quickstart](../DOCKER_QUICKSTART.md)
 - [Troubleshooting](../troubleshooting/common-issues.md)
 
 ---

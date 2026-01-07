@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="images/app-logo.jpg" alt="Healthcare Security Research Lab Logo" width="150"/>
+</div>
+
 # 🏥 Healthcare Security Research Platform - START HERE
 
 **Welcome!** This guide will help you choose the best way to deploy this application based on your experience level.

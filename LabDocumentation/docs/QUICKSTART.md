@@ -5,6 +5,10 @@ Author: Sarah Sund-Lussier (SarahSL@bu.edu)
 GitHub: https://github.com/sarahsl-prog/DB_Security_Testing
 -->
 
+<div align="center">
+  <img src="images/app-logo.jpg" alt="Healthcare Security Research Lab Logo" width="150"/>
+</div>
+
 # Healthcare Security Research Platform - Quick Start Guide
 
 ## Installation (5 minutes)

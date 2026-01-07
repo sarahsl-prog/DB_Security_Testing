@@ -98,7 +98,7 @@ curl http://192.168.1.12:11434/api/tags
 Once your lab is operational:
 
 - Review [Security Controls](../security/overview.md)
-- Plan your [Research Methodology](../research/methodology.md)
+- Plan your research approach using [Research Documentation](../research/research-readme.md)
 - Begin [Security Testing](../testing/test-cases.md)
 
 ## Troubleshooting

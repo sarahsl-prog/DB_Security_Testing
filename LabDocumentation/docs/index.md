@@ -216,10 +216,10 @@ This lab supports research into:
 !!! question "Need Assistance?"
     
     **Setup Issues:** Check the [Troubleshooting Guide](troubleshooting/common-issues.md)
-    
-    **Configuration Questions:** See [Configuration Files](config/nginx.md) section
-    
-    **Research Questions:** Review [Research Methodology](research/methodology.md)
+
+    **Configuration Questions:** See configuration files in the config-files directory
+
+    **Research Questions:** Review [Research Documentation](research/research-readme.md)
     
     **Security Concerns:** This is a research lab only - never use with real patient data
 

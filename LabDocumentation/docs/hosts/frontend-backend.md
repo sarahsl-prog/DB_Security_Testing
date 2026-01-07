@@ -356,7 +356,7 @@ curl -X POST http://192.168.1.10/api/login \
 
 All configuration files used for this host setup are available for download:
 
-- [:material-download: Nginx Configuration](../config-files/nginx-healthcare-api.conf) - Complete Nginx reverse proxy config
+- Nginx Configuration - See config-files directory for nginx configuration examples
 - [:material-download: Flask .env Template](../config-files/backend_config.py) - Environment variables template
 - [:material-download: systemd Service File](../config-files/healthcare-api.service) - Systemd service configuration
 - [:material-download: requirements.txt](../config-files/requirements.txt) - Python dependencies

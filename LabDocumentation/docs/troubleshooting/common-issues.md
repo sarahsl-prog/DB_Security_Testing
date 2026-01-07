@@ -251,9 +251,9 @@ Troubleshooting guide for common problems with the Healthcare Database Security 
 
 ## Related Documentation
 - [Docker Quickstart](../DOCKER_QUICKSTART.md)
-- [Frontend-Backend Troubleshooting](frontend-backend.md)
-- [Database Troubleshooting](database.md)
-- [Network Troubleshooting](network.md)
+- [Frontend-Backend Setup](../hosts/frontend-backend.md)
+- [Database Setup](../hosts/database-host.md)
+- [Network Configuration](../hosts/network-config.md)
 
 ---
 

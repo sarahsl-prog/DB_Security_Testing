@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="images/app-logo.jpg" alt="Healthcare Security Research Lab Logo" width="150"/>
+</div>
+
 # Docker Quick Start - Healthcare Security Research Platform
 
 **The easiest way to get started!** ⭐
