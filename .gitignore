@@ -16,7 +16,7 @@ venv/
 *workspace
 .env
 INSTALLATION*
-/.venv
+.venv/
 __pycache__/
 .ruff_cache/
 logs/
