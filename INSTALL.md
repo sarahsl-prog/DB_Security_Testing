@@ -41,7 +41,7 @@ Ensure your PostgreSQL server is running and you have:
 ### For Windows Users
 
 1. Open Command Prompt or PowerShell
-2. Navigate to the TestLabApp directory
+2. Navigate to the DB_Security_Testing directory
 3. Run the installation script:
    ```cmd
    install.bat
@@ -50,7 +50,7 @@ Ensure your PostgreSQL server is running and you have:
 ### For Linux/Mac Users
 
 1. Open Terminal
-2. Navigate to the TestLabApp directory
+2. Navigate to the DB_Security_Testing directory
 3. Make the script executable (if not already):
    ```bash
    chmod +x install.sh
