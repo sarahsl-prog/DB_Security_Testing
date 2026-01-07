@@ -1,10 +1,10 @@
 <div align="center">
-  <img src="../images/app-logo.jpg" alt="Healthcare Security Research Lab Logo" width="150"/>
+  <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
 # Architecture Diagrams
 
-This page contains all architecture diagrams for the Healthcare Database Security Research Lab.
+This page contains all architecture diagrams for the Healthcare Database Security Testing Lab.
 
 ---
 

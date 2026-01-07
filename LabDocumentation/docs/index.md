@@ -1,11 +1,9 @@
 <div align="center">
-  <img src="../images/app-logo.jpg" alt="Healthcare Security Research Lab Logo" width="150"/>
+  <img src="images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="175"/>
 </div>
 
-# Healthcare Database Security Research Lab
-
-
-!!! info This documentation covers the complete setup and testing methodology for a distributed healthcare database security research environment. The lab is designed to test SQL injection vulnerabilities and security controls in natural language to SQL systems.
+# Healthcare Database Security Testing Lab
+!!! info "This documentation covers the complete setup and testing methodology for a distributed healthcare database security research environment. The lab is designed to test SQL injection vulnerabilities and security controls in natural language to SQL systems."
 
 ---
 
@@ -40,7 +38,7 @@ graph LR
 |------|-----------|-----|------------------|
 | Frontend/Backend | 192.168.1.10 | Ubuntu 24.04 | Nginx, Flask 2.3.3, Vite (Vanilla JS) |
 | Database | 192.168.1.11 | Ubuntu | PostgreSQL 17+ |
-| LLM | 192.168.1.12 | Ubuntu/Windows | Ollama, llama3.1-sql:latest |
+| LLM | 192.168.1.12 | Ubuntu/Windows | Ollama, ds2-coder:latest |
 
 ---
 
@@ -82,7 +80,7 @@ graph LR
 
 3. **[Set up the LLM Host](hosts/llm-host.md)**
    - Install Ollama
-   - Pull llama3.1-sql:latest model
+   - Pull ds2-coder:latest model
    - Configure network access
 
 4. **[Configure Network Security](hosts/network-config.md)**
@@ -197,7 +195,7 @@ This lab supports research into:
 
 ### LLM
 - **Ollama** - LLM inference engine
-- **llama3.1-sql:latest** - SQL-focused language model
+- **deepseek-r1:latest** - SQL-focused language model
 - **Natural Language to SQL** - Query generation
 
 ### Frontend
@@ -205,7 +203,7 @@ This lab supports research into:
 - **Nginx 1.26** - Web server and reverse proxy
 
 ### Infrastructure
-- **Ubuntu 24.04/25.04** - Operating systems
+- **Ubuntu 24.04** - Operating systems
 - **VMware Workstation 17.6.2** - Virtualization
 - **SSL/TLS** - Transport encryption
 
@@ -230,7 +228,7 @@ This lab supports research into:
 This is an academic research project. For questions or collaboration:
 
 - **Email:** sarahsl@bu.edu
-- **GitHub:** [Project Repository](https://github.com/sarahsl-prog)
+- **GitHub:** [Project Repository](https://github.com/sarahsl-prog/DB_Security_Testing)
 - **Course:** MET CS 674 - Database Security
 
 ---
@@ -254,9 +252,3 @@ This project is for educational purposes as part of MET CS 674 coursework.
 - **Course:** MET CS 674 - Database Security
 - **Institution:** Boston University Metropolitan College
 - **Tools:** Material for MkDocs, PostgreSQL, Ollama, Flask
-
----
-
-*Last Updated: [Date]*  
-*Documentation Version: 1.0*  
-*Lab Version: 1.0*

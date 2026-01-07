@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="../images/app-logo.jpg" alt="Healthcare Security Research Lab Logo" width="150"/>
+  <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
 # Security Layers
@@ -10,7 +10,7 @@ This page describes the three-layer security validation system implemented in se
 
 ## Overview
 
-The Healthcare Database Security Research Lab implements a **defense-in-depth** strategy with three distinct security layers:
+The Healthcare Database Security Testing Lab implements a **defense-in-depth** strategy with three distinct security layers:
 
 1. **Layer 1: Question Validation** - Validates natural language input before LLM processing
 2. **Layer 2: SQL Validation** - Validates generated SQL before database execution  

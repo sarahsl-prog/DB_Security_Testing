@@ -1,10 +1,10 @@
 <div align="center">
-  <img src="../images/app-logo.jpg" alt="Healthcare Security Research Lab Logo" width="150"/>
+  <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
 # Entity-Relationship Diagram
 
-Complete ERD for the Healthcare Database Security Research Lab database schema.
+Complete ERD for the Healthcare Database Security Testing Lab database schema.
 
 ---
 

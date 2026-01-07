@@ -1,6 +1,6 @@
-# Healthcare Database Security Research Platform - Frontend
+# Healthcare Database Security Testing Platform - Frontend
 
-Frontend web application for the Healthcare Database Security Research Platform, built with Vite 6 and modern JavaScript.
+Frontend web application for the Healthcare Database Security Testing Platform, built with Vite 6 and modern JavaScript.
 
 ## Prerequisites
 

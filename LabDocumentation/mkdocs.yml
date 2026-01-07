@@ -13,8 +13,30 @@ copyright: Copyright &copy; 2025 Sarah Sund-Lussier - Boston University CS 674
 
 # Configuration
 theme:
-  name: readthedocs
+  name: material
   language: en
+  font:
+    text: Exo 2          # Body text - modern & readable
+    code: JetBrains Mono # Code blocks - professional & monospaced
+  icon:
+    repo: fontawesome/brands/github
+  logo: images/logo-no-text.png
+  favicon: images/logo-no-text.png
+  palette:
+  # Light mode
+  - scheme: default
+    primary: indigo
+    accent: indigo
+    toggle:
+      icon: material/brightness-7
+      name: Switch to dark mode
+  # Dark mode
+  - scheme: grey
+    primary: indigo
+    accent: indigo
+    toggle:
+      icon: material/brightness-4
+      name: Switch to light mode
 
 # Extensions
 markdown_extensions:
@@ -27,17 +49,48 @@ markdown_extensions:
   - tables
   - toc:
       permalink: true
-      toc_depth: 3
-  - codehilite:
-      guess_lang: false
-  - fenced_code
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+ 
 
 # Plugins
 plugins:
   - search:
       lang: en
       separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
+  - tags
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: date
+      fallback_to_build_date: true
 
+      
 # Extra CSS
 extra_css:
   - stylesheets/extra.css
@@ -46,12 +99,6 @@ extra_css:
 extra_javascript:
   - javascripts/extra.js
 
-# Social links
-extra:
-  social:
-    - icon: fontawesome/brands/github
-      link: https://github.com/sarahsl-prog/DB_Security_Testing
-      name: GitHub Repository
 
 # Navigation
 nav:
@@ -63,7 +110,6 @@ nav:
       - Installation Guide: INSTALL.md
       - Docker Quick Start: DOCKER_QUICKSTART.md
       - Quick Start (Scripts): QUICKSTART.md
-      - Quick Start Testing: QUICK_START_TESTING.md
   - Architecture:
       - Overview: architecture/overview.md
       - System Specifications: architecture/system-specifications.md
@@ -104,3 +150,11 @@ nav:
       - Common Issues: troubleshooting/common-issues.md
   - Research:
       - Research Documentation: research/research-readme.md
+
+# Footer
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/sarahsl-prog/DB_Security_Testing
+    - icon: fontawesome/brands/linkedin
+      link: https://linkedin.com/in/sund-lussier

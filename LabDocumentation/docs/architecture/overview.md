@@ -1,12 +1,12 @@
 <div align="center">
-  <img src="../images/app-logo.jpg" alt="Healthcare Security Research Lab Logo" width="150"/>
+  <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
 # Architecture Overview
 
 ## System Architecture
 
-The Healthcare Database Security Research Lab implements a distributed three-tier architecture designed to demonstrate SQL injection vulnerabilities and security control effectiveness.
+The Healthcare Database Security Testing Lab implements a distributed three-tier architecture designed to demonstrate SQL injection vulnerabilities and security control effectiveness.
 
 ## High-Level Architecture
 

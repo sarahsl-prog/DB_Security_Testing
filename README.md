@@ -1,7 +1,7 @@
 <div align="center">
-  <img src="app-LOGO2.jpg" alt="Healthcare Database Security Research Logo" width="200"/>
+  <img src="app-LOGO2.jpg" alt="Healthcare Database Security Testing Logo" width="200"/>
 
-  # Healthcare Database Security Research Application
+  # Healthcare Database Security Testing Application
 
   A comprehensive Flask-based Application designed for researching SQL injection vulnerabilities and defense mechanisms in healthcare database systems. This project supports both vulnerable and secure modes for educational security testing and research purposes.
 </div>

@@ -1,13 +1,13 @@
 <!--
-Healthcare Security Research Project
+Healthcare Database Security Testing Project
 Created for Boston University CS 674 Database Security Fall 2025
 Author: Sarah Sund-Lussier (SarahSL@bu.edu)
 GitHub: https://github.com/sarahsl-prog/DB_Security_Testing
 -->
 
-# Healthcare Security Research Platform - Installation Guide
+# Healthcare Database Security Testing Platform - Installation Guide
 
-This guide will help you install and configure the Healthcare Security Research Platform using the interactive installation scripts.
+This guide will help you install and configure the Healthcare Database Security Testing Platform using the interactive installation scripts.
 
 ## Prerequisites
 

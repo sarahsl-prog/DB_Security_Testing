@@ -1,10 +1,10 @@
 <div align="center">
-  <img src="../images/app-logo.jpg" alt="Healthcare Security Research Lab Logo" width="150"/>
+  <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
 # Quick Start Guide
 
-Get your Healthcare Database Security Research Lab up and running quickly.
+Get your Healthcare Database Security Testing Lab up and running quickly.
 
 ## Deployment Options
 

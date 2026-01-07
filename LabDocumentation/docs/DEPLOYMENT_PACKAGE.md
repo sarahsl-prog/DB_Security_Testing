@@ -1,8 +1,8 @@
 <div align="center">
-  <img src="images/app-logo.jpg" alt="Healthcare Security Research Lab Logo" width="150"/>
+  <img src="images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
-# Healthcare Security Research Platform - Deployment Package
+# Healthcare Database Security Testing Platform - Deployment Package
 
 **Complete Deployment Solution for All User Types**
 
@@ -210,7 +210,7 @@ Can be deployed separately or with application.
 
 **Model Download:**
 ```bash
-ollama pull llama3.1-sql:latest
+ollama pull ds2-coder:latest
 # OR
 ollama pull codellama:7b
 ```

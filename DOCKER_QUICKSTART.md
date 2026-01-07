@@ -1,8 +1,8 @@
-# Docker Quick Start - Healthcare Security Research Platform
+# Docker Quick Start - Healthcare Database Security Testing Platform
 
 **The easiest way to get started!** ⭐
 
-This guide will help you deploy the entire Healthcare Security Research Platform with just a few commands using Docker.
+This guide will help you deploy the entire Healthcare Database Security Testing Platform with just a few commands using Docker.
 
 ---
 
@@ -105,7 +105,7 @@ docker compose up -d ollama
 sleep 30
 
 # Pull the model (this may take 5-10 minutes)
-docker compose exec ollama ollama pull llama3.1-sql:latest
+docker compose exec ollama ollama pull ds2-coder:latest
 
 # Or use a smaller model (faster download)
 docker compose exec ollama ollama pull codellama:7b
@@ -287,7 +287,7 @@ docker stats
 **Solution:**
 ```bash
 # Download the model
-docker compose exec ollama ollama pull llama3.1-sql:latest
+docker compose exec ollama ollama pull ds2-coder:latest
 
 # Verify it's available
 docker compose exec ollama ollama list
@@ -589,6 +589,6 @@ After `docker compose up -d`, you have:
 
 ---
 
-**Enjoy your Healthcare Security Research Platform!** 🏥🔐
+**Enjoy your Healthcare Database Security Testing Platform!** 🏥🔐
 
 For traditional installation (without Docker), see `INSTALL.md` or `QUICKSTART.md`.

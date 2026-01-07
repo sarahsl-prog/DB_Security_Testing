@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="../images/app-logo.jpg" alt="Healthcare Security Research Lab Logo" width="150"/>
+  <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
 # Query Processing
@@ -7,7 +7,7 @@
 Natural language to SQL query processing system using LLM.
 
 ## Overview
-The system converts natural language queries to SQL using Ollama LLM (llama3.1-sql model).
+The system converts natural language queries to SQL using Ollama LLM (ds2-coder model).
 
 ## Processing Pipeline
 

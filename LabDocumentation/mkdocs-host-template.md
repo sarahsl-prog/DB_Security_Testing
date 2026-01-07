@@ -143,7 +143,7 @@ Add the following configuration:
 
 ```ini
 [Unit]
-Description=Healthcare Security Research API
+Description=Healthcare Database Security Testing API
 After=network.target
 
 [Service]
@@ -408,7 +408,7 @@ All configuration files used for this host setup are available for download:
 
     ```ini title="/etc/systemd/system/healthcare-api.service"
     [Unit]
-    Description=Healthcare Security Research API
+    Description=Healthcare Database Security Testing API
     After=network.target
 
     [Service]

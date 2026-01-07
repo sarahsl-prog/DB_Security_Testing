@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project uses **MkDocs** with the **Material theme** to provide comprehensive, searchable documentation for the Healthcare Database Security Research Lab. The documentation includes 52+ markdown files organized across 13 sections covering setup, architecture, security testing, troubleshooting, and more.
+This project uses **MkDocs** with the **Material theme** to provide comprehensive, searchable documentation for the Healthcare Database Security Testing Lab. The documentation includes 52+ markdown files organized across 13 sections covering setup, architecture, security testing, troubleshooting, and more.
 
 ## Current Status
 

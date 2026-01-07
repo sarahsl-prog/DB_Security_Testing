@@ -1,10 +1,10 @@
 <div align="center">
-  <img src="../images/app-logo.jpg" alt="Healthcare Security Research Lab Logo" width="150"/>
+  <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
 # Common Issues
 
-Troubleshooting guide for common problems with the Healthcare Database Security Research Platform.
+Troubleshooting guide for common problems with the Healthcare Database Security Testing Platform.
 
 ## Docker Issues
 
@@ -80,7 +80,7 @@ Troubleshooting guide for common problems with the Healthcare Database Security 
 
 3. Pull model if missing:
    ```bash
-   docker compose exec ollama ollama pull llama3.1-sql:latest
+   docker compose exec ollama ollama pull ds2-coder:latest
    ```
 
 4. Check memory/CPU usage (Ollama is resource-intensive):
