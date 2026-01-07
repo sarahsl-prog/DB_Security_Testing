@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project uses **MkDocs** with the **Material theme** to provide comprehensive, searchable documentation for the Healthcare Database Security Research Lab. The documentation includes 52+ markdown files organized across 13 sections covering setup, architecture, security testing, troubleshooting, and more.
+This project uses **MkDocs** with the **Material theme** to provide comprehensive, searchable documentation for the Healthcare Database Security Testing Lab. The documentation includes 52+ markdown files organized across 13 sections covering setup, architecture, security testing, troubleshooting, and more.
 
 ## Current Status
 
@@ -122,8 +122,8 @@ cd LabDocumentation
 
 ```bash
 cd backend
-pip install -r requirements.txt -r requirements-dev.txt
-pip install mkdocs mkdocs-material pymdown-extensions
+uv pip install -r requirements.txt -r requirements-dev.txt
+uv pip install mkdocs mkdocs-material pymdown-extensions
 ```
 
 **Pros:**
@@ -195,7 +195,7 @@ Access at: http://localhost:8000
 ```bash
 # Backend
 cd backend
-pip install -r requirements.txt -r requirements-dev.txt
+uv pip install -r requirements.txt -r requirements-dev.txt
 
 # Frontend
 cd frontend
@@ -336,7 +336,7 @@ export PATH="$HOME/.local/bin:$PATH"
 ### Issue: `No module named 'material'`
 **Solution**: Install dependencies
 ```bash
-pip install -r requirements-docs.txt
+uv pip install -r requirements-docs.txt
 ```
 
 ### Issue: Build errors about missing pages
@@ -356,10 +356,10 @@ mkdocs serve --dev-addr localhost:8001
 ```bash
 # If using venv:
 source activate-docs.sh
-pip install --upgrade mkdocs mkdocs-material pymdown-extensions
+uv pip install --upgrade mkdocs mkdocs-material pymdown-extensions
 
 # If user/global:
-pip install --user --upgrade mkdocs mkdocs-material pymdown-extensions
+uv pip install --user --upgrade mkdocs mkdocs-material pymdown-extensions
 ```
 
 ### Add New Pages

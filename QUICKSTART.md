@@ -1,11 +1,11 @@
 <!--
-Healthcare Security Research Project
+Healthcare Database Security Testing Project
 Created for Boston University CS 674 Database Security Fall 2025
 Author: Sarah Sund-Lussier (SarahSL@bu.edu)
-GitHub: https://github.com/sarahsl-prog/Database_Security_TestApp
+GitHub: https://github.com/sarahsl-prog/DB_Security_Testing
 -->
 
-# Healthcare Security Research Platform - Quick Start Guide
+# Healthcare Database Security Testing Platform - Quick Start Guide
 
 ## Installation (5 minutes)
 
@@ -37,7 +37,7 @@ When prompted, enter:
 | Database Password | `yourpassword` | PostgreSQL password |
 | LLM Service Host | `192.168.1.102` | Ollama server IP |
 | LLM Service Port | `11434` | Ollama port |
-| LLM Model | `llama3.1-sql:latest` | Model name |
+| LLM Model | `ds2-coder:latest` | Model name |
 | Email Domain | `hospital.com` | Email domain |
 | Security Mode | `vulnerable` or `secure` | Research mode |
 
@@ -51,14 +51,14 @@ Press Enter to accept defaults shown in brackets `[default]`.
 
 ```bash
 cd backend
-python -m venv venv
+uv venv venv
 
 # Activate virtual environment
 source venv/bin/activate        # Linux/Mac
 # OR
 venv\Scripts\activate           # Windows
 
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 python database.py              # Initialize database
 python app.py                   # Start backend
 ```
@@ -114,7 +114,7 @@ curl http://<LLM_HOST>:<LLM_PORT>/api/version
 ## Common Issues
 
 ### "Python not found"
-**Fix**: Install Python 3.8+ from python.org
+**Fix**: Install Python 3.12+ from python.org
 
 ### "Database connection failed"
 **Fix**:
@@ -134,7 +134,7 @@ net start postgresql-x64-12         # Windows
 ollama serve
 
 # Download model (if needed)
-ollama pull llama3.1-sql:latest
+ollama pull ds2-coder:latest
 ```
 
 ### "Port already in use"

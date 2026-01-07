@@ -1,6 +1,6 @@
-# Healthcare Security Research Platform - Installation Scripts
+# Healthcare Database Security Testing Platform - Installation Scripts
 
-This directory contains modular installation scripts for the Healthcare Security Research Platform.
+This directory contains modular installation scripts for the Healthcare Database Security Testing Platform.
 
 ## Overview
 
@@ -463,7 +463,7 @@ For issues or questions:
 
 ## License
 
-Part of the Healthcare Security Research Platform
+Part of the Healthcare Database Security Testing Platform
 Boston University CS 674 Database Security Fall 2025
 
 ## Version History

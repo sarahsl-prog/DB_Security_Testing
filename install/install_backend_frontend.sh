@@ -167,10 +167,10 @@ install_backend_dependencies() {
 
     # Upgrade pip
     print_info "Upgrading pip..."
-    pip install --upgrade pip >> "$INSTALL_LOG" 2>&1
+    uv pip install --upgrade pip >> "$INSTALL_LOG" 2>&1
 
     # Install requirements
-    if pip install -r "$requirements_file" >> "$INSTALL_LOG" 2>&1; then
+    if uv pip install -r "$requirements_file" >> "$INSTALL_LOG" 2>&1; then
         print_success "Backend dependencies installed"
         deactivate
         return 0
@@ -526,7 +526,7 @@ EOF
 
     # Check and install Python
     if ! check_python_installation; then
-        if confirm_action "Python 3.8+ not found. Install it now?"; then
+        if confirm_action "Python 3.12+ not found. Install it now?"; then
             if ! install_python; then
                 exit_error "Python installation failed"
             fi

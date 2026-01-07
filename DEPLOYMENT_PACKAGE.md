@@ -1,4 +1,4 @@
-# Healthcare Security Research Platform - Deployment Package
+# Healthcare Database Security Testing Platform - Deployment Package
 
 **Complete Deployment Solution for All User Types**
 
@@ -184,7 +184,7 @@ Can be deployed separately or with application.
 - Manual: See `DEPLOYMENT_STRATEGY.md#postgresql-installation`
 
 **Requirements:**
-- PostgreSQL 12+
+- PostgreSQL 17+
 - Network accessible from application host
 - User with appropriate permissions
 
@@ -206,7 +206,7 @@ Can be deployed separately or with application.
 
 **Model Download:**
 ```bash
-ollama pull llama3.1-sql:latest
+ollama pull ds2-coder:latest
 # OR
 ollama pull codellama:7b
 ```
@@ -236,7 +236,7 @@ python -m http.server 8000
 
 **Option 4: Static Site Generator**
 ```bash
-pip install mkdocs mkdocs-material
+uv pip install mkdocs mkdocs-material
 mkdocs serve
 ```
 
@@ -490,5 +490,5 @@ npm run dev &
 ---
 
 Created: 2025-12-29
-For: Healthcare Security Research Platform
+For: Healthcare Database Security Testing Platform
 Branch: claude/frontend-migration-checklist-DSMzl

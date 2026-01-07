@@ -1,10 +1,10 @@
 <div align="center">
-  <img src="../images/app-logo.jpg" alt="Healthcare Security Research Lab Logo" width="150"/>
+  <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
 # Authentication Flow
 
-This page details the complete authentication and authorization flow in the Healthcare Database Security Research Lab.
+This page details the complete authentication and authorization flow in the Healthcare Database Security Testing Lab.
 
 ---
 
@@ -349,7 +349,7 @@ curl -X POST http://192.168.1.10/api/query \
 - [Architecture Overview](overview.md)
 - [API Endpoints](../api/endpoints.md)
 - [Security Controls](../security/overview.md)
-- [Testing Guide](../testing/methodology.md)
+- [Testing Guide](../testing/test-cases.md)
 
 ---
 

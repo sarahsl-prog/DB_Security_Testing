@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="../images/app-logo.jpg" alt="Healthcare Security Research Lab Logo" width="150"/>
+  <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
 # Frontend/Backend Host Setup
@@ -139,7 +139,7 @@ Add the following configuration:
 
 ```ini
 [Unit]
-Description=Healthcare Security Research API
+Description=Healthcare Database Security Testing API
 After=network.target
 
 [Service]
@@ -356,7 +356,7 @@ curl -X POST http://192.168.1.10/api/login \
 
 All configuration files used for this host setup are available for download:
 
-- [:material-download: Nginx Configuration](../config-files/nginx-healthcare-api.conf) - Complete Nginx reverse proxy config
+- Nginx Configuration - See config-files directory for nginx configuration examples
 - [:material-download: Flask .env Template](../config-files/backend_config.py) - Environment variables template
 - [:material-download: systemd Service File](../config-files/healthcare-api.service) - Systemd service configuration
 - [:material-download: requirements.txt](../config-files/requirements.txt) - Python dependencies
@@ -404,7 +404,7 @@ All configuration files used for this host setup are available for download:
 
     ```ini title="/etc/systemd/system/healthcare-api.service"
     [Unit]
-    Description=Healthcare Security Research API
+    Description=Healthcare Database Security Testing API
     After=network.target
 
     [Service]

@@ -1,4 +1,4 @@
-# Healthcare Security Research Platform - Deployment Strategy
+# Healthcare Database Security Testing Platform - Deployment Strategy
 
 **For Boston University CS 674 Database Security Fall 2025**
 
@@ -6,7 +6,7 @@
 
 ## Executive Summary
 
-This document outlines three deployment approaches for the Healthcare Security Research Platform, ranging from easiest (Docker) to most flexible (manual installation).
+This document outlines three deployment approaches for the Healthcare Database Security Testing Platform, ranging from easiest (Docker) to most flexible (manual installation).
 
 **Target Users:** Students, researchers, and instructors with varying levels of technical experience.
 
@@ -248,7 +248,7 @@ ollama serve
 
 **Pull required models:**
 ```bash
-ollama pull llama3.1-sql:latest
+ollama pull ds2-coder:latest
 # OR
 ollama pull codellama:7b
 # OR
@@ -319,7 +319,7 @@ server {
 
 Use MkDocs or similar:
 ```bash
-pip install mkdocs mkdocs-material
+uv pip install mkdocs mkdocs-material
 cd LabDocumentation
 mkdocs serve
 ```
@@ -346,9 +346,9 @@ ollama serve &
 
 # Start backend
 cd ../backend
-python -m venv venv
+uv venv venv
 source venv/bin/activate
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 python database.py
 python app.py &
 
@@ -395,7 +395,7 @@ npm run dev
 - [ ] Sufficient resources (8GB+ RAM, GPU optional)
 
 ### Application
-- [ ] Python 3.8+ installed
+- [ ] Python 3.12+ installed
 - [ ] Node.js 22+ installed (required >=22.12.0)
 - [ ] Dependencies installed
 - [ ] .env files configured
@@ -469,7 +469,7 @@ ps aux | grep ollama
 ollama list
 
 # Pull model if missing
-ollama pull llama3.1-sql:latest
+ollama pull ds2-coder:latest
 ```
 
 **"Port already in use"**
@@ -508,7 +508,7 @@ git pull origin main
 # Update backend dependencies
 cd backend
 source venv/bin/activate
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 
 # Update frontend dependencies
 cd frontend
@@ -540,5 +540,5 @@ npm install
 ---
 
 **Created:** 2025-12-29
-**For:** Healthcare Security Research Platform
+**For:** Healthcare Database Security Testing Platform
 **Branch:** claude/frontend-migration-checklist-DSMzl

@@ -1,7 +1,7 @@
 <div align="center">
-  <img src="app-LOGO2.jpg" alt="Healthcare Database Security Research Logo" width="200"/>
+  <img src="app-LOGO2.jpg" alt="Healthcare Database Security Testing Logo" width="200"/>
 
-  # Healthcare Database Security Research Application
+  # Healthcare Database Security Testing Application
 
   A comprehensive Flask-based Application designed for researching SQL injection vulnerabilities and defense mechanisms in healthcare database systems. This project supports both vulnerable and secure modes for educational security testing and research purposes.
 </div>
@@ -60,7 +60,7 @@ git clone <repository-url>
 cd DB_Security_Testing
 
 # Create virtual environment
-python -m venv .venv
+uv venv .venv
 
 # Activate virtual environment
 # On Windows:
@@ -69,7 +69,7 @@ python -m venv .venv
 source .venv/bin/activate
 
 # Install dependencies
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 ```
 
 ### 2. Database Setup
@@ -313,7 +313,7 @@ DB_Security_Testing/
 
 4. **Import Errors**
    - Ensure virtual environment is activated
-   - Install all requirements: `pip install -r requirements.txt`
+   - Install all requirements: `uv pip install -r requirements.txt`
    - Check Python version compatibility
 
 ### Debugging

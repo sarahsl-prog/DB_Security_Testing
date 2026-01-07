@@ -5,7 +5,7 @@ Sample Data Generation Script for Healthcare Security Research
 Healthcare Security Research Project
 Created for Boston University CS 674 Database Security Fall 2025
 Author: Sarah Sund-Lussier (SarahSL@bu.edu)
-GitHub: https://github.com/sarahsl-prog/Database_Security_TestApp
+GitHub: https://github.com/sarahsl-prog/DB_Security_Testing
 
 Generates realistic but fake healthcare data for security testing purposes.
 Includes patients, doctors, medical records, and admin users with various

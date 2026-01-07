@@ -1,10 +1,10 @@
 <div align="center">
-  <img src="../images/app-logo.jpg" alt="Healthcare Security Research Lab Logo" width="150"/>
+  <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
 # Prerequisites
 
-Before setting up the Healthcare Database Security Research Lab, ensure you have the following requirements in place.
+Before setting up the Healthcare Database Security Testing Lab, ensure you have the following requirements in place.
 
 ## Hardware Requirements
 

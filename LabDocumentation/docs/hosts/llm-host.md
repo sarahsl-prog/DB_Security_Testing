@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="../images/app-logo.jpg" alt="Healthcare Security Research Lab Logo" width="150"/>
+  <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
 # LLM Host Setup
@@ -820,7 +820,7 @@ sudo tar -xzf ollama-models-backup-20250101.tar.gz -C /
 
 - [Frontend/Backend Host Setup](frontend-backend.md)
 - [Database Host Setup](database-host.md)
-- [Flask LLM Client Configuration](../api/llm-client.md)
+- [API Documentation](../api/endpoints.md)
 - [Security Testing Guide](../security/security-testing.md)
 
 ---

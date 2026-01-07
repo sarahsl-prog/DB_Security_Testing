@@ -1,11 +1,9 @@
 <div align="center">
-  <img src="../images/app-logo.jpg" alt="Healthcare Security Research Lab Logo" width="150"/>
+  <img src="images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="175"/>
 </div>
 
-# Healthcare Database Security Research Lab
-
-
-!!! info This documentation covers the complete setup and testing methodology for a distributed healthcare database security research environment. The lab is designed to test SQL injection vulnerabilities and security controls in natural language to SQL systems.
+# Healthcare Database Security Testing Lab
+!!! info "This documentation covers the complete setup and testing methodology for a distributed healthcare database security research environment. The lab is designed to test SQL injection vulnerabilities and security controls in natural language to SQL systems."
 
 ---
 
@@ -39,8 +37,8 @@ graph LR
 | Host | IP Address | OS | Primary Services |
 |------|-----------|-----|------------------|
 | Frontend/Backend | 192.168.1.10 | Ubuntu 24.04 | Nginx, Flask 2.3.3, Vite (Vanilla JS) |
-| Database | 192.168.1.11 | Ubuntu | PostgreSQL 12+ |
-| LLM | 192.168.1.12 | Ubuntu/Windows | Ollama, llama3.1-sql:latest |
+| Database | 192.168.1.11 | Ubuntu | PostgreSQL 17+ |
+| LLM | 192.168.1.12 | Ubuntu/Windows | Ollama, ds2-coder:latest |
 
 ---
 
@@ -77,12 +75,12 @@ graph LR
 
 2. **[Set up the Database Host](hosts/database-host.md)**
    - Install Ubuntu or compatible Linux
-   - Configure PostgreSQL 12+ (15+ recommended)
+   - Configure PostgreSQL 17+
    - Load healthcare schema
 
 3. **[Set up the LLM Host](hosts/llm-host.md)**
    - Install Ollama
-   - Pull llama3.1-sql:latest model
+   - Pull ds2-coder:latest model
    - Configure network access
 
 4. **[Configure Network Security](hosts/network-config.md)**
@@ -90,7 +88,7 @@ graph LR
    - Configure firewalls
    - Test connectivity
 
-5. **[Run Security Tests](testing/methodology.md)**
+5. **[Run Security Tests](testing/test-cases.md)**
    - Execute vulnerable mode tests
    - Implement security controls
    - Re-run tests in secure mode
@@ -139,7 +137,6 @@ The lab includes 16 comprehensive test cases covering:
 ### 📋 For Lab Setup
 
 - **[Host Setup](hosts/frontend-backend.md)** - Step-by-step installation guides
-- **[Configuration Files](config/nginx.md)** - All config files with explanations
 - **[Troubleshooting](troubleshooting/common-issues.md)** - Common problems and solutions
 
 ### 🏗️ For Architecture Understanding
@@ -148,11 +145,9 @@ The lab includes 16 comprehensive test cases covering:
 - **[Database Schema](database/schema.md)** - Complete table documentation
 - **[Security Layers](architecture/security-layers.md)** - Defense-in-depth explanation
 
-### 🧪 For Research/Testing
+###  🧪 For Research/Testing
 
-- **[Testing Methodology](testing/methodology.md)** - Research approach and process
-- **[Test Cases](testing/test-cases.md)** - All 16 test scenarios with templates
-- **[Results Analysis](testing/results.md)** - Metrics and comparison frameworks
+- **[Test Cases](testing/test-cases.md)** - All 16 test scenarios with templates and research approach
 
 ### 🔒 For Security Controls
 
@@ -182,7 +177,7 @@ This lab supports research into:
    - Assess usability impact of security measures
    - Develop best practices for secure NL2SQL implementations
 
-[View Full Research Methodology →](research/methodology.md)
+[View Full Research Documentation →](research/research-readme.md)
 
 ---
 
@@ -190,17 +185,17 @@ This lab supports research into:
 
 ### Backend
 - **Flask 2.3.3** - REST API framework
-- **Python 3.8+** (3.11+ recommended) - Application runtime
+- **Python 3.12+** - Application runtime
 - **PyJWT** - JWT token authentication
 - **Loguru** - Logging and audit trails
 
 ### Database
-- **PostgreSQL 12+** (15+ recommended) - Primary data store
+- **PostgreSQL 17+** - Primary data store
 - **Healthcare Schema** - Patients, doctors, medical records, audit logs
 
 ### LLM
 - **Ollama** - LLM inference engine
-- **llama3.1-sql:latest** - SQL-focused language model
+- **deepseek-r1:latest** - SQL-focused language model
 - **Natural Language to SQL** - Query generation
 
 ### Frontend
@@ -208,7 +203,7 @@ This lab supports research into:
 - **Nginx 1.26** - Web server and reverse proxy
 
 ### Infrastructure
-- **Ubuntu 24.04/25.04** - Operating systems
+- **Ubuntu 24.04** - Operating systems
 - **VMware Workstation 17.6.2** - Virtualization
 - **SSL/TLS** - Transport encryption
 
@@ -219,10 +214,10 @@ This lab supports research into:
 !!! question "Need Assistance?"
     
     **Setup Issues:** Check the [Troubleshooting Guide](troubleshooting/common-issues.md)
-    
-    **Configuration Questions:** See [Configuration Files](config/nginx.md) section
-    
-    **Research Questions:** Review [Research Methodology](research/methodology.md)
+
+    **Configuration Questions:** See configuration files in the config-files directory
+
+    **Research Questions:** Review [Research Documentation](research/research-readme.md)
     
     **Security Concerns:** This is a research lab only - never use with real patient data
 
@@ -233,7 +228,7 @@ This lab supports research into:
 This is an academic research project. For questions or collaboration:
 
 - **Email:** sarahsl@bu.edu
-- **GitHub:** [Project Repository](https://github.com/sarahsl-prog)
+- **GitHub:** [Project Repository](https://github.com/sarahsl-prog/DB_Security_Testing)
 - **Course:** MET CS 674 - Database Security
 
 ---
@@ -257,9 +252,3 @@ This project is for educational purposes as part of MET CS 674 coursework.
 - **Course:** MET CS 674 - Database Security
 - **Institution:** Boston University Metropolitan College
 - **Tools:** Material for MkDocs, PostgreSQL, Ollama, Flask
-
----
-
-*Last Updated: [Date]*  
-*Documentation Version: 1.0*  
-*Lab Version: 1.0*

@@ -1,10 +1,10 @@
 <div align="center">
-  <img src="../images/app-logo.jpg" alt="Healthcare Security Research Lab Logo" width="150"/>
+  <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
 # API Endpoints
 
-Complete reference for all REST API endpoints in the Healthcare Database Security Research API.
+Complete reference for all REST API endpoints in the Healthcare Database Security Testing API.
 
 ## Base URL
 - Development: `http://localhost:5000`

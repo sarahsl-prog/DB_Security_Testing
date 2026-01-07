@@ -1,4 +1,8 @@
-# Healthcare Security Research Platform - Deployment Strategy
+<div align="center">
+  <img src="images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
+</div>
+
+# Healthcare Database Security Testing Platform - Deployment Strategy
 
 **For Boston University CS 674 Database Security Fall 2025**
 
@@ -6,7 +10,7 @@
 
 ## Executive Summary
 
-This document outlines three deployment approaches for the Healthcare Security Research Platform, ranging from easiest (Docker) to most flexible (manual installation).
+This document outlines three deployment approaches for the Healthcare Database Security Testing Platform, ranging from easiest (Docker) to most flexible (manual installation).
 
 **Target Users:** Students, researchers, and instructors with varying levels of technical experience.
 
@@ -249,7 +253,7 @@ ollama serve
 **Pull required models:**
 ```bash
 # Recommended model for SQL generation
-ollama pull llama3.1-sql:latest
+ollama pull ds2-coder:latest
 
 # OR alternative models
 ollama pull codellama:7b
@@ -319,7 +323,7 @@ server {
 
 Use MkDocs or similar:
 ```bash
-pip install mkdocs mkdocs-material
+uv pip install mkdocs mkdocs-material
 cd LabDocumentation
 mkdocs serve
 ```
@@ -346,9 +350,9 @@ ollama serve &
 
 # Start backend
 cd ../backend
-python -m venv venv
+uv venv venv
 source venv/bin/activate
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 python database.py
 python app.py &
 
@@ -469,7 +473,7 @@ ps aux | grep ollama
 ollama list
 
 # Pull model if missing
-ollama pull llama3.1-sql:latest
+ollama pull ds2-coder:latest
 ```
 
 **"Port already in use"**
@@ -497,7 +501,7 @@ VITE_BACKEND_PORT=5000
 ### Regular Tasks
 - Check logs weekly: `tail -f backend/logs/healthcare_security.log`
 - Back up database regularly
-- Update dependencies: `pip install -U -r requirements.txt`
+- Update dependencies: `uv pip install -U -r requirements.txt`
 - Review security logs: `backend/logs/security_audit.log`
 
 ### Updates
@@ -508,7 +512,7 @@ git pull origin main
 # Update backend dependencies
 cd backend
 source venv/bin/activate
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 
 # Update frontend dependencies
 cd frontend
@@ -540,7 +544,7 @@ npm install
 ---
 
 **Created:** 2025-12-29
-**For:** Healthcare Security Research Platform
+**For:** Healthcare Database Security Testing Platform
 **Branch:** claude/frontend-migration-checklist-DSMzl
 
 ---

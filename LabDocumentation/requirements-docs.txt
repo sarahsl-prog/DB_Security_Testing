@@ -2,7 +2,7 @@
 # Healthcare Database Security Research Lab Documentation
 #
 # Install these to build and serve the documentation:
-#   pip install -r requirements-docs.txt
+#   uv pip install -r requirements-docs.txt
 #
 # Then run:
 #   mkdocs serve

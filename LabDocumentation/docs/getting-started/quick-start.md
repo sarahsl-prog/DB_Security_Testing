@@ -1,10 +1,10 @@
 <div align="center">
-  <img src="../images/app-logo.jpg" alt="Healthcare Security Research Lab Logo" width="150"/>
+  <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
 # Quick Start Guide
 
-Get your Healthcare Database Security Research Lab up and running quickly.
+Get your Healthcare Database Security Testing Lab up and running quickly.
 
 ## Deployment Options
 
@@ -89,7 +89,7 @@ curl http://192.168.1.12:11434/api/tags
 
 ### Step 5: Run Initial Tests
 
-1. Navigate to [Testing Methodology](../testing/methodology.md)
+1. Navigate to [Testing Documentation](../testing/test-cases.md)
 2. Execute vulnerable mode tests first
 3. Document your results
 
@@ -98,7 +98,7 @@ curl http://192.168.1.12:11434/api/tags
 Once your lab is operational:
 
 - Review [Security Controls](../security/overview.md)
-- Plan your [Research Methodology](../research/methodology.md)
+- Plan your research approach using [Research Documentation](../research/research-readme.md)
 - Begin [Security Testing](../testing/test-cases.md)
 
 ## Troubleshooting

@@ -1,5 +1,5 @@
 <!--
-Healthcare Security Research Project
+Healthcare Database Security Testing Project
 Created for Boston University CS 674 Database Security Fall 2025
 Author: Sarah Sund-Lussier (SarahSL@bu.edu)
 GitHub: https://github.com/sarahsl-prog/DB_Security_Testing
@@ -150,9 +150,9 @@ python --version
 **Solution**:
 ```batch
 cd backend
-python -m venv venv
+uv venv venv
 venv\Scripts\activate
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 ```
 
 ### Issue: "API server not accessible"

@@ -1,7 +1,7 @@
 <div align="center">
-  <img src="app-LOGO2.jpg" alt="Healthcare Database Security Research Logo" width="200"/>
+  <img src="app-LOGO2.jpg" alt="Healthcare Database Security Testing Logo" width="200"/>
 
-  # Healthcare Database Security Research API
+  # Healthcare Database Security Testing API
 
   A comprehensive Flask-based API designed for researching SQL injection vulnerabilities and defense mechanisms in healthcare database systems. This project supports both vulnerable and secure modes for educational security testing and research purposes.
 </div>
@@ -47,8 +47,8 @@ The system uses a distributed architecture across multiple VMs:
 
 ### Prerequisites
 
-1. **Python 3.8+**
-2. **PostgreSQL 12+**
+1. **Python 3.12+**
+2. **PostgreSQL 17+**
 3. **Ollama** (running on Windows host)
 4. **Git**
 
@@ -60,7 +60,7 @@ git clone <repository-url>
 cd healthcare_security_api
 
 # Create virtual environment
-python -m venv venv
+uv venv venv
 
 # Activate virtual environment
 # On Windows:
@@ -69,7 +69,7 @@ venv\\Scripts\\activate
 source venv/bin/activate
 
 # Install dependencies
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 ```
 
 ### 2. Database Setup
@@ -295,7 +295,7 @@ healthcare_security_api/
 
 ```bash
 # Install development dependencies
-pip install pytest pytest-flask pytest-cov
+uv pip install pytest pytest-flask pytest-cov
 
 # Run unit tests
 pytest
@@ -342,7 +342,7 @@ mypy .
 
 4. **Import Errors**
    - Ensure virtual environment is activated
-   - Install all requirements: `pip install -r requirements.txt`
+   - Install all requirements: `uv pip install -r requirements.txt`
    - Check Python version compatibility
 
 ### Debugging

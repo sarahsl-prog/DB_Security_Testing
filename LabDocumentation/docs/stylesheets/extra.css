@@ -1,0 +1,76 @@
+/* Extra CSS for Healthcare Database Security Research Lab Documentation */
+
+:root {
+  --md-primary-fg-color: #3f51b5;
+  --md-accent-fg-color: #2196f3;
+}
+
+/* Custom styling for admonitions */
+.md-typeset .admonition,
+.md-typeset details {
+  border-left: 0.2rem solid var(--md-accent-fg-color);
+}
+
+/* Logo styling */
+.md-header__button.md-logo img {
+  height: 2rem;
+  width: auto;
+}
+
+/* Custom table styling */
+.md-typeset table:not([class]) {
+  font-size: 0.85rem;
+}
+
+.md-typeset table:not([class]) th {
+  background-color: var(--md-primary-fg-color);
+  color: white;
+  font-weight: bold;
+}
+
+/* Code block enhancements */
+.md-typeset pre > code {
+  border-radius: 0.3rem;
+}
+
+/* Mermaid diagram styling */
+.mermaid {
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+/* Custom warning boxes */
+.md-typeset .admonition.warning,
+.md-typeset details.warning {
+  border-left-color: #ff9800;
+}
+
+/* Custom info boxes */
+.md-typeset .admonition.info,
+.md-typeset details.info {
+  border-left-color: #2196f3;
+}
+
+/* Custom tip boxes */
+.md-typeset .admonition.tip,
+.md-typeset details.tip {
+  border-left-color: #00bcd4;
+}
+
+/* Footer styling */
+.md-footer-meta {
+  background-color: var(--md-primary-fg-color);
+}
+
+/* Navigation improvements */
+.md-nav__link--active {
+  font-weight: bold;
+}
+
+/* Centered images */
+.center-image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}

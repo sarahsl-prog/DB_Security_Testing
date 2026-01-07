@@ -1,10 +1,10 @@
 <div align="center">
-  <img src="../images/app-logo.jpg" alt="Healthcare Security Research Lab Logo" width="150"/>
+  <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
 # Network Configuration
 
-Configuration guide for the network infrastructure connecting the three hosts in the Healthcare Database Security Research Lab.
+Configuration guide for the network infrastructure connecting the three hosts in the Healthcare Database Security Testing Lab.
 
 !!! note "Example IP Addresses"
     The IP addresses shown in this guide (192.168.1.x) are **examples only**. You should:
