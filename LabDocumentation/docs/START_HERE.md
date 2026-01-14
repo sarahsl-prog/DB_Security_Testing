@@ -112,27 +112,19 @@ cd install
 
 All deployment options install these components:
 
-```
-┌─────────────────────────────────────────┐
-│         Your Computer                   │
-│                                         │
-│  ┌──────────┐  ┌──────────┐            │
-│  │ Frontend │  │ Backend  │            │
-│  │  (Vite)  │  │ (Flask)  │            │
-│  │  :5173   │  │  :5000   │            │
-│  └──────────┘  └──────────┘            │
-│       │              │                  │
-│       └──────┬───────┘                  │
-│              │                          │
-│  ┌───────────┴──────────┐              │
-│  │                      │              │
-│  │   ┌──────────┐  ┌───▼──────┐       │
-│  │   │PostgreSQL│  │  Ollama  │       │
-│  │   │    DB    │  │   LLM    │       │
-│  │   │  :5432   │  │  :11434  │       │
-│  │   └──────────┘  └──────────┘       │
-│  │                                     │
-└──┴─────────────────────────────────────┘
+```mermaid
+flowchart LR
+ subgraph App["Application Components"]
+    direction TB
+        FE["Frontend (Vite) <br>port 5173"]
+        BE["Backend (Flask) <br>port 5000"]
+  end
+    FE --> BE
+    BE --> DB[("PostgreSQL DB <br>port 5432")] & LLM["Ollama LLM <br>port 11434"]
+
+    style DB fill:#E1BEE7
+    style LLM fill:#C8E6C9
+    style App fill:#BBDEFB
 ```
 
 ---
