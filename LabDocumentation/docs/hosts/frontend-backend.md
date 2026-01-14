@@ -41,13 +41,16 @@ Update the system and install base dependencies:
 sudo apt update && sudo apt upgrade -y
 
 # Install base dependencies
-sudo apt install -y build-essential curl git wget vim python-is-python3
+sudo apt install -y build-essential curl git wget vim 
 
-# Install Python 3.12 and pip
-sudo apt install -y python3.12 python3.12-venv python3-pip
+# Install Python 3.12 
+sudo apt install -y python3.12 python3.12-venv python-is-python3
+
+#Install uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Verify Python installation
-python3 --version
+python --version
 ```
 
 ### 2. Install Nginx
@@ -98,7 +101,7 @@ sudo chown $USER:$USER /var/www/healthcare-api
 cd /var/www/healthcare-api
 
 # Create Python virtual environment
-python3 -m venv .venv
+uv env 
 source .venv/bin/activate
 
 # Install Flask and dependencies
