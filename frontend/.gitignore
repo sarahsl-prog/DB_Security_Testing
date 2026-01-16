@@ -20,10 +20,6 @@ dist-ssr
 .vscode/*
 !.vscode/extensions.json
 .bolt/
-public/
-!public/config.js
-!public/app-logo.jpg
-!public/logo-trans.png
 .idea
 .DS_Store
 *.suo

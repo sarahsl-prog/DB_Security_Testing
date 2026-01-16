@@ -14,7 +14,7 @@ logs/
 tests/test_reports/
 test_reports/
 INSTALLATION*
-.env*
+.env
 .env.backup*
 .ruff_cache/
 .DS_Store
