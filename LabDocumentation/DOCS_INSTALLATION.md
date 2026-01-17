@@ -1,3 +1,8 @@
+<div align="center">
+  <img src="docs\images\logo-trnsp.png" alt="Healthcare Database Security Testing Logo" width="200"/>
+
+</div>
+
 # Documentation Installation Guide
 
 ## Overview

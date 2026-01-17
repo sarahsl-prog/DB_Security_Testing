@@ -1,3 +1,8 @@
+<div align="center">
+  <img src="LabDocumentation\docs\images\logo-trnsp.png" alt="Healthcare Database Security Testing Logo" width="200"/>
+
+</div>
+
 # Docker Quick Start - Healthcare Database Security Testing Platform
 
 **The easiest way to get started!** ⭐

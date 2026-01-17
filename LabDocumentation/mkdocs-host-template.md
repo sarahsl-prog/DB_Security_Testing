@@ -1,3 +1,8 @@
+<div align="center">
+  <img src="docs\images\logo-trnsp.png" alt="Healthcare Database Security Testing Logo" width="200"/>
+
+</div>
+
 # Frontend/Backend Host Setup
 
 !!! info "Host Information"

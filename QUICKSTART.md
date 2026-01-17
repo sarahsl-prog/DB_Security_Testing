@@ -4,9 +4,12 @@ Created for Boston University CS 674 Database Security Fall 2025
 Author: Sarah Sund-Lussier (SarahSL@bu.edu)
 GitHub: https://github.com/sarahsl-prog/DB_Security_Testing
 -->
+<div align="center">
+  <img src="LabDocumentation\docs\images\logo-trnsp.png" alt="Healthcare Database Security Testing Logo" width="200"/>
+
+</div>
 
 # Healthcare Database Security Testing Platform - Quick Start Guide
-
 ## Installation (5 minutes)
 
 ### Step 1: Run Installation Script

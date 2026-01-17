@@ -11,23 +11,29 @@ This page contains all architecture diagrams for the Healthcare Database Securit
 ## System Architecture
 
 The following diagram shows the complete system architecture with all three hosts and their communication paths.
-
-```mermaid
-graph TB
-    User[User/Client] -->|HTTP :80/:443| Frontend[Frontend/Backend Host<br/>Nginx + Flask]
-    Frontend -->|SQL :5432<br/>PostgreSQL Protocol| Database[(Database Host<br/>PostgreSQL 17)]
-    Frontend -->|LLM API :11434<br/>HTTP/JSON| LLM[LLM Host<br/>Ollama<br/>deepseek-coder:1.3b]
-    
-    Database -->|Query Results :5432| Frontend
-    LLM -->|Generated SQL :11434| Frontend
-    Frontend -->|HTTP Response| User
-    
-    style Frontend fill:#fff4e1
-    style Database fill:#f0e1ff
-    style LLM fill:#e1ffe1
 ```
-
-[View Full Mermaid Source](test-lab-architecture.mermaid)
+┌─────────────────┐
+│   Frontend      │  Port: 5173
+│   (Vite)        │
+└────────┬────────┘
+         │
+         │ HTTP/HTTPS
+         │
+┌────────▼────────┐
+│   Backend API   │  Port: 5000
+│   (Flask)       │  Host: BACKEND_HOST
+└────┬──────┬─────┘
+     │      │
+     │      └──────────┐
+     │                 │
+┌────▼────────┐  ┌────▼────────┐
+│  PostgreSQL │  │   Ollama    │
+│  Database   │  │   LLM       │
+│             │  │             │
+│ Port: 5432  │  │ Port: 11434 │
+│ DB_HOST     │  │ LLM_HOST    │
+└─────────────┘  └─────────────┘
+```
 
 ---
 

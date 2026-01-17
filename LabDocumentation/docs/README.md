@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="app-LOGO2.jpg" alt="Healthcare Database Security Testing Logo" width="200"/>
+  <img src="images/logo-trnsp.png" alt="Healthcare Database Security Testing Logo" width="200"/>
 
   # Healthcare Database Security Testing API
 

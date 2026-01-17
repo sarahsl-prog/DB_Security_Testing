@@ -1,3 +1,8 @@
+<div align="center">
+  <img src="LabDocumentation\docs\images\logo-trnsp.png" alt="Healthcare Database Security Testing Logo" width="200"/>
+
+</div>
+
 # Healthcare Database Security Testing Platform - Deployment Strategy
 
 **For Boston University CS 674 Database Security Fall 2025**
