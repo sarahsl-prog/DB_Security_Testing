@@ -31,7 +31,7 @@ class Config:
         SECRET_KEY = 'dev-key-change-in-production'
         print("WARNING: Using default SECRET_KEY. Set SECRET_KEY environment variable for production!")
 
-    HOST = os.environ.get('API_HOST', '192.168.0.237')
+    HOST = os.environ.get('API_HOST', '0.0.0.0')
     PORT = int(os.environ.get('API_PORT', 5000))
     DEBUG = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
 
