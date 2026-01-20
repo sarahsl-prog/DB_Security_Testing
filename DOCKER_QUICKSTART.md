@@ -24,6 +24,23 @@ All with **one command!**
 
 ---
 
+## Compose Layout
+
+This project now uses two Compose descriptors so each concern stays isolated:
+
+- `docker-compose.yml` — infrastructure services (PostgreSQL + Ollama)
+- `docker-compose.app.yml` — application services (Flask backend + Vite/NGINX frontend)
+
+Always run them together so every container shares the same Docker network:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.app.yml up -d
+```
+
+All subsequent examples assume you are passing both files in this order.
+
+---
+
 ## Prerequisites
 
 ### 1. Install Docker
@@ -68,7 +85,7 @@ All you need is the ability to run `docker` and `docker compose` commands.
 
 ---
 
-## Quick Start (3 Steps)
+## Quick Start (4 Steps)
 
 ### Step 1: Configure Environment
 
@@ -85,6 +102,12 @@ nano .env
 DB_PASSWORD=your_secure_password_here
 SECRET_KEY=generate_random_key_here
 JWT_SECRET_KEY=generate_random_jwt_key_here
+DB_HOST=postgres          # matches the postgres service name
+DB_NAME=healthcare_security
+DB_USER=healthcare_user
+LLM_HOST=ollama           # matches the ollama service name
+BACKEND_HOST=0.0.0.0      # ensure Flask listens on all interfaces in the container
+FRONTEND_BACKEND_HOST=localhost  # what the browser will use to reach the API
 ```
 
 **How to generate secure keys:**
@@ -121,17 +144,30 @@ docker compose exec ollama ollama pull codellama:7b
 ### Step 3: Start Everything!
 
 ```bash
-# Start all services
-docker compose up -d
+# Start all services (infrastructure + app)
+docker compose -f docker-compose.yml -f docker-compose.app.yml up -d
 
 # Watch the logs (optional)
-docker compose logs -f
+docker compose -f docker-compose.yml -f docker-compose.app.yml logs -f
 
 # Or check specific service logs
-docker compose logs -f backend
+docker compose -f docker-compose.yml -f docker-compose.app.yml logs -f backend
 ```
 
 **That's it!** 🎉
+
+---
+
+### Step 4: Seed Sample Data
+
+The database only contains schemas after the containers start. Run the data generator once so the default accounts exist:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.app.yml exec backend \
+   python generate_sample_data.py
+```
+
+This seeds doctors, patients, records, and admin accounts. Re-run the command anytime you want a fresh dataset.
 
 ---
 
@@ -140,9 +176,12 @@ docker compose logs -f backend
 ### Web Interface
 Open your browser to: **http://localhost:5173**
 
-**Default Login:**
-- Username: `doctor1` or `admin`
-- Password: `doctor123` or `password123`
+**Default Login (after Step 4):**
+- `admin` / `password123` (system administrator)
+- `security_admin` / `password123` (security administrator)
+- `dr.smith` / `password123` (doctor role)
+
+The generator produces additional doctor and nurse accounts, all using `password123` by default.
 
 ### API
 - Health Check: http://localhost:5000/api/health
