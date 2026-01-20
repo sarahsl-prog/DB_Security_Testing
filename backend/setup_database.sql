@@ -3,8 +3,8 @@
 -- Supports both vulnerable and secure mode research
 
 -- Create database (run separately if needed)
--- CREATE DATABASE healthcare_security;
--- \c healthcare_security;
+CREATE DATABASE healthcare_security;
+\c healthcare_security;
 
 -- Drop existing tables if they exist (for clean setup)
 DROP TABLE IF EXISTS audit_log CASCADE;

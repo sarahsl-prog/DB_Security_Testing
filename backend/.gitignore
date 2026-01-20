@@ -19,3 +19,6 @@ INSTALLATION*
 .ruff_cache/
 .DS_Store
 .idea/
+
+# sample .sql files
+sample*

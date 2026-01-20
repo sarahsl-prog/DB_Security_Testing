@@ -8,7 +8,7 @@ export default defineConfig({
     cors: true,
     proxy: {
       '/api': {
-        target: 'http://192.168.0.241:5000',
+        target: 'http://192.168.0.245:5000',
         changeOrigin: true,
         secure: false
       }
