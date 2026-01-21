@@ -22,9 +22,9 @@ services:
     volumes:
       - ./backend/logs:/app/logs
     depends_on:
-      postgres:
+      healthcare_db:
         condition: service_healthy
-      ollama:
+      healthcare_llm:
         condition: service_started
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
@@ -59,6 +59,6 @@ services:
     networks:
       - healthcare_network
 
-  networks:
-     healthcare_network:
-      external: true
+networks:
+  healthcare_network:
+    external: true

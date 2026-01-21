@@ -53,24 +53,24 @@ services:
     #           capabilities: [gpu]
 
 # Data Generator Service to populate the database with generated data
-data-generator:
-  build: ./data-generator
-  depends_on:
-    postgres:
-      condition: service_healthy
-  environment:
-    - DATABASE_URL=postgresql://dbuser:dbpass@postgres:5432/healthcare
-  networks:
+  data-generator:
+    build: ./data-generator
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://healthcare_user:Postgresql17!@postgres:5432/healthcare_security
+    networks:
     - healthcare_network
-  profiles:
+    profiles:
     - tools
+
 networks:
-  healthcare_network:
-    driver: bridge
+    healthcare_network:
+      driver: bridge
 
 volumes:
   postgres_data:
-    driver: local
+      driver: local
   ollama_data:
-    driver: local
-
+      driver: local
