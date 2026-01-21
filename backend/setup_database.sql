@@ -13,6 +13,10 @@ DROP TABLE IF EXISTS admin_users CASCADE;
 DROP TABLE IF EXISTS doctors CASCADE;
 DROP TABLE IF EXISTS patients CASCADE;
 
+-- Create users and roles as needed (adjust as per your environment)
+CREATE USER healthcare_user WITH PASSWORD 'Postgresql17!';
+GRANT CONNECT ON DATABASE healthcare_security TO healthcare_user;
+
 -- Create patients table with PHI for security testing
 CREATE TABLE patients (
     patient_id SERIAL PRIMARY KEY,
