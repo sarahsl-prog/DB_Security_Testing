@@ -37,40 +37,40 @@ class Config:
     PORT = int(os.environ.get('API_PORT', 5000))
     DEBUG = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
 
-    # Database configuration - require environment variables
-    DATABASE_HOST = os.environ.get('DB_HOST')
-    if not DATABASE_HOST:
-        raise ValueError("DB_HOST environment variable must be set. Check your .env file.")
+    # Try DATABASE_URL first (for Docker), fall back to individual vars (for local)
+    if os.environ.get('DATABASE_URL'):
+        SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    else:
+        # Database configuration - require environment variables
+        DATABASE_HOST = os.environ.get('DB_HOST')
+        if not DATABASE_HOST:
+            raise ValueError("DB_HOST environment variable must be set. Check your .env file.")
 
-    DATABASE_PORT = int(os.environ.get('DB_PORT', 5432))
-    DATABASE_NAME = os.environ.get('DB_NAME', 'healthcare_security')
-    DATABASE_USER = os.environ.get('DB_USER', 'healthcare_user')
-    DATABASE_PASSWORD = os.environ.get('DB_PASSWORD')
-    if not DATABASE_PASSWORD:
-        raise ValueError("DB_PASSWORD environment variable must be set. Check your .env file.")
+        DATABASE_PORT = int(os.environ.get('DB_PORT', 5432))
+        DATABASE_NAME = os.environ.get('DB_NAME', 'healthcare_security')
+        DATABASE_USER = os.environ.get('DB_USER', 'healthcare_user')
+        DATABASE_PASSWORD = os.environ.get('DB_PASSWORD')
+        if not DATABASE_PASSWORD:
+            raise ValueError("DB_PASSWORD environment variable must be set. Check your .env file.")
 
-    DATABASE_URL = f"postgresql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}"
+        DATABASE_URL = f"postgresql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}"
 
-    # use environment variable for DATABASE_URL:
-    SQLALCHEMY_DATABASE_URI = os.environ.get(
-        'DATABASE_URL',
-        f"postgresql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}"
-    )
+
     
     # LLM configuration - require environment variables
-    LLM_HOST = os.environ.get('LLM_HOST')
+    LLM_HOST = os.environ.get('LLM_HOST','ollama')
     if not LLM_HOST:
         raise ValueError("LLM_HOST environment variable must be set. Check your .env file.")
 
     LLM_PORT = int(os.environ.get('LLM_PORT', 11434))
     LLM_BASE_URL = f"http://{LLM_HOST}:{LLM_PORT}"
-    LLM_DEFAULT_MODEL = os.environ.get('LLM_MODEL', 'llama3.1-sql:latest')
+    LLM_DEFAULT_MODEL = os.environ.get('LLM_MODEL', 'llama-sql:latest')
     LLM_TIMEOUT = int(os.environ.get('LLM_TIMEOUT', 30))
     LLM_MAX_RETRIES = int(os.environ.get('LLM_MAX_RETRIES', 3))
     
     SECURITY_MODE = os.environ.get('SECURITY_MODE', 'vulnerable')
     
-    JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY') or SECRET_KEY
+    JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY','dev-key-change-in-production') 
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=int(os.environ.get('JWT_EXPIRES_HOURS', 24)))
     
     LOG_LEVEL = os.environ.get('LOG_LEVEL', 'INFO')
@@ -192,14 +192,29 @@ class ProductionConfig(Config):
     DEBUG = False
     LOG_LEVEL = 'WARNING'
     
-    SECRET_KEY = os.environ.get('SECRET_KEY')
+    SECRET_KEY = os.environ.get('SECRET_KEY','dev-key-change-in-production')
     if not SECRET_KEY:
         raise ValueError("SECRET_KEY environment variable must be set in production")
     
-    DATABASE_PASSWORD = os.environ.get('DB_PASSWORD')
-    if not DATABASE_PASSWORD:
-        raise ValueError("DB_PASSWORD environment variable must be set in production")
-    
+     # Try DATABASE_URL first (for Docker), fall back to individual vars (for local)
+    if os.environ.get('DATABASE_URL'):
+        SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    else:
+        # Database configuration - require environment variables
+        DATABASE_HOST = os.environ.get('DB_HOST')
+        if not DATABASE_HOST:
+            raise ValueError("DB_HOST environment variable must be set. Check your .env file.")
+
+        DATABASE_PORT = int(os.environ.get('DB_PORT', 5432))
+        DATABASE_NAME = os.environ.get('DB_NAME', 'healthcare_security')
+        DATABASE_USER = os.environ.get('DB_USER', 'healthcare_user')
+        DATABASE_PASSWORD = os.environ.get('DB_PASSWORD')
+        if not DATABASE_PASSWORD:
+            raise ValueError("DB_PASSWORD environment variable must be set in production")
+
+        DATABASE_URL = f"postgresql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}"
+
+       
     SECURITY_MODE = 'secure'
     
     RATE_LIMIT_PER_MINUTE = 30
@@ -212,9 +227,9 @@ class TestingConfig(Config):
     LOG_LEVEL = 'DEBUG'
 
     DATABASE_NAME = 'Testing'
-    DATABASE_HOST = os.environ.get('TESTING_DB_HOST', os.environ.get('DB_HOST'))
+    DATABASE_HOST = os.environ.get('TESTING_DB_HOST', os.environ.get('DB_HOST', 'localhost'))
 
-    LLM_HOST = os.environ.get('TESTING_LLM_HOST', os.environ.get('LLM_HOST'))
+    LLM_HOST = os.environ.get('TESTING_LLM_HOST', os.environ.get('LLM_HOST','localhost'))
     LLM_TIMEOUT = 5
     
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=5)

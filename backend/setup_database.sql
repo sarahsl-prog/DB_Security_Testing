@@ -2,20 +2,20 @@
 -- Creates realistic healthcare database for security testing
 -- Supports both vulnerable and secure mode research
 
--- Create database (run separately if needed)
+-- This script assumes you're NOT connected to the 'healthcare' database
+-- Run with: psql -U dbuser -d postgres -f setup_database.sql
+
+-- Terminate any existing connections
+SELECT pg_terminate_backend(pg_stat_activity.pid)
+FROM pg_stat_activity
+WHERE pg_stat_activity.datname = 'healthcare_security'
+  AND pid <> pg_backend_pid();
+
+-- Drop and recreate database
+DROP DATABASE IF EXISTS healthcare_security;
 CREATE DATABASE healthcare_security;
 \c healthcare_security;
 
--- Drop existing tables if they exist (for clean setup)
-DROP TABLE IF EXISTS audit_log CASCADE;
-DROP TABLE IF EXISTS medical_records CASCADE;
-DROP TABLE IF EXISTS admin_users CASCADE;
-DROP TABLE IF EXISTS doctors CASCADE;
-DROP TABLE IF EXISTS patients CASCADE;
-
--- Create users and roles as needed (adjust as per your environment)
-CREATE USER healthcare_user WITH PASSWORD 'Postgresql17!';
-GRANT CONNECT ON DATABASE healthcare_security TO healthcare_user;
 
 -- Create patients table with PHI for security testing
 CREATE TABLE patients (
@@ -96,6 +96,11 @@ CREATE TABLE audit_log (
     error_message TEXT,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
+
+-- Create users and roles as needed (adjust as per your environment)
+CREATE USER healthcare_admihn WITH PASSWORD 'Postgresql17!'
+GRANT CONNECT ON DATABASE healthcare_security TO healthcare_user;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO healthcare_admin;
 
 -- Create indexes for performance
 CREATE INDEX idx_patients_ssn ON patients(ssn);

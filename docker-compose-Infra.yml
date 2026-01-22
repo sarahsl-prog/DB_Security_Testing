@@ -4,7 +4,6 @@ services:
     image: postgres:17-alpine
     container_name: healthcare_db
     environment:
-      POSTGRES_DB: healthcare_security
       POSTGRES_USER: healthcare_user
       POSTGRES_PASSWORD: ${DB_PASSWORD:-healthcare_pass_change_me}
     ports:
@@ -60,6 +59,13 @@ services:
         condition: service_healthy
     environment:
       - DATABASE_URL=postgresql://healthcare_user:Postgresql17!@postgres:5432/healthcare_security
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=healthcare_user
+      - DB_PASSWORD=Postgresql17!
+      - DB_NAME=healthcare_security
+      - DATABASE_PASSWORD=Postgresql17!  # sometimes needed too
+      - SECRET_KEY=dev-secret-key-change-in-prod
     networks:
     - healthcare_network
     profiles:
