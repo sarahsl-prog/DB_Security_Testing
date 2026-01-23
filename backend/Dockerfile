@@ -7,6 +7,7 @@ WORKDIR /app
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     gcc \
+    gosu \
     postgresql-client \
     curl \
     && rm -rf /var/lib/apt/lists/*
@@ -21,13 +22,19 @@ RUN pip install --no-cache-dir uv && \
 # Copy application code
 COPY . .
 
-# Create logs directory
-RUN mkdir -p logs
+# Create logs directory -- moved to below user creation
+# RUN mkdir -p logs
 
 # Create non-root user
 RUN useradd -m -u 1000 appuser && \
     chown -R appuser:appuser /app
-USER appuser
+
+# Copy entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Run entrypoint script
+ENTRYPOINT ["/entrypoint.sh"]
 
 # Expose port
 EXPOSE 5000
