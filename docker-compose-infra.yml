@@ -52,18 +52,6 @@ services:
     #           count: all
     #           capabilities: [gpu]
 
-# Data Generator Service to populate the database with generated data
-data-generator:
-  build: ./data-generator
-  depends_on:
-    postgres:
-      condition: service_healthy
-  environment:
-    - DATABASE_URL=postgresql://dbuser:dbpass@postgres:5432/healthcare
-  networks:
-    - healthcare_network
-  profiles:
-    - tools
 networks:
   healthcare_network:
     driver: bridge
