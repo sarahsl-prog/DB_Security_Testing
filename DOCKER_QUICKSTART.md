@@ -26,7 +26,15 @@ All with **one command!**
 
 ## Compose Layout
 
-This project now uses two Compose descriptors so each concern stays isolated:
+If you want to bring up all the containers at once, use this docker-compose file:
+
+- `docker-compose-all.yml` - starts all containers - postgres, ollama, backend & frontend
+
+```bash
+docker compose -f docker-compose-all.yml -d
+```
+
+This project now includes two Compose descriptors if you want to isolate the infrastructure containers:
 
 - `docker-compose.yml` — infrastructure services (PostgreSQL + Ollama)
 - `docker-compose.app.yml` — application services (Flask backend + Vite/NGINX frontend)
@@ -85,7 +93,7 @@ All you need is the ability to run `docker` and `docker compose` commands.
 
 ---
 
-## Quick Start (4 Steps)
+## Quick Start (3 Steps)
 
 ### Step 1: Configure Environment
 
@@ -121,9 +129,41 @@ python3 -c "import secrets; print(secrets.token_urlsafe(32))"
 
 Copy the output and paste it into your `.env` file.
 
-### Step 2: Pull LLM Model
+---
 
-The Ollama service needs to download an AI model. This happens automatically, but you can pre-download:
+### Step 2: Start Everything!
+
+```bash
+# Start all services (infrastructure + app)
+docker compose -f docker-compose-all.yml up -d
+
+# Watch the logs (optional)
+docker compose -f docker-compose-all.yml logs -f
+
+# Or check specific service logs
+docker compose -f docker-compose-all.yml  logs -f backend
+```
+
+
+
+---
+
+### Step 3: Seed Sample Data
+
+The database only contains schemas after the containers start. Run the data generator once so the default accounts exist:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.app.yml exec backend \
+   python generate_sample_data.py
+```
+
+This seeds doctors, patients, records, and admin accounts. Re-run the command anytime you want a fresh dataset.
+**That's it!** 🎉
+
+---
+
+### Optional - Pull other LLM Models
+The Ollama service will download three AI models. This happens automatically, you can download other models manually:
 
 ```bash
 # Start just the Ollama service
@@ -139,36 +179,7 @@ docker compose exec ollama ollama pull ds2-coder:latest
 docker compose exec ollama ollama pull codellama:7b
 ```
 
-**Note:** Both `docker compose` (modern) and `docker-compose` (legacy) commands work. We use `docker compose` in this guide.
-
-### Step 3: Start Everything!
-
-```bash
-# Start all services (infrastructure + app)
-docker compose -f docker-compose.yml -f docker-compose.app.yml up -d
-
-# Watch the logs (optional)
-docker compose -f docker-compose.yml -f docker-compose.app.yml logs -f
-
-# Or check specific service logs
-docker compose -f docker-compose.yml -f docker-compose.app.yml logs -f backend
-```
-
-**That's it!** 🎉
-
----
-
-### Step 4: Seed Sample Data
-
-The database only contains schemas after the containers start. Run the data generator once so the default accounts exist:
-
-```bash
-docker compose -f docker-compose.yml -f docker-compose.app.yml exec backend \
-   python generate_sample_data.py
-```
-
-This seeds doctors, patients, records, and admin accounts. Re-run the command anytime you want a fresh dataset.
-
+**Both `docker compose` (modern) and `docker-compose` (legacy) commands work. We use `docker compose` in this guide.**
 ---
 
 ## Access the Application
@@ -177,9 +188,9 @@ This seeds doctors, patients, records, and admin accounts. Re-run the command an
 Open your browser to: **http://localhost:5173**
 
 **Default Login (after Step 4):**
-- `admin` / `password123` (system administrator)
-- `security_admin` / `password123` (security administrator)
-- `dr.smith` / `password123` (doctor role)
+- `security_admin` / `password123` (system administrator)
+- `nurse.wilson` / `password123` (security administrator)
+- `dr.johnson` / `password123` (doctor role)
 
 The generator produces additional doctor and nurse accounts, all using `password123` by default.
 
@@ -234,19 +245,19 @@ docker compose logs -f backend 2>&1 | tee logs/backend.log
 ### Stop Everything
 ```bash
 # Stop all services (data persists)
-docker compose down
+docker compose -f docker-compose-all.yml down
 
 # Stop and remove ALL data (fresh start)
-docker compose down -v
+docker compose -f docker-compose-all.yml down -v
 ```
 
 ### Restart a Service
 ```bash
 # Restart backend
-docker compose restart backend
+docker compose -f docker-compose-all.yml restart backend
 
 # Restart all
-docker compose restart
+docker compose -f docker-compose-all.yml restart
 ```
 
 ### Update Code
@@ -255,7 +266,7 @@ docker compose restart
 git pull origin main
 
 # Rebuild and restart
-docker compose up -d --build
+docker compose -f docker-compose-all.yml up -d --build
 ```
 
 ---
@@ -289,8 +300,8 @@ DB_PORT=5433
 
 Then restart:
 ```bash
-docker compose down
-docker compose up -d
+docker compose -f docker-compose-all.yml down
+docker compose -f docker-compose-all.yml up -d
 ```
 
 ### "Cannot connect to Docker daemon"
@@ -311,14 +322,14 @@ docker compose up -d
 **Solution:**
 ```bash
 # Check logs for the failing service
-docker compose logs <service-name>
+docker compose -f docker-compose-all.yml logs <service-name>
 
 # Common fixes:
 # 1. Restart the service
-docker compose restart <service-name>
+docker compose -f docker-compose-all.yml restart <service-name>
 
 # 2. Rebuild the service
-docker compose up -d --build <service-name>
+docker compose -f docker-compose-all.yml up -d --build <service-name>
 
 # 3. Check resource usage
 docker stats
@@ -355,7 +366,7 @@ docker compose restart backend
 **Solution:**
 ```bash
 # Rebuild frontend
-docker compose up -d --build frontend
+docker compose -f docker-compose-all.yml up -d --build frontend
 
 # Check browser console for errors
 # Verify VITE_BACKEND_HOST in .env matches your setup
@@ -416,8 +427,8 @@ openssl rand -base64 32
 
 Then restart:
 ```bash
-docker compose down
-docker compose up -d
+docker compose -f docker-compose-all.yml down
+docker compose -f docker-compose-all.yml up -d
 ```
 
 ---
@@ -505,16 +516,16 @@ If you have an NVIDIA GPU and want faster LLM inference:
 
 ```bash
 # Stop containers
-docker compose down
+docker compose -f docker-compose-all.yml down
 
 # Remove volumes (THIS DELETES ALL DATA!)
-docker compose down -v
+docker compose -f docker-compose-all.yml down -v
 
 # Remove images
-docker compose down --rmi all
+docker compose -f docker-compose-all.yml down --rmi all
 
 # Full cleanup (careful!)
-docker system prune -a --volumes
+docker system -f docker-compose-all.yml prune -a --volumes
 ```
 
 ---
@@ -573,8 +584,8 @@ By default, services are only accessible from localhost. To allow access from ot
 
 2. **Restart services:**
    ```bash
-   docker compose down
-   docker compose up -d
+   docker compose -f docker-compose-all.yml down
+   docker compose -f docker-compose-all.yml up -d
    ```
 
 3. **Configure firewall** to allow ports 5000, 5173
