@@ -52,25 +52,17 @@ services:
     #           capabilities: [gpu]
 
 # Data Generator Service to populate the database with generated data
-  data-generator:
-    build: ./data-generator
-    depends_on:
-      postgres:
-        condition: service_healthy
-    environment:
-      - DATABASE_URL=postgresql://healthcare_user:Postgresql17!@postgres:5432/healthcare_security
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_USER=healthcare_user
-      - DB_PASSWORD=Postgresql17!
-      - DB_NAME=healthcare_security
-      - DATABASE_PASSWORD=Postgresql17!  # sometimes needed too
-      - SECRET_KEY=dev-secret-key-change-in-prod
-    networks:
+data-generator:
+  build: ./data-generator
+  depends_on:
+    postgres:
+      condition: service_healthy
+  environment:
+    - DATABASE_URL=postgresql://dbuser:dbpass@postgres:5432/healthcare
+  networks:
     - healthcare_network
-    profiles:
+  profiles:
     - tools
-
 networks:
     healthcare_network:
       driver: bridge
