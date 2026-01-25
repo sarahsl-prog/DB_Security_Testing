@@ -20,8 +20,8 @@ theme:
     code: JetBrains Mono # Code blocks - professional & monospaced
   icon:
     repo: fontawesome/brands/github
-  logo: images/logo-no-text.png
-  favicon: images/logo-no-text.png
+  logo: images/logo-trnsp.png
+  favicon: images/logo-trnsp.png
   palette:
   # Light mode
   - scheme: default

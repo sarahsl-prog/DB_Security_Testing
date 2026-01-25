@@ -12,12 +12,12 @@ This application is designed for **educational and research purposes only**. It 
 
 ## Architecture Overview
 
-The system uses a distributed architecture across multiple VMs:
+The system can use a distributed architecture across multiple VMs or a docker environment on one VM:
 
 - **Flask API Server**: Ubuntu VM (192.168.100.20:5000)
-- **LLM Service**: Ollama on Windows host (192.168.100.1:11434)
+- **LLM Service**: Ollama on Windows or Ubuntu host (192.168.100.1:11434)
 - **Database**: PostgreSQL on Ubuntu VM (192.168.100.30:5432)
-- **Frontend**: Static files served by Apache2 (proxies /api/* to Flask)
+- **Frontend**: Static files served by NGINX (proxies /api/* to Flask)
 
 ## Features
 
@@ -49,15 +49,17 @@ The system uses a distributed architecture across multiple VMs:
 
 1. **Python 3.12+**
 2. **PostgreSQL 17+**
-3. **Ollama** (running on Windows host)
+3. **Ollama** 
 4. **Git**
 
 ### 1. Clone and Setup
 
 ```bash
-# Clone the repository
-git clone <repository-url>
+# Clone the repository or use curl to download the .zip file
+gh repo clone sarahsl-prog/DB_Security_Testing
 cd DB_Security_Testing
+
+curl -L -o DB_Security_Testing.zip "https://github.com/sarahsl-prog/DB_Security_Testing/archive/refs/heads/main.zip"
 
 # Create virtual environment
 uv venv .venv

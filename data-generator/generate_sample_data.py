@@ -138,7 +138,34 @@ class HealthcareDataGenerator:
 
         logger.info(f"Starting generation of {count} patients")
 
-        for i in range(count):
+        # Always create Omar Cox as the first patient for consistent testing
+        omar_ssn = f"{random.randint(100, 999)}-{random.randint(10, 99)}-{random.randint(1000, 9999)}"
+        omar_insurance_id = f"INS{random.randint(100000, 999999)}"
+        omar_phone = self.format_phone_number(15)
+        omar_birth_date = date(1985, 3, 15)
+        omar_email = f"omar.cox@{Config.EMAIL_DOMAIN}"
+        omar_address = "123 Main Street, Boston, MA 02115"
+        omar_emergency = f"Jane Cox - {self.format_phone_number(15)}"
+
+        omar_patient = Patient(
+            first_name="Omar",
+            last_name="Cox",
+            date_of_birth=omar_birth_date,
+            ssn=omar_ssn,
+            insurance_id=omar_insurance_id,
+            phone_number=omar_phone,
+            email=omar_email,
+            address=omar_address,
+            emergency_contact=omar_emergency
+        )
+        patients.append(omar_patient)
+
+        sql = f"INSERT INTO patients (first_name, last_name, date_of_birth, ssn, insurance_id, phone_number, email, address, emergency_contact) VALUES ({self.escape_sql_string('Omar')}, {self.escape_sql_string('Cox')}, {self.escape_sql_string(omar_birth_date)}, {self.escape_sql_string(omar_ssn)}, {self.escape_sql_string(omar_insurance_id)}, {self.escape_sql_string(omar_phone)}, {self.escape_sql_string(omar_email)}, {self.escape_sql_string(omar_address)}, {self.escape_sql_string(omar_emergency)});"
+        self.sql_statements.append(sql)
+        logger.info("Created required patient: Omar Cox")
+
+        # Generate remaining patients (count - 1 since Omar Cox is already added)
+        for i in range(count - 1):
             try:
                 # Generate realistic SSN format
                 ssn = f"{random.randint(100, 999)}-{random.randint(10, 99)}-{random.randint(1000, 9999)}"
@@ -419,10 +446,28 @@ class HealthcareDataGenerator:
                 ))
                 logger.debug(f"Created nurse user: {username}")
 
-            # Patient accounts (10 random patients get accounts)
+            # Always create patient.omar.cox account first
+            omar_cox = next((p for p in patients if p.first_name == "Omar" and p.last_name == "Cox"), None)
+            if omar_cox:
+                admin_users.append(AdminUser(
+                    username="patient.omar.cox",
+                    password_hash=password_hash,
+                    role='patient',
+                    first_name=omar_cox.first_name,
+                    last_name=omar_cox.last_name,
+                    email=omar_cox.email,
+                    is_active=True,
+                    patient_id=omar_cox.patient_id
+                ))
+                logger.info("Created required patient user: patient.omar.cox")
+            else:
+                logger.warning("Omar Cox patient not found - patient.omar.cox account not created")
+
+            # Patient accounts (9 additional random patients get accounts, excluding Omar Cox)
             if len(patients) >= 10:
-                selected_patients = random.sample(patients[:50], 10)  # Select from first 50 patients
-                logger.info(f"Creating patient accounts for {len(selected_patients)} patients")
+                other_patients = [p for p in patients[:50] if not (p.first_name == "Omar" and p.last_name == "Cox")]
+                selected_patients = random.sample(other_patients, min(9, len(other_patients)))
+                logger.info(f"Creating patient accounts for {len(selected_patients)} additional patients")
 
                 for i, patient in enumerate(selected_patients):
                     username = f"patient.{patient.first_name.lower()}.{patient.last_name.lower()}"
@@ -440,7 +485,7 @@ class HealthcareDataGenerator:
                     ))
                     logger.debug(f"Created patient user: {username}")
             else:
-                logger.warning("Not enough patients to create patient accounts")
+                logger.warning("Not enough patients to create additional patient accounts")
 
             # Test accounts for security research
             test_accounts = [
@@ -659,6 +704,7 @@ class HealthcareDataGenerator:
                 "  admin/password123          - System Administrator",
                 "  dr.smith/password123       - Doctor",
                 "  nurse.wilson/password123   - Nurse",
+                "  patient.omar.cox/password123 - Patient (Omar Cox)",
                 "  test_admin/password123     - Test Administrator",
                 "  test_doctor/password123    - Test Doctor",
                 "  vulnerable_user/password123 - Vulnerable Test Account"

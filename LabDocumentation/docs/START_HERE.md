@@ -19,7 +19,7 @@
 
 **What you need:**
 - Docker Desktop installed
-- 8GB RAM minimum
+- 24 GB RAM minimum
 
 **Get started:**
 ```bash
@@ -28,7 +28,7 @@
 cp .env.docker .env
 
 # 3. Start everything
-docker-compose up -d
+docker-compose -f docker-compose-all.yml up -d
 
 # 4. Open browser to http://localhost:5173
 ```
@@ -96,12 +96,12 @@ cd install
 ## System Requirements
 
 ### Minimum (All Options)
-- **RAM:** 8GB
+- **RAM:** 24GB
 - **Disk:** 20GB free
 - **CPU:** 2 cores
 
 ### Recommended
-- **RAM:** 16GB
+- **RAM:** 32GB
 - **Disk:** 50GB free
 - **CPU:** 4 cores
 - **GPU:** Optional (improves LLM performance)
@@ -135,8 +135,8 @@ Once installed, you'll be able to:
 
 1. **Access the web interface:** http://localhost:5173
 2. **Use test accounts:**
-   - Username: `doctor1` / Password: `doctor123`
-   - Username: `admin` / Password: `password123`
+   - Username: `test_doctor` / Password: `password123`
+   - Username: `test_admin` / Password: `password123`
 3. **Test SQL injection vulnerabilities** (in vulnerable mode)
 4. **Switch to secure mode** and see the difference
 5. **Run automated tests** to validate the installation
@@ -153,7 +153,7 @@ Make sure these ports are available:
 | Backend | 5000 | ✅ Yes (.env) |
 | PostgreSQL | 5432 | ✅ Yes (.env) |
 | Ollama LLM | 11434 | ✅ Yes (.env) |
-| Docs (optional) | 8080 | ✅ Yes (.env) |
+| Docs (optional) | 8000 | ✅ Yes (.env) |
 
 ---
 
@@ -317,7 +317,7 @@ ollama pull ds2-coder:latest
 2. ✅ Simplest setup process
 3. ✅ Easy to reset and try again
 4. ✅ No dependency conflicts
-5. ✅ Production-ready configuration
+5. ✅ Test-ready configuration
 
 **Get started now:**
 ```bash
@@ -326,7 +326,7 @@ ollama pull ds2-coder:latest
 # 3. Run these commands:
 
 cp .env.docker .env
-docker-compose up -d
+docker-compose -f docker-compose-all.yml up -d
 
 # 4. Open http://localhost:5173
 ```

@@ -95,7 +95,16 @@ All you need is the ability to run `docker` and `docker compose` commands.
 
 ## Quick Start (3 Steps)
 
-### Step 1: Configure Environment
+### Step 1: Pull the code
+```bash
+# Clone the repository or use curl to download the .zip file
+gh repo clone sarahsl-prog/DB_Security_Testing
+cd DB_Security_Testing
+
+curl -L -o DB_Security_Testing.zip "https://github.com/sarahsl-prog/DB_Security_Testing/archive/refs/heads/main.zip"
+```
+
+### Step 2: Configure Environment
 
 ```bash
 # Copy the example environment file
@@ -131,7 +140,7 @@ Copy the output and paste it into your `.env` file.
 
 ---
 
-### Step 2: Start Everything!
+### Step 3: Start Everything!
 
 ```bash
 # Start all services 
@@ -148,7 +157,7 @@ docker compose -f docker-compose-all.yml  logs -f backend
 
 ---
 
-### Step 3: Seed Sample Data
+### Step 4: Seed Sample Data
 
 The database only contains schemas after the containers start. Run the data generator once so the default accounts exist:
 
@@ -191,7 +200,7 @@ Open your browser to: **http://localhost:5173**
 - `nurse.wilson` / `password123` (security administrator)
 - `dr.johnson` / `password123` (doctor role)
 
-The generator produces additional doctor and nurse accounts, all using `password123` by default.
+The generator produces additional doctor, patient and nurse accounts, all using `password123` by default.
 
 ### API
 - Health Check: http://localhost:5000/api/health
@@ -200,14 +209,6 @@ The generator produces additional doctor and nurse accounts, all using `password
 ### Database (if needed)
 ```bash
 docker compose exec postgres psql -U healthcare_user -d healthcare_security
-```
-
-### Documentation (optional)
-```bash
-# Start documentation server
-docker compose --profile docs up -d docs
-
-# Access at http://localhost:8080
 ```
 
 ---
@@ -369,23 +370,6 @@ docker compose -f docker-compose-all.yml up -d --build frontend
 
 # Check browser console for errors
 # Verify VITE_BACKEND_HOST in .env matches your setup
-```
-
----
-
-## Testing the Deployment
-
-Run the automated tests:
-
-```bash
-# Test database connectivity
-docker compose exec backend python tests/test_connectivity.py
-
-# Test API endpoints
-docker compose exec backend python tests/test_api_endpoints.py
-
-# Test logging
-docker compose exec backend python tests/test_logging.py
 ```
 
 ---
