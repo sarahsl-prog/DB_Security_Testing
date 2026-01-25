@@ -1,6 +1,6 @@
 #  file location /usr/share/ollama/.ollama/ModelFile_llama32.txt
 # Modelfile_llama32.txt
-FROM llama3.2:1b
+FROM llama3.2:3b
 
 PARAMETER temperature 0.1
 PARAMETER top_p 0.9

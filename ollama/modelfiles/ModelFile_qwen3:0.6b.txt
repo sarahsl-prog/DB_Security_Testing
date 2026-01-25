@@ -1,6 +1,6 @@
 #  file location /usr/share/ollama/.ollama/ModelFile_qwen3:0.6b.txt
 # ModelFile_qwen3:0.6b.txt
-FROM qwen3:0.6b
+FROM qwen3:4b
 
 PARAMETER temperature 0.1
 PARAMETER top_p 0.9
