@@ -52,6 +52,9 @@ The system can use a distributed architecture across multiple VMs or a docker en
 3. **Ollama** 
 4. **Git**
 
+### Documentation 
+https://sarahsl-prog.github.io/DB_Security_Testing/
+
 ### 1. Clone and Setup
 
 ```bash
@@ -112,7 +115,7 @@ DB_PASSWORD=secure_password_123
 # LLM Service Configuration
 LLM_HOST=192.168.100.1
 LLM_PORT=11434
-LLM_MODEL=deepseek-r1:latest
+LLM_MODEL=qwen-coder-sql:latest
 
 # Security Configuration
 SECURITY_MODE=vulnerable
@@ -272,27 +275,6 @@ SECURE_MODE_FEATURES = {
     'comprehensive_logging': True
 }
 ```
-
-## Development
-
-### Project Structure
-
-```
-DB_Security_Testing/
-├── app.py                    # Main Flask application
-├── config.py                 # Configuration management
-├── database.py              # Database connection and queries
-├── llm_client.py            # Ollama LLM integration
-├── security.py              # Security validation and controls
-├── models.py                # Data models and schemas
-├── utils.py                 # Helper functions
-├── setup_database.sql       # Database schema
-├── generate_sample_data.py  # Sample data generator
-├── attack_scenarios.py      # Security testing scenarios
-├── requirements.txt         # Python dependencies
-└── README.md               # This file
-```
-
 
 ## Troubleshooting
 

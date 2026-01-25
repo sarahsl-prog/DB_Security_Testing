@@ -12,6 +12,7 @@ GitHub: https://github.com/sarahsl-prog/DB_Security_Testing
 # Healthcare Database Security Testing Platform - Installation Guide
 
 This guide will help you install and configure the Healthcare Database Security Testing Platform using the interactive installation scripts.
+### Documentation - https://sarahsl-prog.github.io/DB_Security_Testing/
 
 ## Prerequisites
 
@@ -114,8 +115,8 @@ You'll be prompted to provide:
 
 #### Application Configuration
 - **Email Domain**: Domain for user email addresses
-  - Default: `hospital.com`
-  - Example: `admin@hospital.com`
+  - Default: `healthcare.com`
+  - Example: `admin@healthcare.com`
 
 - **LLM Model**: Ollama model to use
   - Default: `qwen-coder-sql:latest`
@@ -213,27 +214,8 @@ Expected response:
 
 #### Test Login
 Open your browser and navigate to the frontend URL. Try logging in with:
-- **Username**: `admin`
+- **Username**: `test_admin`
 - **Password**: `password123`
-
-### 4. Run Tests (Optional)
-
-#### Backend Tests
-```bash
-cd backend/tests
-
-# Run all tests (Linux/Mac)
-./run_tests.sh
-
-# Run all tests (Windows)
-run_tests.bat
-```
-
-#### Frontend Tests
-```bash
-cd frontend/tests
-python testing.py
-```
 
 ---
 
@@ -295,7 +277,7 @@ curl http://<LLM_HOST>:<LLM_PORT>/api/version
 curl http://<LLM_HOST>:<LLM_PORT>/api/tags
 
 # Pull the model if not available
-ollama pull deepseek-r1:latest
+ollama pull qwen2.5-coder:3b
 ```
 
 ### Issue: "Port already in use"
@@ -446,15 +428,6 @@ If you encounter issues:
    # Test LLM service
    telnet <LLM_HOST> <LLM_PORT>
    ```
-
----
-
-## Additional Resources
-
-- **Project Documentation**: See main `README.md`
-- **Backend API Documentation**: `backend/README.md` (if available)
-- **Frontend Documentation**: `frontend/README.md` (if available)
-- **Security Research Guide**: Documentation on using vulnerable vs secure modes
 
 ---
 

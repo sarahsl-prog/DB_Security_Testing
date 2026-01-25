@@ -18,7 +18,7 @@ After following this guide, you'll have:
 - ✅ Frontend web interface on http://localhost:5173
 - ✅ PostgreSQL database automatically configured
 - ✅ Ollama LLM service ready to use
-- ✅ (Optional) Documentation site on http://localhost:8080
+
 
 All with **one command!**
 

@@ -56,7 +56,7 @@ class Config:
 
     LLM_PORT = int(os.environ.get('LLM_PORT', 11434))
     LLM_BASE_URL = f"http://{LLM_HOST}:{LLM_PORT}"
-    LLM_DEFAULT_MODEL = os.environ.get('LLM_MODEL', 'llama3.1-sql:latest')
+    LLM_DEFAULT_MODEL = os.environ.get('LLM_MODEL', 'qwen-coder-sql:latest')
     LLM_TIMEOUT = int(os.environ.get('LLM_TIMEOUT', 30))
     LLM_MAX_RETRIES = int(os.environ.get('LLM_MAX_RETRIES', 3))
     
@@ -70,7 +70,7 @@ class Config:
     AUDIT_LOG_FILE = os.environ.get('AUDIT_LOG_FILE', 'logs/security_audit.log')
 
     # Domain configuration
-    EMAIL_DOMAIN = os.environ.get('EMAIL_DOMAIN', 'hospital.com')
+    EMAIL_DOMAIN = os.environ.get('EMAIL_DOMAIN', 'healthcare.com')
     API_BASE_URL = os.environ.get('API_BASE_URL', f"http://{HOST}:{PORT}")
     
     CORS_ORIGINS = os.environ.get('CORS_ORIGINS', '*').split(',')

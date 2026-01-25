@@ -53,54 +53,6 @@ Preview the production build locally:
 npm run preview
 ```
 
-## Testing
-
-Run the test suite:
-```bash
-npm test
-```
-
-Run tests in watch mode:
-```bash
-npm test -- --watch
-```
-
-Run tests with coverage:
-```bash
-npm test -- --coverage
-```
-
-### Test Organization
-
-- **Unit Tests**: `tests/unit/` - Individual module tests
-- **Integration Tests**: `tests/integration/` - Component interaction tests
-- **E2E Tests**: `tests/e2e/` - Complete workflow tests
-
-## Project Structure
-
-```
-frontend/
-├── index.html           # Main HTML entry point
-├── public/              # Static assets
-│   └── config.js        # Application configuration
-├── src/                 # Source code
-│   ├── main.js          # Application entry point
-│   ├── app.js           # Main application class
-│   ├── styles/          # CSS files
-│   │   └── main.css     # Main stylesheet
-│   └── utils/           # Utility modules
-│       ├── api.js       # API client
-│       └── storage.js   # LocalStorage wrapper
-├── tests/               # Test files
-│   ├── setup.js         # Jest configuration
-│   ├── unit/            # Unit tests
-│   ├── integration/     # Integration tests
-│   └── e2e/             # End-to-end tests
-├── vite.config.js       # Vite configuration
-├── jest.config.cjs      # Jest configuration
-└── package.json         # Dependencies and scripts
-```
-
 ## Configuration
 
 The application uses environment variables for configuration. Copy `.env.example` to `.env` and update the values:
@@ -153,14 +105,6 @@ npm run dev -- --port 3001
 # Clear node_modules and reinstall
 rm -rf node_modules package-lock.json
 npm install
-```
-
-### Tests failing
-
-```bash
-# Clear Jest cache
-npx jest --clearCache
-npm test
 ```
 
 ## License

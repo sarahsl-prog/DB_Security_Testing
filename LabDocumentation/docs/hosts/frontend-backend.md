@@ -288,7 +288,7 @@ DATABASE_URL=postgresql://healthcare_user:password@192.168.1.11:5432/healthcare_
 
 # LLM Service
 LLM_BASE_URL=http://192.168.1.12:11434
-LLM_MODEL=deepseek-coder:1.3b
+LLM_MODEL=qwen-sql-coder:latest
 
 # Security Mode (vulnerable or secure)
 SECURITY_MODE=vulnerable
@@ -399,7 +399,7 @@ All configuration files used for this host setup are available for download:
     SECRET_KEY=your-secret-key-here
     DATABASE_URL=postgresql://healthcare_user:password@192.168.1.11:5432/healthcare_research
     LLM_BASE_URL=http://192.168.1.12:11434
-    LLM_MODEL=deepseek-coder:1.3b
+    LLM_MODEL=qwen-sql-coder:latest
     SECURITY_MODE=vulnerable
     ```
 

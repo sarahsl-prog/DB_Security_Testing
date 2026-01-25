@@ -23,7 +23,7 @@ bleach==6.1.0
 # Environment & Configuration
 python-dotenv==1.0.0
 
-# Logging (CRITICAL - was missing from original requirements!)
+# Logging Library
 loguru==0.7.2
 
 # Data Generation for Testing
