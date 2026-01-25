@@ -118,7 +118,7 @@ You'll be prompted to provide:
   - Example: `admin@hospital.com`
 
 - **LLM Model**: Ollama model to use
-  - Default: `deepseek-r1:latest`
+  - Default: `qwen-coder-sql:latest`
 
 - **Security Mode**: Choose between:
   - `vulnerable` - Demonstrates security vulnerabilities (for research)

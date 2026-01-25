@@ -36,16 +36,16 @@ docker compose -f docker-compose-all.yml -d
 
 This project now includes two Compose descriptors if you want to isolate the infrastructure containers:
 
-- `docker-compose.yml` — infrastructure services (PostgreSQL + Ollama)
+- `docker-compose-infra.yml` — infrastructure services (PostgreSQL + Ollama)
 - `docker-compose.app.yml` — application services (Flask backend + Vite/NGINX frontend)
 
 Always run them together so every container shares the same Docker network:
 
 ```bash
-docker compose -f docker-compose.yml -f docker-compose.app.yml up -d
+docker compose -f docker-compose-infra.yml -f docker-compose.app.yml up -d
 ```
 
-All subsequent examples assume you are passing both files in this order.
+All subsequent examples assume you are passing one file. 
 
 ---
 
@@ -86,8 +86,8 @@ All you need is the ability to run `docker` and `docker compose` commands.
 
 ### 2. System Requirements
 
-- **RAM:** 8GB minimum (16GB recommended)
-- **Disk Space:** 20GB free
+- **RAM:** 16GB minimum (24GB recommended)
+- **Disk Space:** 40GB minimum (60GB recommended)
 - **CPU:** 2 cores minimum (4 recommended)
 - **GPU:** Optional (NVIDIA GPU with nvidia-docker for faster LLM inference)
 
@@ -134,10 +134,10 @@ Copy the output and paste it into your `.env` file.
 ### Step 2: Start Everything!
 
 ```bash
-# Start all services (infrastructure + app)
+# Start all services 
 docker compose -f docker-compose-all.yml up -d
 
-# Watch the logs (optional)
+# Watch the logs once the docker containers are up (optional)
 docker compose -f docker-compose-all.yml logs -f
 
 # Or check specific service logs
@@ -153,8 +153,7 @@ docker compose -f docker-compose-all.yml  logs -f backend
 The database only contains schemas after the containers start. Run the data generator once so the default accounts exist:
 
 ```bash
-docker compose -f docker-compose.yml -f docker-compose.app.yml exec backend \
-   python generate_sample_data.py
+docker compose -f docker-compose-all.yml exec backend python generate_sample_data.py
 ```
 
 This seeds doctors, patients, records, and admin accounts. Re-run the command anytime you want a fresh dataset.
@@ -173,10 +172,10 @@ docker compose up -d ollama
 sleep 30
 
 # Pull the model (this may take 5-10 minutes)
-docker compose exec ollama ollama pull ds2-coder:latest
+docker compose exec ollama ollama pull deepseek-coder:latest
 
 # Or use a smaller model (faster download)
-docker compose exec ollama ollama pull codellama:7b
+docker compose exec ollama ollama pull qwen2.5-coder:1.5b
 ```
 
 **Both `docker compose` (modern) and `docker-compose` (legacy) commands work. We use `docker compose` in this guide.**
