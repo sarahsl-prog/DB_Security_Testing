@@ -101,7 +101,7 @@ sudo chown $USER:$USER /var/www/healthcare-api
 cd /var/www/healthcare-api
 
 # Create Python virtual environment
-uv env 
+uv venv 
 source .venv/bin/activate
 
 # Install Flask and dependencies

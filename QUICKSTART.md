@@ -54,12 +54,12 @@ Press Enter to accept defaults shown in brackets `[default]`.
 
 ```bash
 cd backend
-uv venv venv
+uv venv .venv
 
 # Activate virtual environment
-source venv/bin/activate        # Linux/Mac
+source .venv/bin/activate        # Linux/Mac
 # OR
-venv\Scripts\activate           # Windows
+.venv\Scripts\activate           # Windows
 
 uv pip install -r requirements.txt
 python database.py              # Initialize database
@@ -137,7 +137,7 @@ net start postgresql-x64-12         # Windows
 ollama serve
 
 # Download model (if needed)
-ollama pull ds2-coder:latest
+ollama pull qwen2.5-coder:3b
 ```
 
 ### "Port already in use"
