@@ -282,38 +282,36 @@ display_completion_summary() {
     print_info "Installation log: $INSTALL_LOG"
     echo ""
 
-    # Load app config if available to get deployment mode
-    local backend_dir="$PROJECT_ROOT/backend"
-    local frontend_dir="$PROJECT_ROOT/frontend"
-    local deployment_mode="development"
+    # Load app config if available
+    local backend_dir="/opt/db_security"
+    local frontend_dir="/var/www/healthcare-api"
+    local server_ip=""
 
     if [ -f "$SCRIPT_DIR/.app_config" ]; then
         source "$SCRIPT_DIR/.app_config"
-        backend_dir="${BACKEND_DIR:-$PROJECT_ROOT/backend}"
-        frontend_dir="${FRONTEND_DIR:-$PROJECT_ROOT/frontend}"
-        deployment_mode="${DEPLOYMENT_MODE:-development}"
+        backend_dir="${BACKEND_DIR:-/opt/db_security}"
+        frontend_dir="${FRONTEND_DIR:-/var/www/healthcare-api}"
+        server_ip="${BACKEND_PUBLIC_HOST:-}"
     fi
 
     print_header "Quick Start Commands"
     echo ""
 
     if [ "$INSTALL_BACKEND_FRONTEND" = true ]; then
-        if [ "$deployment_mode" = "production" ]; then
-            echo -e "${CYAN}Backend Service (Production):${NC}"
-            echo "  sudo systemctl start healthcare-api"
-            echo "  sudo systemctl status healthcare-api"
-            echo "  sudo journalctl -u healthcare-api -f"
-            echo ""
-        else
-            echo -e "${CYAN}Start Backend:${NC}"
-            echo "  cd $backend_dir"
-            echo "  source .venv/bin/activate"
-            echo "  python app.py"
-            echo ""
+        echo -e "${CYAN}Backend Service:${NC}"
+        echo "  sudo systemctl start healthcare-api"
+        echo "  sudo systemctl status healthcare-api"
+        echo "  sudo journalctl -u healthcare-api -f"
+        echo ""
 
-            echo -e "${CYAN}Start Frontend:${NC}"
-            echo "  cd $frontend_dir"
-            echo "  npm run dev"
+        echo -e "${CYAN}Nginx (Frontend):${NC}"
+        echo "  sudo systemctl start nginx"
+        echo "  sudo systemctl status nginx"
+        echo ""
+
+        if [ -n "$server_ip" ]; then
+            echo -e "${CYAN}Access Application:${NC}"
+            echo "  http://$server_ip"
             echo ""
         fi
     fi
@@ -342,6 +340,11 @@ display_completion_summary() {
     echo "  • .env files contain sensitive data - keep them secure"
     echo "  • Review CORS settings before production deployment"
     echo "  • Consider enabling HTTPS/SSL for production"
+    echo ""
+
+    print_info "Installation paths:"
+    echo "  • Backend: $backend_dir"
+    echo "  • Frontend: $frontend_dir"
     echo ""
 
     print_info "For detailed information, see:"

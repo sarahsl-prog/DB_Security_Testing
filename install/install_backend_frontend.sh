@@ -3,12 +3,14 @@
 # Healthcare Security Research Platform - Backend/Frontend Installation Module
 #
 # This module handles backend and frontend installation and configuration:
-# - Installs Python and Node.js if needed
+# - Installs Python, uv, and Node.js if needed
+# - Copies project files to deployment directories
 # - Creates virtual environment
 # - Installs Python dependencies
-# - Installs Node.js dependencies
-# - Configures nginx (optional)
+# - Builds frontend and deploys static files
+# - Configures nginx
 # - Creates .env configuration files
+# - Creates systemd service
 # - Validates installation
 #
 # Usage: ./install_backend_frontend.sh
@@ -18,15 +20,13 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/common_utils.sh"
 
-# Configuration variables
-DEPLOYMENT_MODE="development"  # development or production
-DEPLOY_DIR="/opt/DB_Security"  # Production deployment directory
-
-# Set directories based on deployment mode (updated in configure_deployment_mode)
-BACKEND_DIR="$PROJECT_ROOT/backend"
-FRONTEND_DIR="$PROJECT_ROOT/frontend"
+# Fixed deployment directories
+BACKEND_DIR="/opt/db_security"
+FRONTEND_DIR="/var/www/healthcare-api"
+FRONTEND_BUILD_DIR="$SCRIPT_DIR/../frontend_build"  # Temporary build location
 VENV_DIR="$BACKEND_DIR/.venv"
-INSTALL_NGINX=false
+
+# Nginx configuration
 NGINX_CONF_DIR="/etc/nginx/sites-available"
 NGINX_ENABLED_DIR="/etc/nginx/sites-enabled"
 
@@ -51,76 +51,60 @@ if [ -f "$SCRIPT_DIR/.ollama_config" ]; then
 fi
 
 ###############################################################################
-# Deployment Mode Configuration
+# System Detection Functions
 ###############################################################################
 
-configure_deployment_mode() {
-    print_header "Deployment Mode Configuration"
+get_system_ip() {
+    # Get primary non-localhost IP address
+    local ip=""
 
-    print_question "Select deployment mode:"
-    print_info "  development - Install in project directory (for local development)"
-    print_info "  production  - Install to $DEPLOY_DIR (for server deployment)"
+    # Method 1: hostname -I (most reliable on Linux)
+    if command_exists hostname; then
+        ip=$(hostname -I 2>/dev/null | awk '{print $1}')
+    fi
 
-    PS3="$(echo -e "${MAGENTA}? Select mode (1-2): ${NC}")"
-    local options=("development" "production")
-    select opt in "${options[@]}"; do
-        case $opt in
-            "development")
-                DEPLOYMENT_MODE="development"
-                BACKEND_DIR="$PROJECT_ROOT/backend"
-                FRONTEND_DIR="$PROJECT_ROOT/frontend"
-                print_success "Development mode selected"
-                print_info "Backend: $BACKEND_DIR"
-                print_info "Frontend: $FRONTEND_DIR"
-                break
-                ;;
-            "production")
-                DEPLOYMENT_MODE="production"
-                # Allow custom deployment directory
-                local custom_dir=$(prompt_with_validation "Deployment directory" "$DEPLOY_DIR" "")
-                DEPLOY_DIR="$custom_dir"
-                BACKEND_DIR="$DEPLOY_DIR/backend"
-                FRONTEND_DIR="$DEPLOY_DIR/frontend"
-                print_success "Production mode selected"
-                print_info "Backend: $BACKEND_DIR"
-                print_info "Frontend: $FRONTEND_DIR"
-                break
-                ;;
-            *)
-                print_error "Invalid option. Please select 1 or 2."
-                ;;
-        esac
-    done
+    # Method 2: ip route (fallback)
+    if [ -z "$ip" ] && command_exists ip; then
+        ip=$(ip route get 1 2>/dev/null | awk '{print $7; exit}')
+    fi
 
-    # Update VENV_DIR based on new BACKEND_DIR
-    VENV_DIR="$BACKEND_DIR/.venv"
+    # Method 3: ifconfig (older systems)
+    if [ -z "$ip" ] && command_exists ifconfig; then
+        ip=$(ifconfig 2>/dev/null | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | head -n1)
+    fi
+
+    # Fallback to localhost if nothing found
+    if [ -z "$ip" ]; then
+        ip="127.0.0.1"
+    fi
+
+    echo "$ip"
 }
 
-setup_production_directories() {
-    print_header "Setting Up Production Directories"
+###############################################################################
+# Project File Functions
+###############################################################################
 
-    if [ "$DEPLOYMENT_MODE" != "production" ]; then
-        return 0
-    fi
+copy_backend_files() {
+    print_header "Setting Up Backend Directory"
 
-    # Create deployment directory
-    if [ ! -d "$DEPLOY_DIR" ]; then
-        print_info "Creating deployment directory: $DEPLOY_DIR"
-        if sudo mkdir -p "$DEPLOY_DIR"; then
-            sudo chown -R "$USER:$USER" "$DEPLOY_DIR"
-            print_success "Created deployment directory"
+    # Create backend directory
+    if [ ! -d "$BACKEND_DIR" ]; then
+        print_info "Creating backend directory: $BACKEND_DIR"
+        if sudo mkdir -p "$BACKEND_DIR"; then
+            sudo chown -R "$USER:$USER" "$BACKEND_DIR"
+            print_success "Created backend directory"
         else
-            print_error "Failed to create deployment directory"
+            print_error "Failed to create backend directory"
             return 1
         fi
+    else
+        print_info "Backend directory already exists"
+        sudo chown -R "$USER:$USER" "$BACKEND_DIR"
     fi
 
-    # Copy backend files
+    # Copy backend files from project
     print_info "Copying backend files to $BACKEND_DIR..."
-    if [ ! -d "$BACKEND_DIR" ]; then
-        mkdir -p "$BACKEND_DIR"
-    fi
-
     if cp -r "$PROJECT_ROOT/backend/"* "$BACKEND_DIR/" >> "$INSTALL_LOG" 2>&1; then
         print_success "Backend files copied"
     else
@@ -128,34 +112,36 @@ setup_production_directories() {
         return 1
     fi
 
-    # Copy frontend files
-    print_info "Copying frontend files to $FRONTEND_DIR..."
-    if [ ! -d "$FRONTEND_DIR" ]; then
-        mkdir -p "$FRONTEND_DIR"
-    fi
+    return 0
+}
 
-    if cp -r "$PROJECT_ROOT/frontend/"* "$FRONTEND_DIR/" >> "$INSTALL_LOG" 2>&1; then
-        print_success "Frontend files copied"
+copy_frontend_files() {
+    print_header "Setting Up Frontend Directory"
+
+    # Create frontend directory for static files
+    if [ ! -d "$FRONTEND_DIR" ]; then
+        print_info "Creating frontend directory: $FRONTEND_DIR"
+        if sudo mkdir -p "$FRONTEND_DIR"; then
+            sudo chown -R "$USER:$USER" "$FRONTEND_DIR"
+            print_success "Created frontend directory"
+        else
+            print_error "Failed to create frontend directory"
+            return 1
+        fi
     else
-        print_error "Failed to copy frontend files"
-        return 1
+        print_info "Frontend directory already exists"
+        sudo chown -R "$USER:$USER" "$FRONTEND_DIR"
     fi
 
     return 0
 }
 
+###############################################################################
+# Systemd Service Function
+###############################################################################
+
 create_systemd_service() {
     print_header "Creating Systemd Service"
-
-    if [ "$DEPLOYMENT_MODE" != "production" ]; then
-        print_info "Skipping systemd service creation (development mode)"
-        return 0
-    fi
-
-    if ! confirm_action "Would you like to create a systemd service for the backend?"; then
-        print_info "Skipping systemd service creation"
-        return 0
-    fi
 
     local service_file="/etc/systemd/system/healthcare-api.service"
 
@@ -186,11 +172,11 @@ EOF
         # Reload systemd
         sudo systemctl daemon-reload >> "$INSTALL_LOG" 2>&1
 
-        if confirm_action "Enable and start the healthcare-api service now?"; then
-            sudo systemctl enable healthcare-api >> "$INSTALL_LOG" 2>&1
-            sudo systemctl start healthcare-api >> "$INSTALL_LOG" 2>&1
-            print_success "Service enabled and started"
-        fi
+        # Enable and start the service
+        print_info "Enabling and starting healthcare-api service..."
+        sudo systemctl enable healthcare-api >> "$INSTALL_LOG" 2>&1
+        sudo systemctl start healthcare-api >> "$INSTALL_LOG" 2>&1
+        print_success "Service enabled and started"
         return 0
     else
         print_error "Failed to create systemd service file"
@@ -242,6 +228,58 @@ install_python() {
     return 1
 }
 
+check_uv_installation() {
+    print_header "Checking uv Installation"
+
+    # Check if uv is in PATH
+    if command_exists uv; then
+        local version=$(uv --version 2>/dev/null)
+        print_success "uv installed: $version"
+        return 0
+    fi
+
+    # Check common installation locations
+    if [ -f "$HOME/.cargo/bin/uv" ]; then
+        export PATH="$HOME/.cargo/bin:$PATH"
+        local version=$(uv --version 2>/dev/null)
+        print_success "uv installed: $version"
+        return 0
+    fi
+
+    if [ -f "$HOME/.local/bin/uv" ]; then
+        export PATH="$HOME/.local/bin:$PATH"
+        local version=$(uv --version 2>/dev/null)
+        print_success "uv installed: $version"
+        return 0
+    fi
+
+    print_warning "uv not found"
+    return 1
+}
+
+install_uv() {
+    print_header "Installing uv"
+
+    print_info "Downloading and installing uv..."
+
+    if curl -LsSf https://astral.sh/uv/install.sh | sh >> "$INSTALL_LOG" 2>&1; then
+        # Add to PATH for current session
+        if [ -f "$HOME/.cargo/bin/uv" ]; then
+            export PATH="$HOME/.cargo/bin:$PATH"
+        elif [ -f "$HOME/.local/bin/uv" ]; then
+            export PATH="$HOME/.local/bin:$PATH"
+        fi
+
+        local version=$(uv --version 2>/dev/null)
+        print_success "uv installed successfully: $version"
+        return 0
+    else
+        print_error "Failed to install uv"
+        print_info "You can install manually from: https://github.com/astral-sh/uv"
+        return 1
+    fi
+}
+
 check_node_installation() {
     print_header "Checking Node.js Installation"
 
@@ -267,8 +305,8 @@ install_nodejs() {
     print_header "Installing Node.js"
 
     local distro=$(get_distro)
-    local nvm_version="v0.40.3"
-    local node_version="22"
+    local nvm_version="$NVM_VERSION"
+    local node_version="$NODE_VERSION"
 
     print_info "Installing Node.js via nvm (Node Version Manager)..."
 
@@ -327,7 +365,7 @@ create_virtual_environment() {
 
     print_info "Creating virtual environment in: $VENV_DIR"
 
-    if python3 -m venv "$VENV_DIR" >> "$INSTALL_LOG" 2>&1; then
+    if uv venv "$VENV_DIR" >> "$INSTALL_LOG" 2>&1; then
         print_success "Virtual environment created"
         return 0
     else
@@ -352,11 +390,7 @@ install_backend_dependencies() {
     # Activate virtual environment
     source "$VENV_DIR/bin/activate"
 
-    # Upgrade pip
-    print_info "Upgrading pip..."
-    uv pip install --upgrade pip >> "$INSTALL_LOG" 2>&1
-
-    # Install requirements
+    # Install requirements using uv
     if uv pip install -r "$requirements_file" >> "$INSTALL_LOG" 2>&1; then
         print_success "Backend dependencies installed"
         deactivate
@@ -384,10 +418,9 @@ create_backend_env_file() {
     # Create .env file
     cat > "$env_file" << EOF
 # Backend API Configuration
-# Changed to 0.0.0.0 to bind to all network interfaces
 API_HOST=$API_HOST
 API_PORT=$API_PORT
-FLASK_ENV=development
+FLASK_ENV=production
 FLASK_DEBUG=False
 
 # Database Configuration
@@ -427,15 +460,6 @@ CACHE_TTL=300
 # Domain Configuration
 EMAIL_DOMAIN=$EMAIL_DOMAIN
 API_BASE_URL=http://${BACKEND_PUBLIC_HOST}:${API_PORT}
-
-# Development Environment
-DEVELOPMENT_DB_HOST=${PG_HOST:-localhost}
-DEVELOPMENT_LLM_HOST=${OLLAMA_HOST:-localhost}
-
-# Testing Environment
-TESTING_DB_HOST=${PG_HOST:-localhost}
-TESTING_LLM_HOST=${OLLAMA_HOST:-localhost}
-TESTING_API_URL=http://localhost:${API_PORT}
 EOF
 
     chmod 600 "$env_file"
@@ -448,15 +472,8 @@ EOF
 # Frontend Installation Functions
 ###############################################################################
 
-install_frontend_dependencies() {
-    print_header "Installing Frontend Dependencies"
-
-    local package_file="$FRONTEND_DIR/package.json"
-
-    if [ ! -f "$package_file" ]; then
-        print_error "package.json not found: $package_file"
-        return 1
-    fi
+build_frontend() {
+    print_header "Building Frontend"
 
     # Ensure nvm is loaded for npm commands
     if [ -s "$HOME/.nvm/nvm.sh" ]; then
@@ -464,60 +481,70 @@ install_frontend_dependencies() {
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
     fi
 
+    local frontend_src="$PROJECT_ROOT/frontend"
+    local package_file="$frontend_src/package.json"
+
+    if [ ! -f "$package_file" ]; then
+        print_error "package.json not found: $package_file"
+        return 1
+    fi
+
     print_info "Installing Node.js packages..."
     print_info "This may take several minutes..."
 
-    cd "$FRONTEND_DIR"
+    cd "$frontend_src"
 
-    if npm install >> "$INSTALL_LOG" 2>&1; then
-        print_success "Frontend dependencies installed"
-        cd "$SCRIPT_DIR"
-        return 0
-    else
+    # Install dependencies
+    if ! npm install >> "$INSTALL_LOG" 2>&1; then
         print_error "Failed to install frontend dependencies"
         cd "$SCRIPT_DIR"
         return 1
     fi
-}
+    print_success "Frontend dependencies installed"
 
-create_frontend_env_file() {
-    print_header "Creating Frontend .env File"
-
-    local env_file="$FRONTEND_DIR/.env"
-
-    # Backup existing file
-    backup_file "$env_file"
-
-    # Create .env file
-    cat > "$env_file" << EOF
-# Backend API Configuration
+    # Create .env file for build with backend host
+    cat > "$frontend_src/.env" << EOF
 VITE_BACKEND_HOST=${BACKEND_PUBLIC_HOST}
 VITE_BACKEND_PORT=${API_PORT}
-BACKEND_HOST=${BACKEND_PUBLIC_HOST}
-BACKEND_PORT=${API_PORT}
-
-# Database Configuration (for reference only - frontend doesn't connect directly)
-DB_HOST=${PG_HOST:-localhost}
-DB_PORT=${PG_PORT:-5432}
-DB_NAME=${PG_DATABASE:-healthcare_security}
-DB_USER=${PG_USER:-healthcare_user}
-DB_PASSWORD=${PG_PASSWORD:-change_me}
-
-# LLM Service Configuration (for reference only - frontend doesn't connect directly)
-LLM_HOST=${OLLAMA_HOST:-localhost}
-LLM_PORT=${OLLAMA_PORT:-11434}
-LLM_MODEL=${OLLAMA_MODEL:-llama3.1}
-
-# Security Configuration
-SECURITY_MODE=$SECURITY_MODE
-
-# Domain Configuration
-EMAIL_DOMAIN=$EMAIL_DOMAIN
 EOF
 
-    chmod 600 "$env_file"
-    print_success "Frontend .env file created"
+    # Build the frontend
+    print_info "Building frontend for production..."
+    if npm run build >> "$INSTALL_LOG" 2>&1; then
+        print_success "Frontend built successfully"
+    else
+        print_error "Failed to build frontend"
+        cd "$SCRIPT_DIR"
+        return 1
+    fi
 
+    # Copy built files to deployment directory
+    print_info "Copying built files to $FRONTEND_DIR..."
+
+    # Determine build output directory (could be 'dist' or 'build')
+    local build_output=""
+    if [ -d "$frontend_src/dist" ]; then
+        build_output="$frontend_src/dist"
+    elif [ -d "$frontend_src/build" ]; then
+        build_output="$frontend_src/build"
+    else
+        print_error "Build output directory not found (expected 'dist' or 'build')"
+        cd "$SCRIPT_DIR"
+        return 1
+    fi
+
+    # Clear existing files and copy new build
+    sudo rm -rf "$FRONTEND_DIR"/* 2>/dev/null
+    if sudo cp -r "$build_output"/* "$FRONTEND_DIR/" >> "$INSTALL_LOG" 2>&1; then
+        sudo chown -R www-data:www-data "$FRONTEND_DIR"
+        print_success "Built files deployed to $FRONTEND_DIR"
+    else
+        print_error "Failed to copy built files"
+        cd "$SCRIPT_DIR"
+        return 1
+    fi
+
+    cd "$SCRIPT_DIR"
     return 0
 }
 
@@ -553,25 +580,28 @@ configure_nginx() {
 
     local nginx_conf="$NGINX_CONF_DIR/healthcare_security"
 
-    # Create nginx configuration
+    # Remove default site if it exists
+    if [ -L "$NGINX_ENABLED_DIR/default" ]; then
+        sudo rm "$NGINX_ENABLED_DIR/default" 2>/dev/null
+    fi
+
+    # Create nginx configuration for static files
     sudo tee "$nginx_conf" > /dev/null << EOF
 server {
     listen 80;
-    server_name ${BACKEND_PUBLIC_HOST};
+    server_name ${BACKEND_PUBLIC_HOST} _;
 
-    # Frontend (Vite dev server proxy)
+    # Serve static frontend files
+    root $FRONTEND_DIR;
+    index index.html;
+
     location / {
-        proxy_pass http://localhost:5173;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host \$host;
-        proxy_cache_bypass \$http_upgrade;
+        try_files \$uri \$uri/ /index.html;
     }
 
-    # Backend API
+    # Backend API proxy
     location /api/ {
-        proxy_pass http://localhost:${API_PORT};
+        proxy_pass http://127.0.0.1:${API_PORT};
         proxy_http_version 1.1;
         proxy_set_header Host \$host;
         proxy_set_header X-Real-IP \$remote_addr;
@@ -583,13 +613,18 @@ server {
     add_header X-Frame-Options "SAMEORIGIN" always;
     add_header X-Content-Type-Options "nosniff" always;
     add_header X-XSS-Protection "1; mode=block" always;
+
+    # Gzip compression
+    gzip on;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml;
 }
 EOF
 
     # Enable site
-    if [ ! -L "$NGINX_ENABLED_DIR/healthcare_security" ]; then
-        sudo ln -s "$nginx_conf" "$NGINX_ENABLED_DIR/healthcare_security"
+    if [ -L "$NGINX_ENABLED_DIR/healthcare_security" ]; then
+        sudo rm "$NGINX_ENABLED_DIR/healthcare_security"
     fi
+    sudo ln -s "$nginx_conf" "$NGINX_ENABLED_DIR/healthcare_security"
 
     # Test configuration
     if sudo nginx -t >> "$INSTALL_LOG" 2>&1; then
@@ -597,7 +632,8 @@ EOF
 
         # Restart nginx
         if sudo systemctl restart nginx >> "$INSTALL_LOG" 2>&1; then
-            print_success "Nginx restarted successfully"
+            sudo systemctl enable nginx >> "$INSTALL_LOG" 2>&1
+            print_success "Nginx restarted and enabled"
             return 0
         fi
     else
@@ -647,19 +683,11 @@ validate_backend_installation() {
 validate_frontend_installation() {
     print_header "Validating Frontend Installation"
 
-    # Check node_modules
-    if [ -d "$FRONTEND_DIR/node_modules" ]; then
-        print_success "Node modules installed"
+    # Check if index.html exists in deployment directory
+    if [ -f "$FRONTEND_DIR/index.html" ]; then
+        print_success "Frontend index.html exists"
     else
-        print_error "Node modules not found"
-        return 1
-    fi
-
-    # Check .env file
-    if [ -f "$FRONTEND_DIR/.env" ]; then
-        print_success "Frontend .env file exists"
-    else
-        print_error "Frontend .env file not found"
+        print_error "Frontend index.html not found"
         return 1
     fi
 
@@ -675,20 +703,18 @@ main() {
     print_banner
     log_message "INFO" "Backend/Frontend installation module started"
 
-    # Configure deployment mode first
-    configure_deployment_mode
+    # Detect system IP address
+    print_header "System Configuration"
+    BACKEND_PUBLIC_HOST=$(get_system_ip)
+    print_success "Detected system IP: $BACKEND_PUBLIC_HOST"
 
-    # Setup production directories if in production mode
-    if [ "$DEPLOYMENT_MODE" = "production" ]; then
-        if ! setup_production_directories; then
-            exit_error "Failed to setup production directories"
-        fi
-    fi
+    # Display installation paths
+    print_info "Backend will be installed to: $BACKEND_DIR"
+    print_info "Frontend will be installed to: $FRONTEND_DIR"
 
-    # Get configuration
-    print_header "Backend/Frontend Configuration"
+    # Get remaining configuration
+    print_header "Application Configuration"
 
-    BACKEND_PUBLIC_HOST=$(prompt_with_validation "Backend server IP address" "192.168.100.20" validate_ip)
     API_PORT=$(prompt_with_validation "Backend API port" "5000" validate_port)
 
     print_question "Which security mode would you like to start with?"
@@ -712,16 +738,10 @@ main() {
         esac
     done
 
-    EMAIL_DOMAIN=$(prompt_with_validation "Email domain for user accounts" "hospital.com" validate_domain)
-
-    if confirm_action "Would you like to install and configure Nginx?"; then
-        INSTALL_NGINX=true
-    fi
+    EMAIL_DOMAIN=$(prompt_with_validation "Email domain for user accounts" "healthcare.com" validate_domain)
 
     # Save configuration
     cat > "$SCRIPT_DIR/.app_config" << EOF
-DEPLOYMENT_MODE=$DEPLOYMENT_MODE
-DEPLOY_DIR=$DEPLOY_DIR
 BACKEND_DIR=$BACKEND_DIR
 FRONTEND_DIR=$FRONTEND_DIR
 BACKEND_PUBLIC_HOST=$BACKEND_PUBLIC_HOST
@@ -735,24 +755,36 @@ EOF
 
     # Check and install Python
     if ! check_python_installation; then
-        if confirm_action "Python 3.12+ not found. Install it now?"; then
-            if ! install_python; then
-                exit_error "Python installation failed"
-            fi
-        else
-            exit_error "Python is required for backend"
+        print_info "Python 3.12+ not found. Installing..."
+        if ! install_python; then
+            exit_error "Python installation failed"
+        fi
+    fi
+
+    # Check and install uv
+    if ! check_uv_installation; then
+        print_info "uv not found. Installing..."
+        if ! install_uv; then
+            exit_error "uv installation failed"
         fi
     fi
 
     # Check and install Node.js
     if ! check_node_installation; then
-        if confirm_action "Node.js not found. Install it now?"; then
-            if ! install_nodejs; then
-                exit_error "Node.js installation failed"
-            fi
-        else
-            exit_error "Node.js is required for frontend"
+        print_info "Node.js not found. Installing..."
+        if ! install_nodejs; then
+            exit_error "Node.js installation failed"
         fi
+    fi
+
+    # Copy backend files first
+    if ! copy_backend_files; then
+        exit_error "Failed to copy backend files"
+    fi
+
+    # Setup frontend directory
+    if ! copy_frontend_files; then
+        exit_error "Failed to setup frontend directory"
     fi
 
     # Install backend
@@ -774,30 +806,23 @@ EOF
         exit_error "Failed to create backend .env file"
     fi
 
-    # Install frontend
+    # Build and deploy frontend
     print_header "Frontend Installation"
 
-    if ! install_frontend_dependencies; then
-        exit_error "Failed to install frontend dependencies"
+    if ! build_frontend; then
+        exit_error "Failed to build frontend"
     fi
 
-    ensure_directory "$FRONTEND_DIR/tests/reports"
-
-    if ! create_frontend_env_file; then
-        exit_error "Failed to create frontend .env file"
-    fi
-
-    # Install Nginx if requested
-    if [ "$INSTALL_NGINX" = true ]; then
-        if ! check_nginx_installed; then
-            if ! install_nginx; then
-                print_warning "Nginx installation failed (optional)"
-            else
-                configure_nginx
-            fi
-        else
-            configure_nginx
+    # Install and configure Nginx
+    print_header "Nginx Installation"
+    if ! check_nginx_installed; then
+        if ! install_nginx; then
+            exit_error "Nginx installation failed"
         fi
+    fi
+
+    if ! configure_nginx; then
+        exit_error "Nginx configuration failed"
     fi
 
     # Validate installations
@@ -809,31 +834,25 @@ EOF
         exit_error "Frontend validation failed"
     fi
 
-    # Create systemd service for production deployments
-    if [ "$DEPLOYMENT_MODE" = "production" ]; then
-        create_systemd_service
+    # Create systemd service
+    if ! create_systemd_service; then
+        print_warning "Systemd service creation failed (non-fatal)"
     fi
 
-    print_header "Backend/Frontend Installation Complete"
-    print_success "Applications are configured and ready"
-    print_info "Deployment Mode: $DEPLOYMENT_MODE"
+    print_header "Installation Complete"
+    print_success "Healthcare Security Research Platform is installed and running!"
+    echo ""
     print_info "Backend Directory: $BACKEND_DIR"
     print_info "Frontend Directory: $FRONTEND_DIR"
-    print_info "Backend URL: http://${BACKEND_PUBLIC_HOST}:${API_PORT}"
+    print_info "Server IP: $BACKEND_PUBLIC_HOST"
     print_info "Security Mode: $SECURITY_MODE"
-
-    if [ "$DEPLOYMENT_MODE" = "production" ]; then
-        echo ""
-        print_info "Production deployment commands:"
-        echo "  Start backend:  sudo systemctl start healthcare-api"
-        echo "  Check status:   sudo systemctl status healthcare-api"
-        echo "  View logs:      sudo journalctl -u healthcare-api -f"
-    else
-        echo ""
-        print_info "Development commands:"
-        echo "  Start backend:  cd $BACKEND_DIR && source .venv/bin/activate && python app.py"
-        echo "  Start frontend: cd $FRONTEND_DIR && npm run dev"
-    fi
+    echo ""
+    print_info "Access the application at: http://${BACKEND_PUBLIC_HOST}"
+    echo ""
+    print_info "Service management commands:"
+    echo "  Backend:  sudo systemctl {start|stop|restart|status} healthcare-api"
+    echo "  Nginx:    sudo systemctl {start|stop|restart|status} nginx"
+    echo "  Logs:     sudo journalctl -u healthcare-api -f"
 
     log_message "SUCCESS" "Backend/Frontend installation completed successfully"
 
