@@ -19,9 +19,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/common_utils.sh"
 
 # Configuration variables
+DEPLOYMENT_MODE="development"  # development or production
+DEPLOY_DIR="/opt/DB_Security"  # Production deployment directory
+
+# Set directories based on deployment mode (updated in configure_deployment_mode)
 BACKEND_DIR="$PROJECT_ROOT/backend"
 FRONTEND_DIR="$PROJECT_ROOT/frontend"
-VENV_DIR="$BACKEND_DIR/venv"
+VENV_DIR="$BACKEND_DIR/.venv"
 INSTALL_NGINX=false
 NGINX_CONF_DIR="/etc/nginx/sites-available"
 NGINX_ENABLED_DIR="/etc/nginx/sites-enabled"
@@ -31,7 +35,11 @@ API_HOST="0.0.0.0"
 API_PORT="5000"
 BACKEND_PUBLIC_HOST=""
 SECURITY_MODE="vulnerable"
-EMAIL_DOMAIN="hospital.com"
+EMAIL_DOMAIN="healthcare.com"
+
+# Node.js/nvm configuration
+NVM_VERSION="v0.40.3"
+NODE_VERSION="22"
 
 # Import database and LLM config if available
 if [ -f "$SCRIPT_DIR/.pg_config" ]; then
@@ -41,6 +49,154 @@ fi
 if [ -f "$SCRIPT_DIR/.ollama_config" ]; then
     source "$SCRIPT_DIR/.ollama_config"
 fi
+
+###############################################################################
+# Deployment Mode Configuration
+###############################################################################
+
+configure_deployment_mode() {
+    print_header "Deployment Mode Configuration"
+
+    print_question "Select deployment mode:"
+    print_info "  development - Install in project directory (for local development)"
+    print_info "  production  - Install to $DEPLOY_DIR (for server deployment)"
+
+    PS3="$(echo -e "${MAGENTA}? Select mode (1-2): ${NC}")"
+    local options=("development" "production")
+    select opt in "${options[@]}"; do
+        case $opt in
+            "development")
+                DEPLOYMENT_MODE="development"
+                BACKEND_DIR="$PROJECT_ROOT/backend"
+                FRONTEND_DIR="$PROJECT_ROOT/frontend"
+                print_success "Development mode selected"
+                print_info "Backend: $BACKEND_DIR"
+                print_info "Frontend: $FRONTEND_DIR"
+                break
+                ;;
+            "production")
+                DEPLOYMENT_MODE="production"
+                # Allow custom deployment directory
+                local custom_dir=$(prompt_with_validation "Deployment directory" "$DEPLOY_DIR" "")
+                DEPLOY_DIR="$custom_dir"
+                BACKEND_DIR="$DEPLOY_DIR/backend"
+                FRONTEND_DIR="$DEPLOY_DIR/frontend"
+                print_success "Production mode selected"
+                print_info "Backend: $BACKEND_DIR"
+                print_info "Frontend: $FRONTEND_DIR"
+                break
+                ;;
+            *)
+                print_error "Invalid option. Please select 1 or 2."
+                ;;
+        esac
+    done
+
+    # Update VENV_DIR based on new BACKEND_DIR
+    VENV_DIR="$BACKEND_DIR/.venv"
+}
+
+setup_production_directories() {
+    print_header "Setting Up Production Directories"
+
+    if [ "$DEPLOYMENT_MODE" != "production" ]; then
+        return 0
+    fi
+
+    # Create deployment directory
+    if [ ! -d "$DEPLOY_DIR" ]; then
+        print_info "Creating deployment directory: $DEPLOY_DIR"
+        if sudo mkdir -p "$DEPLOY_DIR"; then
+            sudo chown -R "$USER:$USER" "$DEPLOY_DIR"
+            print_success "Created deployment directory"
+        else
+            print_error "Failed to create deployment directory"
+            return 1
+        fi
+    fi
+
+    # Copy backend files
+    print_info "Copying backend files to $BACKEND_DIR..."
+    if [ ! -d "$BACKEND_DIR" ]; then
+        mkdir -p "$BACKEND_DIR"
+    fi
+
+    if cp -r "$PROJECT_ROOT/backend/"* "$BACKEND_DIR/" >> "$INSTALL_LOG" 2>&1; then
+        print_success "Backend files copied"
+    else
+        print_error "Failed to copy backend files"
+        return 1
+    fi
+
+    # Copy frontend files
+    print_info "Copying frontend files to $FRONTEND_DIR..."
+    if [ ! -d "$FRONTEND_DIR" ]; then
+        mkdir -p "$FRONTEND_DIR"
+    fi
+
+    if cp -r "$PROJECT_ROOT/frontend/"* "$FRONTEND_DIR/" >> "$INSTALL_LOG" 2>&1; then
+        print_success "Frontend files copied"
+    else
+        print_error "Failed to copy frontend files"
+        return 1
+    fi
+
+    return 0
+}
+
+create_systemd_service() {
+    print_header "Creating Systemd Service"
+
+    if [ "$DEPLOYMENT_MODE" != "production" ]; then
+        print_info "Skipping systemd service creation (development mode)"
+        return 0
+    fi
+
+    if ! confirm_action "Would you like to create a systemd service for the backend?"; then
+        print_info "Skipping systemd service creation"
+        return 0
+    fi
+
+    local service_file="/etc/systemd/system/healthcare-api.service"
+
+    print_info "Creating systemd service file..."
+
+    sudo tee "$service_file" > /dev/null << EOF
+[Unit]
+Description=Healthcare Database Security Testing API
+After=network.target
+
+[Service]
+Type=simple
+User=$USER
+Group=$USER
+WorkingDirectory=$BACKEND_DIR
+Environment="PATH=$VENV_DIR/bin"
+ExecStart=$VENV_DIR/bin/python app.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+    if [ $? -eq 0 ]; then
+        print_success "Systemd service file created: $service_file"
+
+        # Reload systemd
+        sudo systemctl daemon-reload >> "$INSTALL_LOG" 2>&1
+
+        if confirm_action "Enable and start the healthcare-api service now?"; then
+            sudo systemctl enable healthcare-api >> "$INSTALL_LOG" 2>&1
+            sudo systemctl start healthcare-api >> "$INSTALL_LOG" 2>&1
+            print_success "Service enabled and started"
+        fi
+        return 0
+    else
+        print_error "Failed to create systemd service file"
+        return 1
+    fi
+}
 
 ###############################################################################
 # Prerequisite Check Functions
@@ -89,6 +245,12 @@ install_python() {
 check_node_installation() {
     print_header "Checking Node.js Installation"
 
+    # Try to load nvm if installed (nvm-installed node won't be in PATH otherwise)
+    if [ -s "$HOME/.nvm/nvm.sh" ]; then
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    fi
+
     if command_exists node && command_exists npm; then
         local node_version=$(node --version)
         local npm_version=$(npm --version)
@@ -105,15 +267,40 @@ install_nodejs() {
     print_header "Installing Node.js"
 
     local distro=$(get_distro)
+    local nvm_version="v0.40.3"
+    local node_version="22"
 
-    print_info "Installing Node.js via NodeSource repository..."
+    print_info "Installing Node.js via nvm (Node Version Manager)..."
 
-    # Download and run NodeSource setup script
-    if curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - >> "$INSTALL_LOG" 2>&1; then
-        if install_package "nodejs"; then
-            print_success "Node.js installed successfully"
-            return 0
+    # Check if nvm is already installed
+    if [ -s "$HOME/.nvm/nvm.sh" ]; then
+        print_info "nvm already installed, loading..."
+        source "$HOME/.nvm/nvm.sh"
+    else
+        print_info "Downloading and installing nvm $nvm_version..."
+        if curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/${nvm_version}/install.sh" | bash >> "$INSTALL_LOG" 2>&1; then
+            # Load nvm into current shell
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            print_success "nvm installed successfully"
+        else
+            print_error "Failed to install nvm"
+            print_info "You can install manually from: https://github.com/nvm-sh/nvm"
+            return 1
         fi
+    fi
+
+    # Install Node.js using nvm
+    print_info "Installing Node.js $node_version..."
+    if nvm install $node_version >> "$INSTALL_LOG" 2>&1; then
+        nvm use $node_version >> "$INSTALL_LOG" 2>&1
+        nvm alias default $node_version >> "$INSTALL_LOG" 2>&1
+
+        local installed_node_version=$(node -v 2>/dev/null)
+        local installed_npm_version=$(npm -v 2>/dev/null)
+        print_success "Node.js installed: $installed_node_version"
+        print_success "npm installed: $installed_npm_version"
+        return 0
     fi
 
     print_error "Failed to install Node.js"
@@ -269,6 +456,12 @@ install_frontend_dependencies() {
     if [ ! -f "$package_file" ]; then
         print_error "package.json not found: $package_file"
         return 1
+    fi
+
+    # Ensure nvm is loaded for npm commands
+    if [ -s "$HOME/.nvm/nvm.sh" ]; then
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
     fi
 
     print_info "Installing Node.js packages..."
@@ -482,6 +675,16 @@ main() {
     print_banner
     log_message "INFO" "Backend/Frontend installation module started"
 
+    # Configure deployment mode first
+    configure_deployment_mode
+
+    # Setup production directories if in production mode
+    if [ "$DEPLOYMENT_MODE" = "production" ]; then
+        if ! setup_production_directories; then
+            exit_error "Failed to setup production directories"
+        fi
+    fi
+
     # Get configuration
     print_header "Backend/Frontend Configuration"
 
@@ -517,10 +720,16 @@ main() {
 
     # Save configuration
     cat > "$SCRIPT_DIR/.app_config" << EOF
+DEPLOYMENT_MODE=$DEPLOYMENT_MODE
+DEPLOY_DIR=$DEPLOY_DIR
+BACKEND_DIR=$BACKEND_DIR
+FRONTEND_DIR=$FRONTEND_DIR
 BACKEND_PUBLIC_HOST=$BACKEND_PUBLIC_HOST
 API_PORT=$API_PORT
 SECURITY_MODE=$SECURITY_MODE
 EMAIL_DOMAIN=$EMAIL_DOMAIN
+NVM_VERSION=$NVM_VERSION
+NODE_VERSION=$NODE_VERSION
 EOF
     chmod 600 "$SCRIPT_DIR/.app_config"
 
@@ -600,10 +809,31 @@ EOF
         exit_error "Frontend validation failed"
     fi
 
+    # Create systemd service for production deployments
+    if [ "$DEPLOYMENT_MODE" = "production" ]; then
+        create_systemd_service
+    fi
+
     print_header "Backend/Frontend Installation Complete"
     print_success "Applications are configured and ready"
-    print_info "Backend: http://${BACKEND_PUBLIC_HOST}:${API_PORT}"
+    print_info "Deployment Mode: $DEPLOYMENT_MODE"
+    print_info "Backend Directory: $BACKEND_DIR"
+    print_info "Frontend Directory: $FRONTEND_DIR"
+    print_info "Backend URL: http://${BACKEND_PUBLIC_HOST}:${API_PORT}"
     print_info "Security Mode: $SECURITY_MODE"
+
+    if [ "$DEPLOYMENT_MODE" = "production" ]; then
+        echo ""
+        print_info "Production deployment commands:"
+        echo "  Start backend:  sudo systemctl start healthcare-api"
+        echo "  Check status:   sudo systemctl status healthcare-api"
+        echo "  View logs:      sudo journalctl -u healthcare-api -f"
+    else
+        echo ""
+        print_info "Development commands:"
+        echo "  Start backend:  cd $BACKEND_DIR && source .venv/bin/activate && python app.py"
+        echo "  Start frontend: cd $FRONTEND_DIR && npm run dev"
+    fi
 
     log_message "SUCCESS" "Backend/Frontend installation completed successfully"
 

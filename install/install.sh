@@ -282,20 +282,40 @@ display_completion_summary() {
     print_info "Installation log: $INSTALL_LOG"
     echo ""
 
+    # Load app config if available to get deployment mode
+    local backend_dir="$PROJECT_ROOT/backend"
+    local frontend_dir="$PROJECT_ROOT/frontend"
+    local deployment_mode="development"
+
+    if [ -f "$SCRIPT_DIR/.app_config" ]; then
+        source "$SCRIPT_DIR/.app_config"
+        backend_dir="${BACKEND_DIR:-$PROJECT_ROOT/backend}"
+        frontend_dir="${FRONTEND_DIR:-$PROJECT_ROOT/frontend}"
+        deployment_mode="${DEPLOYMENT_MODE:-development}"
+    fi
+
     print_header "Quick Start Commands"
     echo ""
 
     if [ "$INSTALL_BACKEND_FRONTEND" = true ]; then
-        echo -e "${CYAN}Start Backend:${NC}"
-        echo "  cd $PROJECT_ROOT/backend"
-        echo "  source venv/bin/activate"
-        echo "  python app.py"
-        echo ""
+        if [ "$deployment_mode" = "production" ]; then
+            echo -e "${CYAN}Backend Service (Production):${NC}"
+            echo "  sudo systemctl start healthcare-api"
+            echo "  sudo systemctl status healthcare-api"
+            echo "  sudo journalctl -u healthcare-api -f"
+            echo ""
+        else
+            echo -e "${CYAN}Start Backend:${NC}"
+            echo "  cd $backend_dir"
+            echo "  source .venv/bin/activate"
+            echo "  python app.py"
+            echo ""
 
-        echo -e "${CYAN}Start Frontend:${NC}"
-        echo "  cd $PROJECT_ROOT/frontend"
-        echo "  npm run dev"
-        echo ""
+            echo -e "${CYAN}Start Frontend:${NC}"
+            echo "  cd $frontend_dir"
+            echo "  npm run dev"
+            echo ""
+        fi
     fi
 
     if [ "$POSTGRESQL_LOCAL" = true ]; then
@@ -313,7 +333,7 @@ display_completion_summary() {
     fi
 
     echo -e "${CYAN}Run Tests:${NC}"
-    echo "  cd $PROJECT_ROOT/backend/tests"
+    echo "  cd $backend_dir/tests"
     echo "  ./run_tests.sh"
     echo ""
 
