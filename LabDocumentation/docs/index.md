@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="175"/>
+  <img src="/images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="175"/>
 </div>
 
 !!! warning "**DRAFT** - This documentation is a work in progress"
