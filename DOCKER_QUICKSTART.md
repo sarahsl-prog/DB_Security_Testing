@@ -20,8 +20,6 @@ After following this guide, you'll have:
 - ✅ Ollama LLM service ready to use
 
 
-All with **one command!**
-
 ---
 
 ## Compose Layout
@@ -34,7 +32,7 @@ If you want to bring up all the containers at once, use this docker-compose file
 docker compose -f docker-compose-all.yml -d
 ```
 
-This project now includes two Compose descriptors if you want to isolate the infrastructure containers:
+This project now includes two compose descriptors if you want to isolate the infrastructure containers:
 
 - `docker-compose-infra.yml` — infrastructure services (PostgreSQL + Ollama)
 - `docker-compose.app.yml` — application services (Flask backend + Vite/NGINX frontend)
@@ -171,7 +169,7 @@ This seeds doctors, patients, records, and admin accounts. Re-run the command an
 ---
 
 ### Optional - Pull other LLM Models
-The Ollama service will download three AI models. This happens automatically, you can download other models manually:
+The Ollama service will download three AI models. This happens automatically. You can also download other models manually:
 
 ```bash
 # Start just the Ollama service
@@ -197,7 +195,7 @@ Open your browser to: **http://localhost:5173**
 
 **Default Login (after Step 4):**
 - `security_admin` / `password123` (system administrator)
-- `nurse.wilson` / `password123` (security administrator)
+- `nurse.wilson` / `password123` (nurse role)
 - `dr.johnson` / `password123` (doctor role)
 
 The generator produces additional doctor, patient and nurse accounts, all using `password123` by default.

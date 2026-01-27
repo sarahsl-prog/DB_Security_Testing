@@ -16,6 +16,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 30s
     networks:
       - healthcare_network
     restart: unless-stopped
@@ -32,7 +33,7 @@ services:
     environment:
       - OLLAMA_HOST=0.0.0.0:11434
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:11434/"]
+      test: ["CMD", "ollama", "list"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -50,6 +51,7 @@ services:
     #         - driver: nvidia
     #           count: all
     #           capabilities: [gpu]
+
 
 # Data Generator Service to populate the database with generated data
 data-generator:
