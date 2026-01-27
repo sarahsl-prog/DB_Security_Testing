@@ -2,6 +2,8 @@
   <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
+!!! warning "**DRAFT** - This documentation is a work in progress"
+
 # Healthcare Database Security Testing Test Lab
 
 A distributed research platform for studying SQL injection vulnerabilities and defense mechanisms in healthcare database systems. This test lab supports both vulnerable and secure operational modes for comprehensive security testing and analysis.

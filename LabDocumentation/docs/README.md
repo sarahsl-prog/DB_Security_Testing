@@ -1,5 +1,10 @@
 <div align="center">
   <img src="images/logo-trnsp.png" alt="Healthcare Database Security Testing Logo" width="200"/>
+</div>
+
+!!! warning "**DRAFT** - This documentation is a work in progress"
+
+<div align="center">
 
   # Healthcare Database Security Testing API
 
@@ -110,7 +115,7 @@ DB_PASSWORD=secure_password_123
 # LLM Service Configuration
 LLM_HOST=192.168.100.1
 LLM_PORT=11434
-LLM_MODEL=llama3.1
+LLM_MODEL=qwen2.5-coder
 
 # Security Configuration
 SECURITY_MODE=vulnerable

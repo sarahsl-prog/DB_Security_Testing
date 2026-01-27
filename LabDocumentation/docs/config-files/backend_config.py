@@ -53,7 +53,7 @@ class Config:
 
     LLM_PORT = int(os.environ.get('LLM_PORT', 11434))
     LLM_BASE_URL = f"http://{LLM_HOST}:{LLM_PORT}"
-    LLM_DEFAULT_MODEL = os.environ.get('LLM_MODEL', 'ds-coder2')
+    LLM_DEFAULT_MODEL = os.environ.get('LLM_MODEL', 'qwen-coder-sql')
     LLM_TIMEOUT = int(os.environ.get('LLM_TIMEOUT', 30))
     LLM_MAX_RETRIES = int(os.environ.get('LLM_MAX_RETRIES', 3))
 

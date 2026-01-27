@@ -2,6 +2,8 @@
   <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
+!!! warning "**DRAFT** - This documentation is a work in progress"
+
 # Architecture Overview
 
 ## System Architecture
@@ -49,7 +51,7 @@ graph TB
 ### AI Layer
 **Host:** LLM (192.168.1.12)
 - Ollama inference engine
-- deepseek-coder:1.3b model
+- qwen2.5-coder model
 - Natural language to SQL conversion
 
 ## Design Decisions

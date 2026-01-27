@@ -4,6 +4,8 @@
 
 # LLM Host Setup
 
+!!! warning "**DRAFT** - This documentation is a work in progress"
+
 !!! info "Host Information"
     **Hostname:** llm-01
     **IP Address:** 192.168.1.12
@@ -14,7 +16,7 @@
     **Services:**
 
     - Ollama 0.12.3 (LLM Inference Engine)
-    - deepseek-coder:1.3b (Language Model)
+    - qwen2.5-coder (Language Model)
     - Nginx 1.26 (Reverse Proxy - Optional)
 
 !!! note "Example IP Addresses"
@@ -150,34 +152,34 @@ Key environment variables for Ollama:
 
 ## Model Management
 
-### 1. Pull the deepseek-coder Model
+### 1. Pull the qwen2.5-coder Model
 
 ```bash
-# Pull the 1.3b parameter model
-ollama pull deepseek-coder:1.3b
+# Pull the qwen2.5-coder model
+ollama pull qwen2.5-coder
 
 # Verify the model is downloaded
 ollama list
 
 # Expected output:
 # NAME                     ID              SIZE     MODIFIED
-# deepseek-coder:latest    436e72e8c833    776 MB   X minutes ago
+# qwen2.5-coder:latest     xxxxxxxxxx      1.5 GB   X minutes ago
 ```
 
 !!! note "Model Size"
-    The deepseek-coder:1.3b model is less than 1 GB in size. With 32GB RAM, this leaves plenty of memory for inference operations.
+    The qwen2.5-coder model is approximately 1.5 GB in size. With 32GB RAM, this leaves plenty of memory for inference operations.
 
 ### 2. Create a new model using a custom Model File
 
-Create a model file to use to customize the ds-coder model
+Create a model file to use to customize the qwen2.5-coder model
 
 ```bash
-sudo vim /usr/share/ollama/.ollama/ModelFile_ds2.txt 
+sudo vim /usr/share/ollama/.ollama/ModelFile_qwen25-coder.txt
 ```
 Add the following information:
 
 ```bash
-FROM deepseek-coder
+FROM qwen2.5-coder
 
 PARAMETER temperature 0.2
 PARAMETER top_p 0.9
@@ -190,7 +192,7 @@ SYSTEM """You are a SQL query generator for our specific database. Generate accu
 
 DATABASE SCHEMA:
 ```
-Put the complete schema here... 
+Put the complete schema here...
 
 ```bash
 GUIDELINES:
@@ -204,24 +206,24 @@ GUIDELINES:
 
 Create a model using the model file
 
-``` bash 
-sudo ollama create ds-coder2 -f /usr/share/ollama/.ollama/ModelFile_ds2.txt
+``` bash
+sudo ollama create qwen-coder-sql -f /usr/share/ollama/.ollama/ModelFile_qwen25-coder.txt
 
 ```
 # Test SQL generation (relevant to your research)
 
 ```bash
-ollama run ds-coder2 "Generate SQL to select all patients from a patients table"
+ollama run qwen-coder-sql "Generate SQL to select all patients from a patients table"
 ```
 
 ### 3. Test the Model
 
 ```bash
 # Test with a simple prompt
-ollama run ds-coder2 "Write a Python function to calculate factorial"
+ollama run qwen-coder-sql "Write a Python function to calculate factorial"
 
 # Test SQL generation (relevant to your research)
-ollama run ds-coder2 "Generate SQL to select all patients from a patients table"
+ollama run qwen-coder-sql "Generate SQL to select all patients from a patients table"
 ```
 
 ### 4. Model Management Commands
@@ -231,10 +233,10 @@ ollama run ds-coder2 "Generate SQL to select all patients from a patients table"
 ollama list
 
 # Show model information
-ollama show deepseek-coder:1.3b
+ollama show qwen2.5-coder
 
 # Remove a model (if needed)
-ollama rm deepseek-coder:1.3b
+ollama rm qwen2.5-coder
 
 # Pull a different model
 ollama pull codellama:7b
@@ -322,7 +324,7 @@ df -h
 
 ### 2. Performance Tuning
 
-For optimal performance with deepseek-coder:1.3b:
+For optimal performance with qwen2.5-coder:
 
 ```bash
 # Edit Ollama service override
@@ -356,7 +358,7 @@ sudo systemctl restart ollama
 
 ### 3. Model Context Window
 
-The deepseek-coder:1.3b model has a context window of approximately 4096 tokens. For your research use case (SQL generation), this is sufficient.
+The qwen2.5-coder model has a context window of approximately 4096 tokens. For your research use case (SQL generation), this is sufficient.
 
 ---
 
@@ -369,14 +371,14 @@ Test the generation endpoint:
 ```bash
 # Simple generation test
 curl http://localhost:11434/api/generate -d '{
-  "model": "deepseek-coder:1.3b",
+  "model": "qwen2.5-coder",
   "prompt": "Write SQL to select all patients",
   "stream": false
 }'
 
 # Test from remote host (Frontend/Backend)
 curl http://192.168.1.12:11434/api/generate -d '{
-  "model": "deepseek-coder:1.3b",
+  "model": "qwen2.5-coder",
   "prompt": "SELECT * FROM patients",
   "stream": false
 }'
@@ -387,7 +389,7 @@ curl http://192.168.1.12:11434/api/generate -d '{
 ```bash
 # Chat completion test
 curl http://localhost:11434/api/chat -d '{
-  "model": "deepseek-coder:1.3b",
+  "model": "qwen2.5-coder",
   "messages": [
     {
       "role": "system",
@@ -413,7 +415,7 @@ curl http://localhost:11434/api/ps
 
 # Model information
 curl http://localhost:11434/api/show -d '{
-  "name": "deepseek-coder:1.3b"
+  "name": "qwen2.5-coder"
 }'
 ```
 
@@ -440,7 +442,7 @@ sudo journalctl -u ollama -n 50
 
 ```bash
 # Quick inference test
-time ollama run deepseek-coder:1.3b "def factorial(n):"
+time ollama run qwen2.5-coder "def factorial(n):"
 
 # This should return a Python function and show execution time
 ```
@@ -455,7 +457,7 @@ curl http://192.168.1.12:11434/api/tags
 
 # Test generation
 curl http://192.168.1.12:11434/api/generate -d '{
-  "model": "deepseek-coder:1.3b",
+  "model": "qwen2.5-coder",
   "prompt": "Hello",
   "stream": false
 }'
@@ -466,14 +468,14 @@ curl http://192.168.1.12:11434/api/generate -d '{
 ```bash
 # Benchmark simple prompt
 time curl http://localhost:11434/api/generate -d '{
-  "model": "deepseek-coder:1.3b",
+  "model": "qwen2.5-coder",
   "prompt": "Write a hello world program",
   "stream": false
 }'
 
 # Benchmark SQL generation (your use case)
 time curl http://localhost:11434/api/generate -d '{
-  "model": "deepseek-coder:1.3b",
+  "model": "qwen2.5-coder",
   "prompt": "Generate SQL to select all records from patients table",
   "stream": false
 }'
@@ -488,7 +490,7 @@ time curl http://localhost:11434/api/generate -d '{
 - [:material-download: Ollama Service Override](../config-files/ollama.service) - Systemd service configuration
 - [:material-download: Nginx Ollama Config](../config-files/nginx-ollama.conf) - Nginx reverse proxy (optional)
 - [:material-download: Ollama API Examples](../config-files/ollama-api-examples.sh) - API testing scripts
-- [:material-download: Ollama Model File](../config-files/ModelFile_ds2.txt) - Ollama Model File to create a specific Deepseek-coder model
+- [:material-download: Ollama Model File](../config-files/ModelFile_qwen25-coder.txt) - Ollama Model File to create a specific qwen2.5-coder model
 
 ### View Configuration Files
 
@@ -553,7 +555,7 @@ time curl http://localhost:11434/api/generate -d '{
     # Test 2: Simple generation
     echo -e "\n=== Test 2: Simple Generation ==="
     curl $OLLAMA_HOST/api/generate -d '{
-      "model": "deepseek-coder:1.3b",
+      "model": "qwen2.5-coder",
       "prompt": "SELECT * FROM",
       "stream": false
     }' | jq .
@@ -561,7 +563,7 @@ time curl http://localhost:11434/api/generate -d '{
     # Test 3: SQL generation with context
     echo -e "\n=== Test 3: SQL Generation ==="
     curl $OLLAMA_HOST/api/generate -d '{
-      "model": "deepseek-coder:1.3b",
+      "model": "qwen2.5-coder",
       "prompt": "Generate SQL to select patient name and date of birth from patients table",
       "stream": false
     }' | jq .
@@ -641,7 +643,7 @@ sudo ufw status numbered
     ollama list
     
     # If model is missing, pull it again
-    ollama pull deepseek-coder:1.3b
+    ollama pull qwen2.5-coder
     
     # Check model storage location
     ls -lh /usr/share/ollama/.ollama/models
@@ -689,7 +691,7 @@ sudo ufw status numbered
     free -h
     
     # Unload model from memory
-    ollama stop deepseek-coder:1.3b
+    ollama stop qwen2.5-coder
     
     # Adjust max loaded models
     # Set OLLAMA_MAX_LOADED_MODELS=1
@@ -762,9 +764,9 @@ sudo journalctl -u ollama -f | grep "POST /api"
 
 ## Model Selection Guide
 
-For your research project, deepseek-coder:1.3b is appropriate because:
+For your research project, qwen2.5-coder is appropriate because:
 
-✅ **Small size (1.3GB)** - Loads quickly, low memory overhead  
+✅ **Reasonable size (~1.5GB)** - Loads quickly, low memory overhead  
 ✅ **Code-focused** - Trained specifically for code generation including SQL  
 ✅ **Fast inference** - Suitable for interactive research testing  
 ✅ **Fits in memory** - Even with multiple concurrent requests on 32GB RAM
@@ -792,7 +794,7 @@ ollama pull codellama:7b
 ## Security Hardening Checklist
 
 - [x] Ollama installed and configured
-- [x] deepseek-coder:1.3b model downloaded
+- [x] qwen2.5-coder model downloaded
 - [x] Service listening on network interface
 - [ ] Firewall configured to allow only frontend/backend (secure mode)
 - [ ] OLLAMA_HOST restricted to specific IP (secure mode)

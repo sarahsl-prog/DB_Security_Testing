@@ -2,6 +2,8 @@
   <img src="images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
+!!! warning "**DRAFT** - This documentation is a work in progress"
+
 # 🏥 Healthcare Database Security Testing Platform - START HERE
 
 **Welcome!** This guide will help you choose the best way to deploy this application based on your experience level.
@@ -180,7 +182,7 @@ sudo -u postgres createuser healthcare_user
 curl -fsSL https://ollama.com/install.sh | sh
 
 # Pull model
-ollama pull ds2-coder:latest
+ollama pull qwen-coder-sql:latest
 ```
 
 📖 **[Full Ollama Guide](DEPLOYMENT_STRATEGY.md#ollama-llm-installation)**
@@ -279,10 +281,10 @@ sudo systemctl status postgresql
 **Solution:** Download the model
 ```bash
 # Docker
-docker-compose exec ollama ollama pull ds2-coder:latest
+docker-compose exec ollama ollama pull qwen-coder-sql:latest
 
 # Manual
-ollama pull ds2-coder:latest
+ollama pull qwen-coder-sql:latest
 ```
 
 ---

@@ -2,6 +2,8 @@
   <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
+!!! warning "**DRAFT** - This documentation is a work in progress"
+
 # Security Layers
 
 This page describes the three-layer security validation system implemented in secure mode.

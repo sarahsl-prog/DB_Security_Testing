@@ -2,6 +2,8 @@
   <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
+!!! warning "**DRAFT** - This documentation is a work in progress"
+
 # Command Reference
 
 Common commands for managing the Healthcare Database Security Testing Platform.
@@ -100,10 +102,10 @@ psql -h localhost -U healthcare_admin -d healthcare_security < backup.sql
 ### Pull LLM Model
 ```bash
 # From host (if Ollama installed)
-ollama pull ds2-coder:latest
+ollama pull qwen-coder-sql:latest
 
 # From Docker
-docker compose exec ollama ollama pull ds2-coder:latest
+docker compose exec ollama ollama pull qwen-coder-sql:latest
 ```
 
 ### List Models
@@ -114,7 +116,7 @@ docker compose exec ollama ollama list
 ### Test LLM
 ```bash
 curl http://localhost:11434/api/generate -d '{
-  "model": "ds2-coder:latest",
+  "model": "qwen-coder-sql:latest",
   "prompt": "Convert to SQL: show all patients"
 }'
 ```

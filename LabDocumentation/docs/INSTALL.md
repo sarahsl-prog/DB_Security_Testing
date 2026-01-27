@@ -9,6 +9,8 @@ GitHub: https://github.com/sarahsl-prog/DB_Security_Testing
   <img src="images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
+!!! warning "**DRAFT** - This documentation is a work in progress"
+
 # Healthcare Database Security Testing Platform - Installation Guide
 
 This guide will help you install and configure the Healthcare Database Security Testing Platform using the interactive installation scripts.
@@ -118,7 +120,7 @@ You'll be prompted to provide:
   - Example: `admin@hospital.com`
 
 - **LLM Model**: Ollama model to use
-  - Default: `ds2-coder:latest`
+  - Default: `qwen-coder-sql:latest`
 
 - **Security Mode**: Choose between:
   - `vulnerable` - Demonstrates security vulnerabilities (for research)
@@ -295,7 +297,7 @@ curl http://<LLM_HOST>:<LLM_PORT>/api/version
 curl http://<LLM_HOST>:<LLM_PORT>/api/tags
 
 # Pull the model if not available
-ollama pull ds2-coder:latest
+ollama pull qwen-coder-sql:latest
 ```
 
 ### Issue: "Port already in use"

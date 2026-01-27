@@ -1,6 +1,6 @@
 #  file location /usr/share/ollama/.ollama/ModelFile_ds2.txt
 # Modelfile_ds2.txt
-FROM deepseek-coder
+FROM qwen2.5-coder
 
 PARAMETER temperature 0.2
 PARAMETER top_p 0.9

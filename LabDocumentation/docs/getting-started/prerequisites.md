@@ -2,6 +2,8 @@
   <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
+!!! warning "**DRAFT** - This documentation is a work in progress"
+
 # Prerequisites
 
 Before setting up the Healthcare Database Security Testing Lab, ensure you have the following requirements in place.

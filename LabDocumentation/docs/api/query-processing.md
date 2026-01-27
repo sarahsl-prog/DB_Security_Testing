@@ -2,12 +2,14 @@
   <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
+!!! warning "**DRAFT** - This documentation is a work in progress"
+
 # Query Processing
 
 Natural language to SQL query processing system using LLM.
 
 ## Overview
-The system converts natural language queries to SQL using Ollama LLM (ds2-coder model).
+The system converts natural language queries to SQL using Ollama LLM (qwen-coder-sql model).
 
 ## Processing Pipeline
 

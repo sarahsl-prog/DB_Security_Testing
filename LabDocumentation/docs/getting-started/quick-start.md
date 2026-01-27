@@ -2,6 +2,8 @@
   <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
+!!! warning "**DRAFT** - This documentation is a work in progress"
+
 # Quick Start Guide
 
 Get your Healthcare Database Security Testing Lab up and running quickly.
@@ -55,7 +57,7 @@ Follow these guides in order:
 
 3. **[LLM Host](../hosts/llm-host.md)** (1-2 hours)
    - Install Ollama
-   - Pull deepseek-coder model
+   - Pull qwen2.5-coder model
    - Configure network access
 
 ### Step 3: Configure Networking

@@ -2,6 +2,8 @@
   <img src="images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
+!!! warning "**DRAFT** - This documentation is a work in progress"
+
 # Healthcare Database Security Testing Platform - Deployment Strategy
 
 **For Boston University CS 674 Database Security Fall 2025**
@@ -253,7 +255,7 @@ ollama serve
 **Pull required models:**
 ```bash
 # Recommended model for SQL generation
-ollama pull ds2-coder:latest
+ollama pull qwen-coder-sql:latest
 
 # OR alternative models
 ollama pull codellama:7b
@@ -473,7 +475,7 @@ ps aux | grep ollama
 ollama list
 
 # Pull model if missing
-ollama pull ds2-coder:latest
+ollama pull qwen-coder-sql:latest
 ```
 
 **"Port already in use"**

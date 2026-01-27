@@ -2,6 +2,8 @@
   <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
+!!! warning "**DRAFT** - This documentation is a work in progress"
+
 # System Specifications
 
 Complete technical specifications for all components in the Healthcare Database Security Testing Lab.
@@ -18,7 +20,7 @@ See the detailed [Lab Specifications Table](lab-specs-table.md) for complete har
 |------|----|----|-----|-----|---------|--------------|
 | Frontend/Backend | 192.168.1.10 | Ubuntu 24.04 | 12GB | 2 vCPU | 100GB | Nginx 1.26, Flask 3.1.2, Python 3.12 |
 | Database | 192.168.1.11 | Ubuntu 25.04 | 16GB | 2 vCPU | 100GB | PostgreSQL 17, Apache 2 |
-| LLM | 192.168.1.12 | Ubuntu 24.04 | 32GB | Intel Core Ultra 5 | 1TB | Ollama 0.12.3, deepseek-coder:1.3b |
+| LLM | 192.168.1.12 | Ubuntu 24.04 | 32GB | Intel Core Ultra 5 | 1TB | Ollama 0.12.3, qwen2.5-coder |
 
 ---
 
@@ -79,7 +81,7 @@ Extensions:
 ```yaml
 Operating System: Ubuntu 24.04 LTS
 Ollama: 0.12.3
-Model: deepseek-coder:1.3b
+Model: qwen2.5-coder
 Nginx: 1.26
 ```
 
@@ -237,7 +239,7 @@ See [API Endpoints](../api/endpoints.md) for complete documentation.
 
 ### LLM Model Storage
 
-**Current Model:** deepseek-coder:1.3b = 1.3GB
+**Current Model:** qwen2.5-coder = 1.3GB
 
 **Alternative Models:** 
 - codellama:7b = 3.8GB

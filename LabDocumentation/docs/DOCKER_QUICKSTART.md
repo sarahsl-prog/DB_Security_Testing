@@ -2,6 +2,8 @@
   <img src="images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
+!!! warning "**DRAFT** - This documentation is a work in progress"
+
 # Docker Quick Start - Healthcare Database Security Testing Platform
 
 **The easiest way to get started!** ⭐
@@ -109,7 +111,7 @@ docker compose up -d ollama
 sleep 30
 
 # Pull the model (this may take 5-10 minutes)
-docker compose exec ollama ollama pull ds2-coder:latest
+docker compose exec ollama ollama pull qwen-coder-sql:latest
 
 # Or use a smaller model (faster download)
 docker compose exec ollama ollama pull codellama:7b
@@ -291,7 +293,7 @@ docker stats
 **Solution:**
 ```bash
 # Download the model
-docker compose exec ollama ollama pull ds2-coder:latest
+docker compose exec ollama ollama pull qwen-coder-sql:latest
 
 # Verify it's available
 docker compose exec ollama ollama list
@@ -389,7 +391,7 @@ docker compose up -d
 Edit `.env`:
 ```bash
 # Use CodeLlama instead
-LLM_MODEL=ds2-coder:latest
+LLM_MODEL=qwen-coder-sql:latest
 
 # Or alternative model
 LLM_MODEL=codellama:7b
@@ -397,7 +399,7 @@ LLM_MODEL=codellama:7b
 
 Download the model:
 ```bash
-docker compose exec ollama ollama pull ds2-coder:latest
+docker compose exec ollama ollama pull qwen-coder-sql:latest
 ```
 
 ### Persistent Logs

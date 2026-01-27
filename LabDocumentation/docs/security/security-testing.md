@@ -2,16 +2,18 @@
   <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
+!!! warning "**DRAFT** - This documentation is a work in progress"
+
 # Security Testing Documentation
 
 ## Test Environment
 
-**Test Date (Vulnerable Mode):** [Date]  
-**Test Date (Secure Mode):** [Date]  
-**Tester:** [Your Name]  
-**Database Version:** PostgreSQL 17  
-**Application Version:** Flask 3.1.2  
-**LLM Model:** Ollama 0.12.3 / deepseek-coder:1.3b
+**Test Date (Vulnerable Mode):** [Date]
+**Test Date (Secure Mode):** [Date]
+**Tester:** [Your Name]
+**Database Version:** PostgreSQL 17
+**Application Version:** Flask 3.1.2
+**LLM Model:** Ollama 0.12.3 / qwen2.5-coder
 
 ---
 

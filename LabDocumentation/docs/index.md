@@ -2,6 +2,8 @@
   <img src="images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="175"/>
 </div>
 
+!!! warning "**DRAFT** - This documentation is a work in progress"
+
 # Healthcare Database Security Testing Lab
 !!! info "This documentation covers the complete setup and testing methodology for a distributed healthcare database security research environment. The lab is designed to test SQL injection vulnerabilities and security controls in natural language to SQL systems."
 
@@ -38,7 +40,7 @@ graph LR
 |------|-----------|-----|------------------|
 | Frontend/Backend | 192.168.1.10 | Ubuntu 24.04 | Nginx, Flask 2.3.3, Vite (Vanilla JS) |
 | Database | 192.168.1.11 | Ubuntu | PostgreSQL 17+ |
-| LLM | 192.168.1.12 | Ubuntu/Windows | Ollama, ds2-coder:latest |
+| LLM | 192.168.1.12 | Ubuntu/Windows | Ollama, qwen-coder-sql:latest |
 
 ---
 
@@ -80,7 +82,7 @@ graph LR
 
 3. **[Set up the LLM Host](hosts/llm-host.md)**
    - Install Ollama
-   - Pull ds2-coder:latest model
+   - Pull qwen-coder-sql:latest model
    - Configure network access
 
 4. **[Configure Network Security](hosts/network-config.md)**
@@ -195,7 +197,7 @@ This lab supports research into:
 
 ### LLM
 - **Ollama** - LLM inference engine
-- **deepseek-r1:latest** - SQL-focused language model
+- **qwen2.5-coder** - SQL-focused language model
 - **Natural Language to SQL** - Query generation
 
 ### Frontend

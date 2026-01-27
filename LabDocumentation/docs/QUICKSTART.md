@@ -9,6 +9,8 @@ GitHub: https://github.com/sarahsl-prog/DB_Security_Testing
   <img src="images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
+!!! warning "**DRAFT** - This documentation is a work in progress"
+
 # Healthcare Database Security Testing Platform - Quick Start Guide
 
 ## Installation (5 minutes)
@@ -41,7 +43,7 @@ When prompted, enter:
 | Database Password | `yourpassword` | PostgreSQL password |
 | LLM Service Host | `192.168.1.102` | Ollama server IP |
 | LLM Service Port | `11434` | Ollama port |
-| LLM Model | `ds2-coder:latest` | Model name |
+| LLM Model | `qwen-coder-sql:latest` | Model name |
 | Email Domain | `hospital.com` | Email domain |
 | Security Mode | `vulnerable` or `secure` | Research mode |
 
@@ -138,7 +140,7 @@ net start postgresql-x64-12         # Windows
 ollama serve
 
 # Download model (if needed)
-ollama pull ds2-coder:latest
+ollama pull qwen-coder-sql:latest
 ```
 
 ### "Port already in use"

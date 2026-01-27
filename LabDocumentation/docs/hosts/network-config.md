@@ -2,6 +2,8 @@
   <img src="../images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
+!!! warning "**DRAFT** - This documentation is a work in progress"
+
 # Network Configuration
 
 Configuration guide for the network infrastructure connecting the three hosts in the Healthcare Database Security Testing Lab.
