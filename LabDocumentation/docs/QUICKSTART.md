@@ -6,7 +6,7 @@ GitHub: https://github.com/sarahsl-prog/DB_Security_Testing
 -->
 
 <div align="center">
-  <img src="/images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
+  <img src="images/logo-trnsp.png" alt="Healthcare Database Security Testing Lab Logo" width="150"/>
 </div>
 
 !!! warning "**DRAFT** - This documentation is a work in progress"
