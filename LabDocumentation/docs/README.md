@@ -1,7 +1,3 @@
-<div align="center">
-  <img src="images/logo-trnsp.png" alt="Healthcare Database Security Testing Logo" width="200"/>
-</div>
-
 !!! warning "**DRAFT** - This documentation is a work in progress"
 
 <div align="center">
