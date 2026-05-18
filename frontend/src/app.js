@@ -74,7 +74,7 @@
             async checkAuthStatus() {
                 if (this.authToken) {
                     try {
-                        const response = await this.callAuthAPI('/api/login', {
+                        const response = await this.callAuthAPI('/api/verify', {
                             method: 'GET',
                             headers: {
                                 'Authorization': `Bearer ${this.authToken}`
@@ -363,40 +363,87 @@
 
             displayAuditInfo(response, query, userRole, isMalicious) {
                 const auditOutput = document.getElementById('audit-output');
-                
-                const auditHtml = `
-                    <div style="display: grid; gap: 1rem;">
-                        <div style="padding: 1rem; background: var(--light-gray); border-radius: 8px;">
-                            <strong>Query Analysis:</strong><br>
-                            Risk Level: <span class="security-indicator ${response.securityFlags.riskLevel.toLowerCase() === 'high' ? 'danger' : 'safe'}">${response.securityFlags.riskLevel}</span><br>
-                            Authenticated User: ${response.securityFlags.authenticatedUser || 'Unknown'}<br>
-                            User Role: ${response.securityFlags.userRole || userRole}<br>
-                            Malicious Mode: ${isMalicious ? 'ON' : 'OFF'}
-                        </div>
-                        
-                        <div style="padding: 1rem; background: var(--light-gray); border-radius: 8px;">
-                            <strong>Security Events:</strong><br>
-                            Blocked Attempts: ${response.securityFlags.blockedAttempts}<br>
-                            Access Control: ${response.securityFlags.riskLevel === 'HIGH' ? 'RESTRICTED' : 'ALLOWED'}<br>
-                            Audit Log: ✓ Recorded<br>
-                            Authentication: ✓ Verified
-                        </div>
-                        
-                        <div style="padding: 1rem; background: var(--light-gray); border-radius: 8px;">
-                            <strong>User Permissions:</strong><br>
-                            ${response.securityFlags.allowedOperations.map(op => `• ${op}`).join('<br>')}
-                        </div>
-                        
-                        <div style="padding: 1rem; background: var(--light-gray); border-radius: 8px;">
-                            <strong>Query Timestamp:</strong> ${new Date().toISOString()}<br>
-                            <strong>Session ID:</strong> sess_${Math.random().toString(36).substr(2, 9)}<br>
-                            <strong>IP Address:</strong> 192.168.100.${Math.floor(Math.random() * 254) + 1}<br>
-                            <strong>Auth Token:</strong> ${this.authToken ? this.authToken.substr(0, 20) + '...' : 'None'}
-                        </div>
-                    </div>
-                `;
-                
-                auditOutput.innerHTML = auditHtml;
+
+                auditOutput.textContent = '';
+
+                const container = document.createElement('div');
+                container.style.display = 'grid';
+                container.style.gap = '1rem';
+
+                const queryAnalysisDiv = document.createElement('div');
+                queryAnalysisDiv.style.padding = '1rem';
+                queryAnalysisDiv.style.background = 'var(--light-gray)';
+                queryAnalysisDiv.style.borderRadius = '8px';
+
+                const riskLevel = (response.securityFlags?.riskLevel || 'Unknown').toLowerCase();
+                const riskLevelSpan = document.createElement('span');
+                riskLevelSpan.className = `security-indicator ${riskLevel === 'high' ? 'danger' : 'safe'}`;
+                riskLevelSpan.textContent = response.securityFlags?.riskLevel || 'Unknown';
+
+                queryAnalysisDiv.innerHTML = '<strong>Query Analysis:</strong><br>';
+                queryAnalysisDiv.appendChild(document.createTextNode('Risk Level: '));
+                queryAnalysisDiv.appendChild(riskLevelSpan);
+                queryAnalysisDiv.appendChild(document.createElement('br'));
+                queryAnalysisDiv.appendChild(document.createTextNode('Authenticated User: '));
+                queryAnalysisDiv.appendChild(document.createTextNode(response.securityFlags?.authenticatedUser || 'Unknown'));
+                queryAnalysisDiv.appendChild(document.createElement('br'));
+                queryAnalysisDiv.appendChild(document.createTextNode('User Role: '));
+                queryAnalysisDiv.appendChild(document.createTextNode(response.securityFlags?.userRole || userRole));
+                queryAnalysisDiv.appendChild(document.createElement('br'));
+                queryAnalysisDiv.appendChild(document.createTextNode('Malicious Mode: '));
+                queryAnalysisDiv.appendChild(document.createTextNode(isMalicious ? 'ON' : 'OFF'));
+
+                const securityEventsDiv = document.createElement('div');
+                securityEventsDiv.style.padding = '1rem';
+                securityEventsDiv.style.background = 'var(--light-gray)';
+                securityEventsDiv.style.borderRadius = '8px';
+
+                securityEventsDiv.innerHTML = '<strong>Security Events:</strong><br>';
+                securityEventsDiv.appendChild(document.createTextNode('Blocked Attempts: ' + (response.securityFlags?.blockedAttempts || 0)));
+                securityEventsDiv.appendChild(document.createElement('br'));
+                securityEventsDiv.appendChild(document.createTextNode('Access Control: '));
+                securityEventsDiv.appendChild(document.createTextNode(response.securityFlags?.riskLevel === 'HIGH' ? 'RESTRICTED' : 'ALLOWED'));
+                securityEventsDiv.appendChild(document.createElement('br'));
+                securityEventsDiv.appendChild(document.createTextNode('Audit Log: ✓ Recorded'));
+                securityEventsDiv.appendChild(document.createElement('br'));
+                securityEventsDiv.appendChild(document.createTextNode('Authentication: ✓ Verified'));
+
+                const permissionsDiv = document.createElement('div');
+                permissionsDiv.style.padding = '1rem';
+                permissionsDiv.style.background = 'var(--light-gray)';
+                permissionsDiv.style.borderRadius = '8px';
+
+                permissionsDiv.innerHTML = '<strong>User Permissions:</strong><br>';
+                const operationsList = document.createElement('div');
+                (response.securityFlags?.allowedOperations || []).forEach(op => {
+                    const opDiv = document.createElement('div');
+                    opDiv.textContent = `• ${op}`;
+                    operationsList.appendChild(opDiv);
+                });
+                permissionsDiv.appendChild(operationsList);
+
+                const queryTimestampDiv = document.createElement('div');
+                queryTimestampDiv.style.padding = '1rem';
+                queryTimestampDiv.style.background = 'var(--light-gray)';
+                queryTimestampDiv.style.borderRadius = '8px';
+
+                queryTimestampDiv.innerHTML = '<strong>Query Timestamp:</strong> ';
+                queryTimestampDiv.appendChild(document.createTextNode(new Date().toISOString()));
+                queryTimestampDiv.appendChild(document.createElement('br'));
+
+                const authTokenDisplay = this.authToken ? this.authToken.slice(0, 20) + '...' : 'None';
+
+                const sessionInfoDiv = document.createElement('div');
+                sessionInfoDiv.innerHTML = `<strong>Auth Token:</strong> ${authTokenDisplay}`;
+
+                queryTimestampDiv.appendChild(sessionInfoDiv);
+
+                container.appendChild(queryAnalysisDiv);
+                container.appendChild(securityEventsDiv);
+                container.appendChild(permissionsDiv);
+                container.appendChild(queryTimestampDiv);
+
+                auditOutput.appendChild(container);
             }
 
             createDataTable(data) {
@@ -471,15 +518,21 @@
                     const historyItem = document.createElement('div');
                     historyItem.className = 'history-item';
                     historyItem.dataset.query = item.query;
-                    
+
                     const date = new Date(item.timestamp);
                     const timeString = date.toLocaleTimeString();
-                    
-                    historyItem.innerHTML = `
-                        <div class="history-timestamp">${timeString} ${item.malicious ? '⚠️' : ''}</div>
-                        <div class="history-query">${item.query}</div>
-                    `;
-                    
+
+                    const timestampDiv = document.createElement('div');
+                    timestampDiv.className = 'history-timestamp';
+                    timestampDiv.textContent = `${timeString} ${item.malicious ? '⚠️' : ''}`;
+
+                    const queryDiv = document.createElement('div');
+                    queryDiv.className = 'history-query';
+                    queryDiv.textContent = item.query;
+
+                    historyItem.appendChild(timestampDiv);
+                    historyItem.appendChild(queryDiv);
+
                     historyContainer.appendChild(historyItem);
                 });
             }
@@ -553,19 +606,19 @@
 
             async checkSystemStatus() {
                 const statusChecks = [
-                    { 
-                        id: 'backend-status', 
+                    {
+                        id: 'backend-status',
                         url: window.CONFIG.getBackendUrl(window.CONFIG.api.health),
                         name: window.CONFIG.hosts.WEB.name
                     },
-                    { 
-                        id: 'llm-status', 
-                        url: window.CONFIG.getUrl('LLM', '/health'),
+                    {
+                        id: 'llm-status',
+                        url: window.CONFIG.getUrl('LLM', '/api/tags'),
                         name: window.CONFIG.hosts.LLM.name
                     },
-                    { 
-                        id: 'db-status', 
-                        url: `${window.CONFIG.hosts.DB.protocol}://${window.CONFIG.hosts.DB.host}:${window.CONFIG.hosts.DB.port}`,
+                    {
+                        id: 'db-status',
+                        url: window.CONFIG.getBackendUrl('/api/health'),
                         name: window.CONFIG.hosts.DB.name
                     }
                 ];

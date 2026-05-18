@@ -20,7 +20,7 @@ import hashlib
 import json
 from loguru import logger
 
-from config import Config
+from common.config import Config
 from models import SecurityEvent, QueryResult
 
 

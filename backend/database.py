@@ -20,7 +20,7 @@ from typing import List, Dict, Any, Optional
 import re
 from loguru import logger
 
-from config import Config
+from common.config import Config
 from models import Base, Patient, MedicalRecord, AdminUser, AuditLog, User, QueryResult, DatabaseSchema
 
 
@@ -210,17 +210,11 @@ class DatabaseManager:
         
         try:
             with self.engine.connect() as conn:
-                # CRITICAL FIX: Add query timeout enforcement to prevent DoS
-                # Use execution_options to set timeout at application level
+                conn.execute(text(f"SET LOCAL statement_timeout = {Config.QUERY_TIMEOUT * 1000}"))
                 if parameters:
-                    result = conn.execute(
-                        text(sql_query).execution_options(timeout=Config.QUERY_TIMEOUT),
-                        parameters
-                    )
+                    result = conn.execute(text(sql_query), parameters)
                 else:
-                    result = conn.execute(
-                        text(sql_query).execution_options(timeout=Config.QUERY_TIMEOUT)
-                    )
+                    result = conn.execute(text(sql_query))
                 
                 if result.returns_rows:
                     columns = result.keys()
@@ -629,6 +623,27 @@ class DatabaseManager:
             logger.error(f"Database restore error: {str(e)}")
             raise
     
+    def get_audit_log_count(self, user_id: int = None, status: str = None) -> int:
+        """Get total audit log count for pagination"""
+        session = self.get_session()
+        try:
+            query = session.query(AuditLog)
+
+            if user_id:
+                query = query.filter(AuditLog.user_id == user_id)
+
+            if status:
+                query = query.filter(AuditLog.result_status == status)
+
+            count = query.count()
+            return count
+
+        except Exception as e:
+            logger.error(f"Audit log count retrieval failed: {str(e)}")
+            return 0
+        finally:
+            session.close()
+
     def close(self):
         """Close database connections"""
         if self.engine:

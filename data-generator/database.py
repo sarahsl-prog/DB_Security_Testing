@@ -37,8 +37,8 @@ class DatabaseManager:
     def _setup_database(self):
         """Initialize database connection and session factory"""
         try:
-            logger.info(f"Attempting to connect to database at {Config.DB_HOST}:{Config.DB_PORT}")
-            logger.debug(f"Database connection parameters: host={Config.DB_HOST}, port={Config.DB_PORT}, db={Config.DB_NAME}")
+            logger.info(f"Attempting to connect to database at {Config.DATABASE_HOST}:{Config.DATABASE_PORT}")
+            logger.debug(f"Database connection parameters: host={Config.DATABASE_HOST}, port={Config.DATABASE_PORT}, db={Config.DATABASE_NAME}")
 
             self.engine = create_engine(
                 Config.DATABASE_URL,
@@ -52,7 +52,7 @@ class DatabaseManager:
 
             Base.metadata.bind = self.engine
 
-            logger.success(f"Database connection established successfully to {Config.DB_NAME}")
+            logger.success(f"Database connection established successfully to {Config.DATABASE_NAME}")
             logger.info("Connection pool configured: pool_size=10, max_overflow=20")
 
         except Exception as e:

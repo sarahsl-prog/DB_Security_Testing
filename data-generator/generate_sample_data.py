@@ -284,7 +284,12 @@ class HealthcareDataGenerator:
         for i in range(count):
             try:
                 patient = random.choice(patients)
-                doctor = random.choice([d for d in doctors if d.is_active])
+                active_doctors = [d for d in doctors if d.is_active]
+                if not active_doctors:
+                    logger.warning("No active doctors available, falling back to all doctors")
+                    doctor = random.choice(doctors)
+                else:
+                    doctor = random.choice(active_doctors)
 
                 # Visit date (within last 3 years, weighted toward more recent)
                 days_ago = random.choices(

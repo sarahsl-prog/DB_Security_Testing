@@ -98,9 +98,11 @@ CREATE TABLE audit_log (
 );
 
 -- Create users and roles as needed (adjust as per your environment)
-CREATE USER healthcare_admihn WITH PASSWORD 'Postgresql17!'
+CREATE USER healthcare_user WITH PASSWORD 'CHANGE_ME';
 GRANT CONNECT ON DATABASE healthcare_security TO healthcare_user;
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO healthcare_admin;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO healthcare_user;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO healthcare_user;
+
 
 -- Create indexes for performance
 CREATE INDEX idx_patients_ssn ON patients(ssn);
@@ -166,17 +168,9 @@ INSERT INTO medical_records (patient_id, doctor_id, visit_date, diagnosis, treat
 (2, 1, '2023-05-15 11:15:00', 'High Cholesterol', 'Dietary changes', 'Atorvastatin 20mg daily', 'Lipid panel elevated', '2023-08-15'),
 (3, 2, '2023-06-01 10:45:00', 'Migraine Follow-up', 'Medication review', 'Sumatriptan and Propranolol', 'Frequency reduced', '2023-09-01');
 
--- Insert admin users with different roles (passwords are "password123" hashed with bcrypt)
--- Note: In production, use proper password hashing
-INSERT INTO admin_users (username, password_hash, role, first_name, last_name, email, patient_id) VALUES
-('admin', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewkQjl.YuqnF6C2K', 'admin', 'System', 'Administrator', 'admin@hospital.com', NULL),
-('dr.johnson', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewkQjl.YuqnF6C2K', 'doctor', 'Sarah', 'Johnson', 'sarah.johnson@hospital.com', NULL),
-('nurse.smith', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewkQjl.YuqnF6C2K', 'nurse', 'Emily', 'Smith', 'emily.smith@hospital.com', NULL),
-('patient.john', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewkQjl.YuqnF6C2K', 'patient', 'John', 'Smith', 'john.smith@email.com', 1),
-('dr.chen', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewkQjl.YuqnF6C2K', 'doctor', 'Michael', 'Chen', 'michael.chen@hospital.com', NULL),
-('nurse.brown', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewkQjl.YuqnF6C2K', 'nurse', 'Laura', 'Brown', 'laura.brown@hospital.com', NULL),
-('patient.mary', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewkQjl.YuqnF6C2K', 'patient', 'Mary', 'Johnson', 'mary.johnson@email.com', 2),
-('testuser', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewkQjl.YuqnF6C2K', 'doctor', 'Test', 'User', 'test@hospital.com', NULL);
+-- Note: User accounts are seeded by generate_sample_data.py, not by this SQL script
+-- The generate_sample_data.py script creates proper bcrypt hashes for 'password123'
+-- and creates the canonical test accounts: admin, test_doctor, test_nurse, test_patient, vulnerable_user
 
 -- Insert sample audit log entries
 INSERT INTO audit_log (user_id, username, action, query, result_status, security_mode, ip_address) VALUES

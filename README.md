@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="LabDocumentation\docs\images\logo-trnsp.png" alt="Healthcare Database Security Testing Logo" width="200"/>
+  <img src="LabDocumentation/docs/images/logo-trnsp.png" alt="Healthcare Database Security Testing Logo" width="200"/>
 
   # Healthcare Database Security Testing Application
 
@@ -39,9 +39,12 @@ The system can use a distributed architecture across multiple VMs or a docker en
 - `POST /api/query` - Process natural language to SQL conversion
 - `GET /api/schema` - Return database schema for LLM context
 - `POST /api/login` - User authentication and role assignment
+- `GET /api/verify` - JWT token verification
 - `GET /api/audit` - Security audit logs (admin only)
 - `GET /api/health` - Service health check for all components
 - `POST /api/validate` - Test query validation without execution
+- `POST /api/security/mode` - Toggle vulnerable/secure security mode (admin only)
+- `GET /api/attack/scenarios` - List available attack scenarios (admin only)
 
 ## Quick Start
 
@@ -49,8 +52,9 @@ The system can use a distributed architecture across multiple VMs or a docker en
 
 1. **Python 3.12+**
 2. **PostgreSQL 17+**
-3. **Ollama** 
-4. **Git**
+3. **Ollama**
+4. **Node.js 22.12+**
+5. **Git**
 
 ### Documentation 
 https://sarahsl-prog.github.io/DB_Security_Testing/
@@ -73,9 +77,16 @@ uv venv .venv
 # On Linux/Mac:
 source .venv/bin/activate
 
-# Install dependencies
-uv pip install -r requirements.txt
-```
+ # Install backend dependencies
+ cd backend
+ uv pip install -r requirements.txt
+ cd ..
+
+ # Install frontend dependencies (for development)
+ cd frontend
+ npm install
+ cd ..
+ ```
 
 ### 2. Database Setup
 
@@ -96,31 +107,41 @@ GRANT ALL PRIVILEGES ON DATABASE healthcare_security TO healthcare_user;
 ```
 
 ```bash
-# Run schema setup
-psql -h localhost -U healthcare_user -d healthcare_security -f setup_database.sql
+# Run schema setup (note: user accounts are created by generate_sample_data.py)
+psql -h localhost -U healthcare_user -d healthcare_security -f backend/setup_database.sql
 ```
 
 ### 3. Environment Configuration
 
-Create `.env` file:
+**For Docker Compose (production/testing):**
+Copy and use `.env.docker` as your base configuration:
+```bash
+cp .env.docker .env
+# Then adjust values as needed
+```
 
+**For Local Development (VM setup):**
+Create `.env` file:
 ```bash
 # Database Configuration
-DB_HOST=192.168.100.30
-DB_PORT=5432
+DB_HOST=localhost                  # Use 'postgres' for Docker, IP for VM
+DB_PORT=5432                      # Default PostgreSQL port
 DB_NAME=healthcare_security
 DB_USER=healthcare_user
 DB_PASSWORD=secure_password_123
 
 # LLM Service Configuration
-LLM_HOST=192.168.100.1
-LLM_PORT=11434
-LLM_MODEL=qwen-coder-sql:latest
+LLM_HOST=localhost                # Use 'ollama' for Docker, IP for VM/Windows host
+LLM_PORT=11434                    # Default Ollama port
+LLM_MODEL=qwen-coder-sql:latest   # Default model
 
 # Security Configuration
-SECURITY_MODE=vulnerable
+SECURITY_MODE=vulnerable          # or 'secure' for testing defenses
 SECRET_KEY=your-secret-key-here
 JWT_SECRET_KEY=your-jwt-secret-here
+
+# CORS Configuration (for frontend)
+CORS_ORIGINS=http://localhost:5173,http://localhost:3000
 
 # Logging
 LOG_LEVEL=INFO
@@ -142,11 +163,36 @@ This creates:
 
 ### 5. Start the Application
 
+**For Local Development:**
 ```bash
+# Start backend API
+cd backend
 python app.py
 ```
 
+**For Docker Compose:**
+```bash
+# Start all services (backend, frontend, database, ollama)
+docker-compose -f docker-compose-all.yml up
+
+# Or start components separately
+# Infrastructure only (database, ollama)
+docker-compose -f docker-compose-infra.yml up
+
+# Application only (backend, frontend)
+docker-compose -f docker-compose-app.yml up
+```
+
+**Frontend Development:**
+```bash
+cd frontend
+# Set backend URL
+export VITE_BACKEND_URL=http://localhost:5000
+npm run dev
+```
+
 The API will be available at `http://localhost:5000`
+The Frontend will be available at `http://localhost:3000`
 
 ## Security Testing
 

@@ -20,31 +20,36 @@ from typing import Dict, List, Any
 
 class AttackScenarioRunner:
     """Runs various security attack scenarios against the API"""
-    
+
     def __init__(self, base_url: str = "http://localhost:5000"):
         self.base_url = base_url
         self.session = requests.Session()
         self.auth_token = None
         self.results = []
-    
-    def authenticate(self, username: str = "test_doctor", password: str = "password123") -> bool:
+        self.username = None
+        self.password = None
+
+    def authenticate(self, username: str = None, password: str = None) -> bool:
         """Authenticate with the API"""
+        self.username = username or "admin"
+        self.password = password or "password123"
+
         try:
             response = self.session.post(
                 f"{self.base_url}/api/login",
-                json={"username": username, "password": password}
+                json={"username": self.username, "password": self.password}
             )
-            
+
             if response.status_code == 200:
                 data = response.json()
                 self.auth_token = data.get('token')
                 self.session.headers.update({'Authorization': f'Bearer {self.auth_token}'})
-                print(f"✓ Authenticated as {username}")
+                print(f"✓ Authenticated as {self.username}")
                 return True
             else:
                 print(f"✗ Authentication failed: {response.status_code}")
                 return False
-                
+
         except Exception as e:
             print(f"✗ Authentication error: {str(e)}")
             return False
@@ -244,8 +249,8 @@ class AttackScenarioRunner:
         print(f"\n{'='*60}")
         print(f"COMPREHENSIVE SECURITY TEST - {security_mode.upper()} MODE")
         print(f"{'='*60}")
-        
-        if not self.authenticate():
+
+        if not self.authenticate(self.username, self.password):
             print("Authentication failed. Cannot run tests.")
             return
         
@@ -373,18 +378,20 @@ class AttackScenarioRunner:
 def main():
     """Main function to run attack scenarios"""
     import argparse
-    
+
     parser = argparse.ArgumentParser(description='Healthcare API Security Testing')
     parser.add_argument('--url', default='http://localhost:5000', help='API base URL')
-    parser.add_argument('--mode', choices=['vulnerable', 'secure', 'compare'], 
+    parser.add_argument('--mode', choices=['vulnerable', 'secure', 'compare'],
                        default='compare', help='Security mode to test')
     parser.add_argument('--username', default='test_doctor', help='Username for authentication')
     parser.add_argument('--password', default='password123', help='Password for authentication')
-    
+
     args = parser.parse_args()
-    
+
     runner = AttackScenarioRunner(args.url)
-    
+    runner.username = args.username
+    runner.password = args.password
+
     if args.mode == 'compare':
         runner.test_mode_comparison()
     else:

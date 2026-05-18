@@ -25,63 +25,51 @@ load_dotenv()
 class Config:
     """Base configuration class with security research settings"""
 
-    # Load environment variables with required validation
-    SECRET_KEY = os.environ.get('SECRET_KEY')
-    if not SECRET_KEY:
-        SECRET_KEY = 'dev-key-change-in-production'
+    load_dotenv()
+
+    SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-key-change-in-production')
+    if not os.environ.get('SECRET_KEY'):
         print("WARNING: Using default SECRET_KEY. Set SECRET_KEY environment variable for production!")
 
     HOST = os.environ.get('API_HOST', '0.0.0.0')
     PORT = int(os.environ.get('API_PORT', 5000))
     DEBUG = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
 
-    # Database configuration - require environment variables
     DATABASE_HOST = os.environ.get('DB_HOST')
-    if not DATABASE_HOST:
-        raise ValueError("DB_HOST environment variable must be set. Check your .env file.")
-
     DATABASE_PORT = int(os.environ.get('DB_PORT', 5432))
     DATABASE_NAME = os.environ.get('DB_NAME', 'healthcare_security')
     DATABASE_USER = os.environ.get('DB_USER', 'healthcare_user')
     DATABASE_PASSWORD = os.environ.get('DB_PASSWORD')
-    if not DATABASE_PASSWORD:
-        raise ValueError("DB_PASSWORD environment variable must be set. Check your .env file.")
-
     DATABASE_URL = f"postgresql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}"
 
-    # LLM configuration - require environment variables
     LLM_HOST = os.environ.get('LLM_HOST')
-    if not LLM_HOST:
-        raise ValueError("LLM_HOST environment variable must be set. Check your .env file.")
-
     LLM_PORT = int(os.environ.get('LLM_PORT', 11434))
     LLM_BASE_URL = f"http://{LLM_HOST}:{LLM_PORT}"
     LLM_DEFAULT_MODEL = os.environ.get('LLM_MODEL', 'qwen-coder-sql:latest')
     LLM_TIMEOUT = int(os.environ.get('LLM_TIMEOUT', 30))
     LLM_MAX_RETRIES = int(os.environ.get('LLM_MAX_RETRIES', 3))
-    
+
     SECURITY_MODE = os.environ.get('SECURITY_MODE', 'vulnerable')
-    
+
     JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY') or SECRET_KEY
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=int(os.environ.get('JWT_EXPIRES_HOURS', 24)))
-    
+
     LOG_LEVEL = os.environ.get('LOG_LEVEL', 'INFO')
     LOG_FILE = os.environ.get('LOG_FILE', 'logs/healthcare_security.log')
     AUDIT_LOG_FILE = os.environ.get('AUDIT_LOG_FILE', 'logs/security_audit.log')
 
-    # Domain configuration
     EMAIL_DOMAIN = os.environ.get('EMAIL_DOMAIN', 'healthcare.com')
     API_BASE_URL = os.environ.get('API_BASE_URL', f"http://{HOST}:{PORT}")
-    
-    CORS_ORIGINS = os.environ.get('CORS_ORIGINS', '*').split(',')
-    
+
+    CORS_ORIGINS = os.environ.get('CORS_ORIGINS', 'http://localhost:5173').split(',')
+
     MAX_QUERY_RESULTS = int(os.environ.get('MAX_QUERY_RESULTS', 1000))
     QUERY_TIMEOUT = int(os.environ.get('QUERY_TIMEOUT', 30))
-    
+
     RATE_LIMIT_PER_MINUTE = int(os.environ.get('RATE_LIMIT_PER_MINUTE', 60))
-    
+
     CACHE_TTL = int(os.environ.get('CACHE_TTL', 300))
-    
+
     VULNERABLE_MODE_FEATURES = {
         'sql_injection_protection': False,
         'input_validation': False,
@@ -90,7 +78,7 @@ class Config:
         'query_analysis': False,
         'schema_protection': False
     }
-    
+
     SECURE_MODE_FEATURES = {
         'sql_injection_protection': True,
         'input_validation': True,
@@ -99,9 +87,9 @@ class Config:
         'query_analysis': True,
         'schema_protection': True
     }
-    
+
     SQL_INJECTION_PATTERNS = [
-        r"(\b(union|select|insert|update|delete|drop|create|alter|exec|execute)\b)",
+        r"(union\s+select)",
         r"(--|#|/\*|\*/)",
         r"(\bor\b\s+\d+\s*=\s*\d+)",
         r"(\band\b\s+\d+\s*=\s*\d+)",
@@ -112,12 +100,12 @@ class Config:
         r"(\bxp_cmdshell\b)",
         r"(\bsp_executesql\b)"
     ]
-    
+
     SENSITIVE_COLUMNS = [
         'ssn', 'social_security_number', 'password', 'password_hash',
         'credit_card', 'card_number', 'license_number', 'insurance_id'
     ]
-    
+
     ROLE_PERMISSIONS = {
         'patient': {
             'tables': ['patients', 'medical_records'],
@@ -151,6 +139,25 @@ class Config:
             'filters': []
         }
     }
+
+    @classmethod
+    def validate(cls):
+        """Validate required configuration at runtime instead of import time"""
+        errors = []
+        
+        if not cls.DATABASE_HOST:
+            errors.append("DB_HOST environment variable must be set. Check your .env file.")
+        
+        if not cls.DATABASE_PASSWORD:
+            errors.append("DB_PASSWORD environment variable must be set. Check your .env file.")
+        
+        if not cls.LLM_HOST:
+            errors.append("LLM_HOST environment variable must be set. Check your .env file.")
+        
+        if errors:
+            raise ValueError("\n".join(errors))
+        
+        return True
     
     @classmethod
     def get_current_mode_features(cls):

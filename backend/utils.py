@@ -27,7 +27,7 @@ import os
 import sys
 from loguru import logger
 
-from config import Config
+from common.config import Config
 
 
 def setup_logging():
@@ -354,12 +354,9 @@ def mask_sensitive_data(data: str, mask_char: str = '*',
     return masked_part + visible_part
 
 
-def log_security_event(event_type: str, message: str, user_id: int = None, 
+def log_security_event(event_type: str, message: str, user_id: int = None,
                       details: Dict[str, Any] = None, severity: str = 'INFO'):
-    """Log security-related events"""
-    security_logger = logging.getLogger('security')
-    audit_logger = logging.getLogger('audit')
-    
+    """Log security-related events using loguru"""
     log_data = {
         'event_type': event_type,
         'message': message,
@@ -369,13 +366,13 @@ def log_security_event(event_type: str, message: str, user_id: int = None,
         'user_agent': request.headers.get('User-Agent', 'Unknown') if request else 'System',
         'details': details or {}
     }
-    
+
     log_message = f"{event_type}: {message}"
     if user_id:
         log_message += f" (User: {user_id})"
-    
-    security_logger.log(getattr(logging, severity), log_message)
-    audit_logger.info(json.dumps(log_data))
+
+    logger.bind(type="AUDIT", event_type=event_type, user_id=user_id).info(log_message)
+    logger.bind(type="SECURITY", severity=severity, **log_data).info(json.dumps(log_data))
 
 
 def get_client_ip() -> str:

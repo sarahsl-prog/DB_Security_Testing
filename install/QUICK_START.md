@@ -3,7 +3,7 @@
 ## 1-Minute Quick Start
 
 ```bash
-cd /home/sunds/Code/Database_Security_TestApp/install
+cd install
 ./install.sh
 ```
 

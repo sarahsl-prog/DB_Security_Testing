@@ -22,7 +22,7 @@ from urllib.parse import urljoin
 import hashlib
 from loguru import logger
 
-from config import Config
+from common.config import Config
 
 
 class LLMClient:
@@ -317,15 +317,7 @@ class LLMClient:
     def _apply_security_filters(self, sql_query: str, user_role: str) -> str:
         """Apply role-based security filters to SQL"""
         
-        if user_role == 'patient':
-            
-            if 'patients' in sql_query.lower() and 'where' not in sql_query.lower():
-                if sql_query.endswith(';'):
-                    sql_query = sql_query[:-1] + ' WHERE patient_id = {user_patient_id};'
-                else:
-                    sql_query += ' WHERE patient_id = {user_patient_id}'
-        
-        elif user_role == 'nurse':
+        if user_role == 'nurse':
             
             sensitive_columns = ['ssn', 'license_number', 'password_hash']
             for col in sensitive_columns:
