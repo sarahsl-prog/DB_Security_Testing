@@ -49,14 +49,44 @@ class Config:
 
     DATABASE_URL = f"postgresql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}"
 
-    # LLM configuration - require environment variables
-    LLM_HOST = os.environ.get('LLM_HOST')
-    if not LLM_HOST:
-        raise ValueError("LLM_HOST environment variable must be set. Check your .env file.")
+    # LLM configuration - supports multiple providers
+    # Provider: ollama, openai, anthropic
+    LLM_PROVIDER = os.environ.get('LLM_PROVIDER', 'ollama').lower()
 
+    # API key for cloud providers (OpenAI, Anthropic)
+    LLM_API_KEY = os.environ.get('LLM_API_KEY', '')
+
+    # Validate API key for cloud providers
+    if LLM_PROVIDER in ('openai', 'anthropic') and not LLM_API_KEY:
+        raise ValueError(f"LLM_API_KEY environment variable must be set for {LLM_PROVIDER} provider.")
+
+    # Host/Port for Ollama (local or remote)
+    LLM_HOST = os.environ.get('LLM_HOST', 'localhost')
     LLM_PORT = int(os.environ.get('LLM_PORT', 11434))
-    LLM_BASE_URL = f"http://{LLM_HOST}:{LLM_PORT}"
-    LLM_DEFAULT_MODEL = os.environ.get('LLM_MODEL', 'qwen-coder-sql:latest')
+
+    # Custom API base URL (optional - for custom endpoints or proxies)
+    LLM_API_BASE = os.environ.get('LLM_API_BASE', '')
+
+    # Construct base URL based on provider
+    if LLM_API_BASE:
+        LLM_BASE_URL = LLM_API_BASE
+    elif LLM_PROVIDER == 'ollama':
+        LLM_BASE_URL = f"http://{LLM_HOST}:{LLM_PORT}"
+    elif LLM_PROVIDER == 'openai':
+        LLM_BASE_URL = 'https://api.openai.com/v1'
+    elif LLM_PROVIDER == 'anthropic':
+        LLM_BASE_URL = 'https://api.anthropic.com/v1'
+    else:
+        LLM_BASE_URL = f"http://{LLM_HOST}:{LLM_PORT}"
+
+    # Default models per provider
+    _DEFAULT_MODELS = {
+        'ollama': 'qwen-coder-sql:latest',
+        'openai': 'gpt-4o-mini',
+        'anthropic': 'claude-3-5-haiku-20241022'
+    }
+    LLM_DEFAULT_MODEL = os.environ.get('LLM_MODEL', _DEFAULT_MODELS.get(LLM_PROVIDER, 'qwen-coder-sql:latest'))
+
     LLM_TIMEOUT = int(os.environ.get('LLM_TIMEOUT', 30))
     LLM_MAX_RETRIES = int(os.environ.get('LLM_MAX_RETRIES', 3))
     

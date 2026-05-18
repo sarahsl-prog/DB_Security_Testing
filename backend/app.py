@@ -25,7 +25,7 @@ from loguru import logger
 
 from config import Config
 from database import DatabaseManager
-from llm_client import LLMClient
+from llm_providers import get_llm_provider
 from security import SecurityManager, SecurityMode
 from models import User, AuditLog
 from utils import generate_response, validate_json_input, setup_logging
@@ -35,7 +35,7 @@ app.config.from_object(Config)
 CORS(app, resources={r"/api/*": {"origins": "*", "allow_headers": ["Content-Type", "Authorization"], "methods": ["GET", "POST", "OPTIONS"]}}, supports_credentials=True)
 
 db_manager = DatabaseManager()
-llm_client = LLMClient()
+llm_client = get_llm_provider(Config)
 security_manager = SecurityManager()
 
 setup_logging()
@@ -553,7 +553,9 @@ def get_attack_scenarios():
 if __name__ == '__main__':
     logger.info("Starting Healthcare Security Research API")
     logger.info(f"Database: {Config.DATABASE_URL}")
+    logger.info(f"LLM Provider: {Config.LLM_PROVIDER}")
     logger.info(f"LLM Service: {Config.LLM_BASE_URL}")
+    logger.info(f"LLM Model: {Config.LLM_DEFAULT_MODEL}")
     
     app.run(
         host=Config.HOST,
